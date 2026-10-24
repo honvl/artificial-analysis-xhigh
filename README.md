@@ -1,7 +1,22 @@
 # artificial-analysis-xhigh
 
-An auto-updating link to the [Artificial Analysis](https://artificialanalysis.ai/models)
-Intelligence Index chart with every `max` variant swapped for its `xhigh` variant.
+Auto-updating links to the [Artificial Analysis](https://artificialanalysis.ai/models) Intelligence
+Index chart at `xhigh`, `high` or `medium` effort instead of its default `max`, plus a summary of
+the top models at each effort level.
+
+## Links
+
+Bookmark these. Each redirects to the latest chart.
+
+| View | What changes from the default chart | Link |
+| --- | --- | --- |
+| xhigh | every `max` variant becomes `xhigh` | https://honvl.github.io/artificial-analysis-xhigh/ |
+| high | every `max` and `xhigh` variant becomes `high` | https://honvl.github.io/artificial-analysis-xhigh/high/ |
+| medium | every `max`, `xhigh` and `high` variant becomes `medium` | https://honvl.github.io/artificial-analysis-xhigh/medium/ |
+
+A model with no variant at that level stays as it is, and models with no effort setting are
+untouched. Add `#info` to a link to see which models were swapped instead of redirecting. See
+[Add it to your bookmarks](#add-it-to-your-bookmarks) for the easy way to save them.
 
 ## Why I made this
 
@@ -25,11 +40,30 @@ describe `max` as ["absolute maximum capability with no constraints on token spe
 
 The site does show xhigh scores, but you have to pick every model by hand in its model selector.
 This repo builds the link that does that for me and keeps it current as the site's default models
-change.
+change. The high and medium links do the same for lower effort levels.
 
-**Bookmark: https://honvl.github.io/artificial-analysis-xhigh/** redirects to the latest swapped
-link. Add `#info` to the end to see which models were swapped instead of redirecting. See
-[Add it to your bookmarks](#add-it-to-your-bookmarks) for the easy way to save it.
+## Top models at each effort level
+
+The ten highest-scoring models on the Intelligence Index at each effort level, regenerated every
+3 hours. Only models Artificial Analysis lists with an explicit effort setting appear. Anthropic,
+OpenAI and Google have their own colors, and every other lab shares gray. Table views of the same
+numbers are on the [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
+
+### max (the Artificial Analysis default)
+
+![Top models at max effort](docs/charts/max.svg)
+
+### xhigh
+
+![Top models at xhigh effort](docs/charts/xhigh.svg)
+
+### high
+
+![Top models at high effort](docs/charts/high.svg)
+
+### medium
+
+![Top models at medium effort](docs/charts/medium.svg)
 
 ## How it works
 
@@ -41,14 +75,20 @@ The site picks its default 27 models server-side and accepts an override as
 
 1. The default selection (`chartDefaultSelected`), in the site's order.
 2. The full variant list, each entry with a `releaseSlug` and an effort label in its name.
-3. For every default model labelled Max, it finds the sibling with the same `releaseSlug`, the
-   same qualifier (e.g. "Default Fallback") and the label Xhigh, and substitutes it.
+3. For every default model labelled above the target level, it finds the sibling with the same
+   `releaseSlug`, the same qualifier (e.g. "Default Fallback") and the target label, and
+   substitutes it. It never raises a model to a higher level.
 
-Models that are not Max are left alone. A Max model with no xhigh sibling (GLM-5.3, Muse Wonder
-and DeepSeek V4.1 Flash 1017 at the time of writing) stays on Max, because it has no xhigh entry
-on the site to swap to. Use `--unmatched drop` to remove such models from the chart instead.
+A model above the target with no sibling at it (for example GLM-5.3, which only has Max and Low
+at the time of writing) stays as it is. Use `--unmatched drop` to remove such models from the
+chart instead.
 
-The scheduled workflow re-runs this every 3 hours and commits `docs/` only when the link changes.
+The charts use a second source: the model picker embedded in the site's
+`/models/comparisons` page, which lists an Intelligence Index for each variant. `aa_charts.py`
+ranks the models carrying each effort tag and draws the SVGs.
+
+The scheduled workflow re-runs everything every 3 hours and commits `docs/` only when something
+changes.
 
 ## Setup
 
@@ -62,30 +102,31 @@ gh workflow run update-link
 
 Or in the web UI: Settings, Pages, deploy from branch `main`, folder `/docs`.
 
-Then the stable URL is `https://<your-username>.github.io/artificial-analysis-xhigh/`. Raw link as
-text: `.../link.txt`. Details as JSON: `.../latest.json`.
+The site then lives at `https://<your-username>.github.io/artificial-analysis-xhigh/`. Each link
+folder also has `link.txt` (the raw link) and `latest.json` (details).
 
 ## Add it to your bookmarks
 
-The stable URL redirects, so pressing your browser's "bookmark this page" shortcut on it saves the
-long chart URL it lands on, which goes stale when the default models change. Instead:
+The links redirect, so pressing your browser's "bookmark this page" shortcut on one saves the long
+chart URL it lands on, which goes stale when the default models change. Instead:
 
 - **Drag (easiest):** open the [bookmark page](https://honvl.github.io/artificial-analysis-xhigh/bookmark.html)
-  and drag its link onto your bookmarks bar.
-- **Paste the URL:** copy `https://honvl.github.io/artificial-analysis-xhigh/`, then in Chrome press
-  Cmd/Ctrl+Shift+O, use the menu at the top right, choose Add new bookmark and paste. In Firefox,
-  Cmd/Ctrl+Shift+O, Organize, New Bookmark. Safari has no add-by-URL, so use the drag link.
+  and drag the links onto your bookmarks bar.
+- **Paste the URL:** copy a link from the table above, then in Chrome press Cmd/Ctrl+Shift+O, use
+  the menu at the top right, choose Add new bookmark and paste. In Firefox, Cmd/Ctrl+Shift+O,
+  Organize, New Bookmark. Safari has no add-by-URL, so use the drag links.
 
 ## Use it locally
 
-No dependencies. Needs Python 3.9+ (tested on 3.12).
+No dependencies. Developed on Python 3.12.
 
 ```bash
-python3 aa_xhigh.py                 # print the link
-python3 aa_xhigh.py --explain       # also show what was swapped
-python3 aa_xhigh.py --open          # open it in your browser
+python3 aa_xhigh.py                  # print the xhigh link
+python3 aa_xhigh.py --level high     # print the high link (xhigh, high, medium, low or minimal)
+python3 aa_xhigh.py --explain        # also show what was swapped
+python3 aa_xhigh.py --open           # open it in your browser
 python3 aa_xhigh.py --unmatched drop
-python3 aa_xhigh.py --write docs    # regenerate the Pages output
+python3 aa_xhigh.py --write docs     # regenerate the whole Pages site: links and charts
 ```
 
 ## Tests
@@ -97,10 +138,11 @@ AA_LIVE=1 python3 -m unittest discover -s tests -k Live -v   # also hit the real
 
 ## When it breaks
 
-The script reads the Next.js data embedded in the page, which is not a public API. If the site
-changes its shape the script exits with an error (and checks that every slug it emits exists in
-the site's own model list) rather than publishing a bad link. The workflow run then fails, GitHub
-emails you, and `docs/` keeps pointing at the last good link.
+The scripts read data embedded in the site's pages, which is not a public API. If a page changes
+shape the script exits with an error (and checks that every slug it emits exists in the site's own
+model list) rather than publishing something wrong. The links and the charts come from different
+pages, so one failing does not hold back the other. The workflow run turns red, GitHub emails
+you, and `docs/` keeps the last good output.
 
 GitHub disables scheduled workflows after 60 days without repo activity, so the workflow adds an
 empty keepalive commit when the last commit is older than 50 days.

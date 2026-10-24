@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Build an Artificial Analysis /models link with every "max" variant swapped for "xhigh".
+"""Build Artificial Analysis /models links at a fixed effort level (xhigh, high or medium).
 
 The site renders its default chart selection (27 models) server-side and lets you
 override it with ``?models=slug1,slug2,...``. Every effort level of a model is its
-own slug (``claude-opus-5-5`` is Max, ``claude-opus-5-5-xhigh`` is Xhigh), so the
-swap is: take the default selection, and for each model labelled "Max" substitute
-the sibling from the same release whose label is "Xhigh".
+own slug (``claude-opus-5-5`` is Max, ``claude-opus-5-5-xhigh`` is Xhigh), so for a
+target level the swap is: take the default selection, and for each model labelled
+above that level substitute the sibling from the same release whose label is the
+target level. Models at or below the target, and models with no effort label, are
+left alone.
 
 Standard library only.
 """
@@ -17,53 +19,29 @@ import html
 import json
 import re
 import sys
-import urllib.request
 import webbrowser
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote
 
-SOURCE = "https://artificialanalysis.ai/models"
-USER_AGENT = "Mozilla/5.0 (compatible; artificial-analysis-xhigh/1.0; +https://github.com)"
-EFFORTS = {"max", "xhigh", "high", "medium", "low", "minimal"}
+import aa_charts
+from aa_common import (
+    LEVELS,
+    ORDER,
+    SOURCE,
+    Label,
+    ParseError,
+    fetch,
+    flight_payload,
+    level_href,
+    parse_label,
+    read_json,
+    write_text,
+)
 
 
-class ParseError(RuntimeError):
-    """The page no longer looks the way this script expects."""
-
-
-# --- fetching and decoding ---------------------------------------------------
-
-
-def fetch(url: str = SOURCE, timeout: int = 30) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8")
-
-
-def flight_payload(page: str) -> str:
-    """Join the Next.js flight chunks (``self.__next_f.push([1,"..."])``) into one string.
-
-    Values can span chunk boundaries, so the chunks are concatenated before any
-    searching is done.
-    """
-    decoder = json.JSONDecoder()
-    marker = "self.__next_f.push("
-    parts: list[str] = []
-    pos = 0
-    while (i := page.find(marker, pos)) != -1:
-        start = i + len(marker)
-        try:
-            chunk, pos = decoder.raw_decode(page, start)
-        except json.JSONDecodeError:
-            pos = start
-            continue
-        if isinstance(chunk, list) and len(chunk) == 2 and chunk[0] == 1 and isinstance(chunk[1], str):
-            parts.append(chunk[1])
-    if not parts:
-        raise ParseError("no Next.js flight data found in the page")
-    return "".join(parts)
+# --- reading the page --------------------------------------------------------
 
 
 def default_models(payload: str) -> list[dict]:
@@ -99,32 +77,6 @@ def variant_index(payload: str) -> list[dict]:
     return best
 
 
-# --- effort labels -----------------------------------------------------------
-
-
-@dataclass(frozen=True)
-class Label:
-    effort: str | None
-    qualifier: tuple[str, ...] = ()
-
-
-def parse_label(name: str) -> Label:
-    """Pull the effort level out of a trailing parenthetical.
-
-    "Claude Opus 5.5 (Max, Default Fallback)" -> Label("max", ("default fallback",))
-    "GPT-6 Sol (Daybreak Blue, max)"          -> Label("max", ("daybreak blue",))
-    "Qwen3.8 Max (0902)"                       -> Label(None)
-    """
-    m = re.search(r"\(([^()]*)\)\s*$", name)
-    if not m:
-        return Label(None)
-    tokens = [t.strip().lower() for t in m.group(1).split(",")]
-    effort = next((t for t in tokens if t in EFFORTS), None)
-    if effort is None:
-        return Label(None)
-    return Label(effort, tuple(t for t in tokens if t != effort))
-
-
 # --- the swap ----------------------------------------------------------------
 
 
@@ -144,23 +96,35 @@ class Kept:
 
 @dataclass
 class Result:
+    level: str
     slugs: list[str]
     swapped: list[Swap]
-    no_xhigh: list[Kept]  # "max" models with no xhigh sibling
+    unmatched: list[Kept]  # models above the level that have no sibling at it
 
     @property
     def url(self) -> str:
         return f"{SOURCE}?models={quote(','.join(self.slugs), safe='')}"
 
 
-def select(defaults: list[dict], variants: list[dict], unmatched: str = "keep") -> Result:
-    """Swap max -> xhigh across the default selection.
+def above(level: str) -> list[str]:
+    return list(ORDER[ORDER.index(level) + 1 :])
 
-    ``unmatched`` decides what happens to a max model that has no xhigh sibling:
-    "keep" leaves it on max, "drop" removes it from the chart.
+
+def _or(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " or " + items[-1]
+
+
+def select(defaults: list[dict], variants: list[dict], level: str = "xhigh", unmatched: str = "keep") -> Result:
+    """Swap everything above ``level`` down to ``level`` across the default selection.
+
+    ``unmatched`` decides what happens to a model above the level that has no
+    sibling at it: "keep" leaves it as is, "drop" removes it from the chart.
     """
+    if level not in ORDER[:-1]:
+        raise ValueError(f"level must be one of {ORDER[:-1]}, not {level!r}")
     if unmatched not in ("keep", "drop"):
         raise ValueError(f"unmatched must be 'keep' or 'drop', not {unmatched!r}")
+    rank = ORDER.index(level)
     by_slug = {v["slug"]: v for v in variants}
     by_release: dict[str, list[dict]] = collections.defaultdict(list)
     for v in variants:
@@ -168,21 +132,21 @@ def select(defaults: list[dict], variants: list[dict], unmatched: str = "keep") 
 
     slugs: list[str] = []
     swapped: list[Swap] = []
-    no_xhigh: list[Kept] = []
+    kept: list[Kept] = []
     for m in defaults:
         slug, name = m["slug"], m["name"]
         label = parse_label(name)
-        if label.effort != "max":
+        if label.effort is None or ORDER.index(label.effort) <= rank:
             slugs.append(slug)
             continue
         release = (by_slug.get(slug) or {}).get("releaseSlug") or (m.get("release") or {}).get("slug")
-        want = Label("xhigh", label.qualifier)
+        want = Label(level, label.qualifier)
         target = next((v for v in by_release.get(release, []) if parse_label(v["name"]) == want), None)
         if target:
             slugs.append(target["slug"])
             swapped.append(Swap(slug, name, target["slug"], target["name"]))
         else:
-            no_xhigh.append(Kept(slug, name))
+            kept.append(Kept(slug, name))
             if unmatched == "keep":
                 slugs.append(slug)
 
@@ -192,41 +156,46 @@ def select(defaults: list[dict], variants: list[dict], unmatched: str = "keep") 
         raise ParseError(f"slugs missing from the model selector list: {unknown}")
     if not slugs:
         raise ParseError("selection came out empty")
-    return Result(slugs, swapped, no_xhigh)
+    return Result(level, slugs, swapped, kept)
 
 
-def build(page: str, unmatched: str = "keep") -> Result:
+def build(page: str, level: str = "xhigh", unmatched: str = "keep") -> Result:
     payload = flight_payload(page)
-    return select(default_models(payload), variant_index(payload), unmatched)
+    return select(default_models(payload), variant_index(payload), level, unmatched)
 
 
 # --- output ------------------------------------------------------------------
 
 
 def explain(result: Result) -> str:
-    lines = [f"{len(result.slugs)} models, {len(result.swapped)} swapped to xhigh"]
+    lines = [f"{result.level}: {len(result.slugs)} models, {len(result.swapped)} swapped"]
     for s in result.swapped:
         lines.append(f"  swapped  {s.name}  ->  {s.to_name}")
-    for k in result.no_xhigh:
-        lines.append(f"  no xhigh {k.name}  (left as is)")
+    for k in result.unmatched:
+        lines.append(f"  no {result.level}  {k.name}  (left as is)")
     return "\n".join(lines)
 
 
-def render_page(result: Result, changed_at: str) -> str:
+def render_page(result: Result, changed_at: str, prefix: str = "") -> str:
     url = result.url
+    level = result.level
     rows = "".join(
         f"<tr><td>{html.escape(s.name)}</td><td>{html.escape(s.to_name)}</td></tr>" for s in result.swapped
     )
     rows += "".join(
-        f"<tr><td>{html.escape(k.name)}</td><td class=\"muted\">no xhigh variant, unchanged</td></tr>"
-        for k in result.no_xhigh
+        f"<tr><td>{html.escape(k.name)}</td><td class=\"muted\">no {level} variant, unchanged</td></tr>"
+        for k in result.unmatched
+    )
+    views = " · ".join(
+        f"<strong>{lv}</strong>" if lv == level else f'<a href="{level_href(lv, prefix, "#info")}">{lv}</a>'
+        for lv in LEVELS
     )
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Artificial Analysis, xhigh view</title>
+<title>Artificial Analysis, {level} view</title>
 <link rel="canonical" href="{html.escape(url)}">
 <noscript><meta http-equiv="refresh" content="0; url={html.escape(url)}"></noscript>
 <script>if (location.hash !== "#info") location.replace({json.dumps(url)});</script>
@@ -239,9 +208,10 @@ def render_page(result: Result, changed_at: str) -> str:
 </style>
 </head>
 <body>
-<h1>Artificial Analysis, xhigh view</h1>
-<p><a href="{html.escape(url)}">Open the chart</a> with every max variant swapped for xhigh.
+<h1>Artificial Analysis, {level} view</h1>
+<p><a href="{html.escape(url)}">Open the chart</a> with every {_or(above(level))} variant swapped for {level}.
 Link last changed {html.escape(changed_at)}.</p>
+<p class="muted">Views: {views} · <a href="{prefix}summary.html">summary charts</a> · <a href="{prefix}bookmark.html">bookmark</a></p>
 <table>{rows}</table>
 <p class="muted"><code>{html.escape(url)}</code></p>
 </body>
@@ -249,33 +219,37 @@ Link last changed {html.escape(changed_at)}.</p>
 """
 
 
-def write_outputs(result: Result, out: Path, now: datetime | None = None) -> bool:
-    """Write index.html, link.txt and latest.json under ``out``. False if nothing changed."""
-    out.mkdir(parents=True, exist_ok=True)
-    latest = out / "latest.json"
-    if latest.exists() and (out / "index.html").exists() and (out / "link.txt").exists():
-        try:
-            if json.loads(latest.read_text())["url"] == result.url:
-                return False
-        except (json.JSONDecodeError, KeyError):
-            pass  # unreadable state: regenerate
-    changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
-    (out / "index.html").write_text(render_page(result, changed_at))
-    (out / "link.txt").write_text(result.url + "\n")
-    latest.write_text(
-        json.dumps(
-            {
-                "url": result.url,
-                "changed_at": changed_at,
-                "source": SOURCE,
-                "swapped": [{"from": s.name, "to": s.to_name} for s in result.swapped],
-                "no_xhigh": [k.name for k in result.no_xhigh],
-            },
-            indent=2,
-        )
-        + "\n"
-    )
-    return True
+def level_dir(out: Path, level: str) -> Path:
+    return out if level == LEVELS[0] else out / level
+
+
+def write_level(result: Result, out: Path, now: datetime | None = None) -> bool:
+    """Write index.html, link.txt and latest.json for one level. False if nothing changed.
+
+    ``changed_at`` only moves when the link itself changes, so the output is stable
+    between runs and the scheduled job commits only real changes.
+    """
+    d = level_dir(out, result.level)
+    prefix = "" if d == out else "../"
+    old = read_json(d / "latest.json")
+    if old and old.get("url") == result.url and old.get("changed_at"):
+        changed_at = old["changed_at"]
+    else:
+        changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
+    state = {
+        "level": result.level,
+        "url": result.url,
+        "changed_at": changed_at,
+        "source": SOURCE,
+        "swapped": [{"from": s.name, "to": s.to_name} for s in result.swapped],
+        "unmatched": [k.name for k in result.unmatched],
+    }
+    files = {
+        "index.html": render_page(result, changed_at, prefix),
+        "link.txt": result.url + "\n",
+        "latest.json": json.dumps(state, indent=2) + "\n",
+    }
+    return any([write_text(d / name, text) for name, text in files.items()])
 
 
 # --- cli ---------------------------------------------------------------------
@@ -283,34 +257,59 @@ def write_outputs(result: Result, out: Path, now: datetime | None = None) -> boo
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--write", metavar="DIR", type=Path, help="regenerate index.html, link.txt, latest.json in DIR")
+    ap.add_argument(
+        "--level",
+        choices=ORDER[:-1],
+        default=LEVELS[0],
+        help="effort level to print the link for (default: %(default)s)",
+    )
+    ap.add_argument(
+        "--write",
+        metavar="DIR",
+        type=Path,
+        help=f"regenerate the whole Pages site in DIR: links for {', '.join(LEVELS)} and the summary charts",
+    )
     ap.add_argument("--explain", action="store_true", help="show which models were swapped")
     ap.add_argument("--open", action="store_true", help="open the link in your browser")
     ap.add_argument(
         "--unmatched",
         choices=("keep", "drop"),
         default="keep",
-        help="max models with no xhigh variant: keep them on max (default) or drop them from the chart",
+        help="models with no variant at the level: keep them as they are (default) or drop them from the chart",
     )
     ap.add_argument("--input", metavar="FILE", type=Path, help="parse a saved copy of the page instead of fetching")
     args = ap.parse_args(argv)
 
     try:
         page = args.input.read_text(encoding="utf-8") if args.input else fetch()
-        result = build(page, args.unmatched)
+        payload = flight_payload(page)
+        defaults, variants = default_models(payload), variant_index(payload)
+        wanted = list(dict.fromkeys([*LEVELS, args.level])) if args.write else [args.level]
+        results = {lv: select(defaults, variants, lv, args.unmatched) for lv in wanted}
     except (ParseError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
+    status = 0
     if args.explain:
-        print(explain(result), file=sys.stderr)
+        for r in results.values():
+            print(explain(r), file=sys.stderr)
     if args.write:
-        changed = write_outputs(result, args.write)
-        print(f"{'updated' if changed else 'unchanged'}: {args.write}/", file=sys.stderr)
-    print(result.url)
+        for lv in LEVELS:
+            changed = write_level(results[lv], args.write)
+            print(f"{'updated' if changed else 'unchanged'}: {lv}", file=sys.stderr)
+        # The charts come from a separate page, so a failure there must not hold back the links.
+        try:
+            boards = aa_charts.leaderboards(aa_charts.picker_models(fetch(aa_charts.PICKER_URL)))
+            changed = aa_charts.write_charts(boards, args.write)
+            print(f"{'updated' if changed else 'unchanged'}: summary charts", file=sys.stderr)
+        except (ParseError, OSError) as exc:
+            print(f"error: summary charts: {exc}", file=sys.stderr)
+            status = 1
+    print(results[args.level].url)
     if args.open:
-        webbrowser.open(result.url)
-    return 0
+        webbrowser.open(results[args.level].url)
+    return status
 
 
 if __name__ == "__main__":

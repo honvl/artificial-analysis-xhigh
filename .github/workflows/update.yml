@@ -18,18 +18,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Regenerate link
+      # The links and the summary charts come from different pages. If one fails the other is
+      # still committed, and the last step turns the run red so GitHub emails you.
+      - name: Regenerate links and charts
+        id: generate
+        continue-on-error: true
         run: python3 aa_xhigh.py --write docs --explain
 
-      - name: Commit if the link changed
+      - name: Commit if anything changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update xhigh link"
+            git commit -m "chore: update xhigh, high and medium links and charts"
           elif [ $(( $(date +%s) - $(git log -1 --format=%ct) )) -gt 4320000 ]; then
             # GitHub disables scheduled workflows after 60 days without repo activity
             git commit --allow-empty -m "chore: keepalive"
           fi
           git push
+
+      - name: Fail the run if regeneration failed
+        if: steps.generate.outcome == 'failure'
+        run: |
+          echo "aa_xhigh.py failed, see the 'Regenerate links and charts' step" >&2
+          exit 1

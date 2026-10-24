@@ -1,0 +1,213 @@
+{
+  "changed_at": "2026-10-24 21:55 UTC",
+  "grades": {
+    "max": [
+      {
+        "name": "Claude Opus 5.5 (Max, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 57.6
+      },
+      {
+        "name": "Claude Sonnet 5.5 (Max, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 56.0
+      },
+      {
+        "name": "Muse Wonder Full (Max)",
+        "lab": "Meta",
+        "score": 55.8
+      },
+      {
+        "name": "Claude Fable 5.1 (Max, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 53.4
+      },
+      {
+        "name": "GPT-6 Astra (Max)",
+        "lab": "OpenAI",
+        "score": 52.7
+      },
+      {
+        "name": "Muse Wonder (Max)",
+        "lab": "Meta",
+        "score": 52.4
+      },
+      {
+        "name": "GPT-6.1 Sol (Max)",
+        "lab": "OpenAI",
+        "score": 51.8
+      },
+      {
+        "name": "DeepSeek V4.1 Flash 1017 (Max)",
+        "lab": "DeepSeek",
+        "score": 45.1
+      },
+      {
+        "name": "GLM-5.3 (Max)",
+        "lab": "Z AI",
+        "score": 44.8
+      },
+      {
+        "name": "Claude Haiku 5.5 (Max)",
+        "lab": "Anthropic",
+        "score": 43.4
+      }
+    ],
+    "xhigh": [
+      {
+        "name": "Claude Opus 5.5 (Xhigh, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 56.0
+      },
+      {
+        "name": "Claude Fable 5.1 (Xhigh, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 53.2
+      },
+      {
+        "name": "GPT-6 Astra (Xhigh)",
+        "lab": "OpenAI",
+        "score": 52.4
+      },
+      {
+        "name": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 51.9
+      },
+      {
+        "name": "GPT-6.1 Sol (Xhigh)",
+        "lab": "OpenAI",
+        "score": 51.0
+      },
+      {
+        "name": "Grok 4.7 (Xhigh)",
+        "lab": "SpaceXAI",
+        "score": 46.4
+      },
+      {
+        "name": "Claude Haiku 5.5 (Xhigh)",
+        "lab": "Anthropic",
+        "score": 41.2
+      },
+      {
+        "name": "Muse Spark Open (Xhigh)",
+        "lab": "Meta",
+        "score": 38.9
+      },
+      {
+        "name": "GPT-5.6 Terra (Xhigh)",
+        "lab": "OpenAI",
+        "score": 38.0
+      },
+      {
+        "name": "GPT-6 Luna (Xhigh)",
+        "lab": "OpenAI",
+        "score": 34.6
+      }
+    ],
+    "high": [
+      {
+        "name": "Claude Opus 5.5 (High, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 53.6
+      },
+      {
+        "name": "Gemini 4 Argon (High)",
+        "lab": "Google",
+        "score": 52.6
+      },
+      {
+        "name": "Claude Fable 5.1 (High, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 51.2
+      },
+      {
+        "name": "GPT-6 Astra (High)",
+        "lab": "OpenAI",
+        "score": 50.9
+      },
+      {
+        "name": "GPT-6.1 Sol (High)",
+        "lab": "OpenAI",
+        "score": 50.2
+      },
+      {
+        "name": "Claude Sonnet 5.5 (High, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 46.8
+      },
+      {
+        "name": "Grok 4.7 (High)",
+        "lab": "SpaceXAI",
+        "score": 46.3
+      },
+      {
+        "name": "Gemini 3.8 Flash (High)",
+        "lab": "Google",
+        "score": 40.9
+      },
+      {
+        "name": "Claude Haiku 5.5 (High)",
+        "lab": "Anthropic",
+        "score": 37.8
+      },
+      {
+        "name": "GPT-5.6 Terra (High)",
+        "lab": "OpenAI",
+        "score": 34.2
+      }
+    ],
+    "medium": [
+      {
+        "name": "Claude Opus 5.5 (Medium, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 51.2
+      },
+      {
+        "name": "GPT-6 Astra (Medium)",
+        "lab": "OpenAI",
+        "score": 49.6
+      },
+      {
+        "name": "Claude Fable 5.1 (Medium, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 48.9
+      },
+      {
+        "name": "GPT-6.1 Sol (Medium)",
+        "lab": "OpenAI",
+        "score": 47.8
+      },
+      {
+        "name": "Claude Sonnet 5.5 (Medium, Default Fallback)",
+        "lab": "Anthropic",
+        "score": 40.8
+      },
+      {
+        "name": "Gemini 3.8 Flash (Medium)",
+        "lab": "Google",
+        "score": 39.8
+      },
+      {
+        "name": "Claude Haiku 5.5 (Medium)",
+        "lab": "Anthropic",
+        "score": 34.5
+      },
+      {
+        "name": "GPT-5.6 Terra (Medium)",
+        "lab": "OpenAI",
+        "score": 30.1
+      },
+      {
+        "name": "GPT-6 Luna (Medium)",
+        "lab": "OpenAI",
+        "score": 29.9
+      },
+      {
+        "name": "Qwen3.8 27B (Medium)",
+        "lab": "Alibaba",
+        "score": 27.6
+      }
+    ]
+  }
+}

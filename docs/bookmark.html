@@ -3,54 +3,64 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bookmark the xhigh chart</title>
+<title>Bookmark the Artificial Analysis views</title>
 <style>
   :root { color-scheme: light dark; }
   body { font: 16px/1.5 system-ui, sans-serif; max-width: 42rem; margin: 3rem auto; padding: 0 1rem; }
+  .drags { display: flex; flex-wrap: wrap; gap: .75rem; }
   .drag { display: inline-block; padding: .6rem 1.1rem; border: 2px dashed currentColor; border-radius: .5rem;
           font-weight: 600; text-decoration: none; cursor: grab; }
+  .row { display: grid; grid-template-columns: 5rem 1fr auto; gap: .5rem; align-items: center; margin: .5rem 0; }
   input { width: 100%; box-sizing: border-box; padding: .4rem; font: inherit; }
-  button { padding: .4rem .9rem; font: inherit; margin-top: .5rem; }
+  button { padding: .4rem .9rem; font: inherit; }
   .muted { opacity: .65; }
 </style>
 </head>
 <body>
-<h1>Bookmark the xhigh chart</h1>
+<h1>Bookmark the Artificial Analysis views</h1>
 
-<p>The bookmark URL redirects to the latest chart. If you press your browser's "bookmark this page"
-shortcut on it, you save the long chart URL it lands on, and that goes stale when the default
-models change. Use the drag link or paste the URL instead.</p>
+<p>Each view redirects to the latest chart. If you press your browser's "bookmark this page"
+shortcut on one, you save the long chart URL it lands on, and that goes stale when the default
+models change. Use the drag links or paste the URL instead.</p>
 
-<h2>Drag it</h2>
-<p><a id="bm" class="drag" href="./">Artificial Analysis (xhigh)</a></p>
-<p class="muted">Drag the box above onto your bookmarks bar. If the bar is hidden: Chrome and Edge
+<h2>Drag them</h2>
+<div class="drags">
+  <a class="drag" href="./">Artificial Analysis (xhigh)</a>
+  <a class="drag" href="high/">Artificial Analysis (high)</a>
+  <a class="drag" href="medium/">Artificial Analysis (medium)</a>
+</div>
+<p class="muted">Drag a box onto your bookmarks bar. If the bar is hidden: Chrome and Edge
 Cmd/Ctrl+Shift+B, Safari View &gt; Show Favorites Bar, Firefox View &gt; Toolbars &gt; Bookmarks Toolbar.</p>
 
 <h2>Or paste the URL</h2>
-<input id="url" readonly value="" aria-label="Bookmark URL">
-<button id="copy" type="button">Copy URL</button>
+<div class="row" data-path="./"><strong>xhigh</strong><input readonly aria-label="xhigh URL"><button type="button">Copy URL</button></div>
+<div class="row" data-path="high/"><strong>high</strong><input readonly aria-label="high URL"><button type="button">Copy URL</button></div>
+<div class="row" data-path="medium/"><strong>medium</strong><input readonly aria-label="medium URL"><button type="button">Copy URL</button></div>
 <ul>
   <li>Chrome: Cmd/Ctrl+Shift+O, the menu at the top right, Add new bookmark, paste.</li>
   <li>Firefox: Cmd/Ctrl+Shift+O, Organize, New Bookmark, paste.</li>
-  <li>Safari has no add-by-URL, so use the drag link.</li>
+  <li>Safari has no add-by-URL, so use the drag links.</li>
 </ul>
 
-<p class="muted"><a href="./#info">See which models are swapped</a></p>
+<p class="muted"><a href="summary.html">Top models at each effort level</a> ·
+<a href="./#info">See which models are swapped</a></p>
 
 <script>
-  var url = new URL("./", location.href).href;
-  var box = document.getElementById("url");
-  box.value = url;
-  document.getElementById("copy").addEventListener("click", function (e) {
-    var btn = e.target;
-    var fallback = function () {
-      box.select();
-      var ok = false;
-      try { ok = document.execCommand("copy"); } catch (_) {}
-      btn.textContent = ok ? "Copied" : "Selected, press Cmd/Ctrl+C";
-    };
-    if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { btn.textContent = "Copied"; }, fallback);
-    else fallback();
+  document.querySelectorAll(".row").forEach(function (row) {
+    var url = new URL(row.dataset.path, location.href).href;
+    var box = row.querySelector("input");
+    var btn = row.querySelector("button");
+    box.value = url;
+    btn.addEventListener("click", function () {
+      var fallback = function () {
+        box.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (_) {}
+        btn.textContent = ok ? "Copied" : "Selected, press Cmd/Ctrl+C";
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { btn.textContent = "Copied"; }, fallback);
+      else fallback();
+    });
   });
 </script>
 </body>
