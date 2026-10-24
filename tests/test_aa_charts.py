@@ -317,9 +317,108 @@ class Svg(unittest.TestCase):
         self.assertNotIn("serif", svg.replace("sans-serif", ""))
 
 
+RUNS = {  # full index run at API prices, by variant slug
+    "opus": 8708.0,
+    "opus-xhigh": 4057.0,
+    "astra-xhigh": 3803.0,
+    "astra-high": 2925.0,
+    "luna": 122.0,
+    "opus-high": 2172.0,
+}
+
+
+class CostLine(unittest.TestCase):
+    def setUp(self):
+        self.boards = ch.leaderboards(MODELS, VARIANTS, n=10)
+
+    def test_usd(self):
+        self.assertEqual(ch.usd(8708), "$8,708")
+        self.assertEqual(ch.usd(192.23), "$192")
+        self.assertEqual(ch.usd(89.55), "$90")
+        self.assertEqual(ch.usd(7.294), "$7.29")
+
+    def test_reference_entries_are_the_top_model_of_each_known_plan(self):
+        refs = ch.reference_entries(self.boards["xhigh"])
+        self.assertEqual([e.slug for e in refs], ["opus-xhigh", "astra-xhigh"])  # best first, one per lab
+        self.assertEqual({e.lab for e in ch.reference_entries(self.boards["max"])}, {"Anthropic", "OpenAI"})
+
+    def test_labs_without_a_known_plan_are_never_referenced(self):
+        refs = ch.reference_entries(self.boards["max"])
+        self.assertFalse({"Google", "Meta", "Kimi", "SpaceXAI"} & {e.lab for e in refs})
+
+    def test_the_line_prices_a_run_at_api_and_on_the_plan(self):
+        line = ch.cost_line("xhigh", self.boards["xhigh"], RUNS)
+        self.assertEqual(
+            line,
+            "Full index run: Claude Opus 5.5 $90 on Claude Max 20x (API $4,057) · GPT-6 Astra $371 on ChatGPT (API $3,803)",
+        )
+
+    def test_a_model_below_the_chart_level_names_its_setting(self):
+        line = ch.cost_line("max", self.boards["max"], RUNS)
+        self.assertIn("GPT-6 Astra (xhigh)", line)  # no Max variant, so the chart shows its Xhigh
+        self.assertIn("Claude Opus 5.5 $192 on Claude Max 20x (API $8,708)", line)
+
+    def test_models_without_a_known_cost_are_left_out_and_no_costs_means_no_line(self):
+        only_opus = ch.cost_line("xhigh", self.boards["xhigh"], {"opus-xhigh": 4057.0})
+        self.assertNotIn("GPT-6", only_opus)
+        self.assertIsNone(ch.cost_line("xhigh", self.boards["xhigh"], {}))
+
+    def test_wanted_slugs_are_unique_and_cover_every_chart(self):
+        wanted = ch.wanted_slugs(self.boards)
+        self.assertEqual(len(wanted), len(set(wanted)))
+        self.assertTrue({"opus", "opus-xhigh", "opus-high", "opus-medium"} <= set(wanted))
+
+    def test_the_svg_makes_room_for_the_line_and_stays_well_formed(self):
+        rows = self.boards["xhigh"]
+        plain = ET.fromstring(ch.render_svg("xhigh", rows))
+        line = ch.cost_line("xhigh", rows, RUNS)
+        with_line = ET.fromstring(ch.render_svg("xhigh", rows, line))
+        self.assertEqual(float(with_line.get("height")) - float(plain.get("height")), ch.COST_LINE)
+        texts = {t.get("class"): t.text for t in with_line.findall(".//s:text", SVG_NS) if t.get("class") in ("costline",)}
+        self.assertEqual(texts["costline"], line)
+        legend_y = lambda root: min(float(r.get("y")) for r in root.findall(".//s:rect", SVG_NS) if r.get("width") == "10")
+        self.assertEqual(legend_y(with_line) - legend_y(plain), ch.COST_LINE)  # legend moves down, nothing overlaps
+        ET.fromstring(ch.svg_file("xhigh", rows, line).encode())
+
+    def test_the_line_fits_inside_the_card(self):
+        for grade, rows in self.boards.items():
+            line = ch.cost_line(grade, rows, RUNS)
+            if line:
+                self.assertLess(24 + len(line) * 6.0, ch.W - 24, grade)  # about 6px a character at 11px
+
+
 class Output(unittest.TestCase):
     def boards(self, models=MODELS):
         return ch.leaderboards(models, VARIANTS)
+
+    def test_cost_lines_reach_the_svgs_the_page_and_the_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            ch.write_charts(self.boards(), out, runs=RUNS)
+            self.assertIn("Full index run: Claude Opus 5.5 $192", (out / "charts/max.svg").read_text())
+            page = (out / "summary.html").read_text()
+            self.assertIn("Full index run:", page)
+            self.assertIn("Paweł Huryn", page)  # the multipliers are credited on the page
+            self.assertIn("45.3x", page)
+            state = json.loads((out / "charts.json").read_text())
+            self.assertIn("Claude Max 20x", state["cost_lines"]["xhigh"])
+            self.assertIsNone(state["cost_lines"]["medium"])  # no cost known for that chart's leaders
+
+    def test_no_runs_means_no_lines_and_charts_still_render(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            ch.write_charts(self.boards(), out)
+            self.assertNotIn("Full index run:", (out / "charts/xhigh.svg").read_text())
+
+    def test_a_changed_cost_rewrites_and_an_unchanged_one_does_not(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            t1, t2, t3 = (datetime(y, 1, 1, tzinfo=timezone.utc) for y in (2030, 2031, 2032))
+            self.assertTrue(ch.write_charts(self.boards(), out, now=t1, runs=RUNS))
+            self.assertFalse(ch.write_charts(self.boards(), out, now=t2, runs=dict(RUNS)))
+            self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2030-01-01 00:00 UTC")
+            self.assertTrue(ch.write_charts(self.boards(), out, now=t3, runs={**RUNS, "opus": 9000.0}))
+            self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2032-01-01 00:00 UTC")
 
     def test_writes_every_file_and_a_white_page(self):
         with tempfile.TemporaryDirectory() as tmp:

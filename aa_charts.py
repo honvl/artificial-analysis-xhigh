@@ -38,6 +38,7 @@ from aa_common import (
     read_json,
     write_text,
 )
+from aa_costs import PLANS
 
 LEADERBOARD_URL = "https://artificialanalysis.ai/leaderboards/models"
 GRADES = ("max", "xhigh", "high", "medium")
@@ -48,6 +49,7 @@ NEUTRAL = "#898781"  # a lab the site gives no usable color
 W, LEFT, RIGHT = 760, 128, 24
 TOP, PLOT_H, LABEL_BAND = 92, 240, 150
 LEGEND_ROW = 16
+COST_LINE = 16  # extra height when the thin subscription-cost line is shown under the subtitle
 MAX_BAR = 24  # columns are capped at 24px; the rest of the slot is air
 LABEL_CHARS = 34
 UNLABELLED = " †"
@@ -62,6 +64,7 @@ STYLE = """
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
 .aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
+.aa-chart .costline{fill:var(--ink2);font-size:11px}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}
@@ -224,6 +227,44 @@ def legend_items(entries: list[Entry]) -> tuple[list[tuple[float, int, str, str]
     return items, row + 1
 
 
+def usd(value: float) -> str:
+    if value >= 100:
+        return f"${value:,.0f}"
+    if value >= 10:
+        return f"${value:.0f}"
+    return f"${value:.2f}"
+
+
+def reference_entries(entries: list[Entry]) -> list[Entry]:
+    """The top-ranked entry of each lab we know a subscription multiplier for, best first."""
+    refs = [e for e in (next((e for e in entries if e.lab == lab), None) for lab in PLANS) if e]
+    return sorted(refs, key=lambda e: (-e.score, e.name))
+
+
+def wanted_slugs(boards: dict[str, list[Entry]]) -> list[str]:
+    """The model variants whose full-run cost the cost lines need."""
+    return list(dict.fromkeys(e.slug for rows in boards.values() for e in reference_entries(rows)))
+
+
+def cost_line(grade: str, entries: list[Entry], runs: dict[str, float]) -> str | None:
+    """A thin line pricing one full index run for the leading model of each plan we know.
+
+    ``runs`` maps a variant slug to the full-run cost in USD at API prices. The subscription
+    figure is that cost divided by the plan's multiplier.
+    """
+    parts = []
+    for e in reference_entries(entries):
+        api = runs.get(e.slug)
+        if api is None:
+            continue
+        plan, multiplier = PLANS[e.lab]
+        name = re.sub(r"\s*\([^()]*\)\s*$", "", e.label)  # "Claude Opus 5.5 (fallback)" -> "Claude Opus 5.5"
+        if e.effort and e.effort != grade:
+            name += f" ({e.effort})"
+        parts.append(f"{name} {usd(api / multiplier)} on {plan} (API {usd(api)})")
+    return "Full index run: " + " · ".join(parts) if parts else None
+
+
 def _scale(top_score: float) -> tuple[int, int]:
     """Tick step and axis maximum, with headroom above the tallest column."""
     step = 10 if top_score <= 40 else 20
@@ -239,10 +280,11 @@ def _column(x: float, width: float, top: float, base: float) -> str:
     )
 
 
-def render_svg(grade: str, entries: list[Entry]) -> str:
+def render_svg(grade: str, entries: list[Entry], cost: str | None = None) -> str:
     n = len(entries)
     legend, rows = legend_items(entries)
-    plot_top = TOP + LEGEND_ROW * (rows - 1)
+    extra = COST_LINE if cost else 0
+    plot_top = TOP + extra + LEGEND_ROW * (rows - 1)
     base = plot_top + PLOT_H
     height = base + LABEL_BAND
     step, ymax = _scale(max(e.score for e in entries))
@@ -254,6 +296,8 @@ def render_svg(grade: str, entries: list[Entry]) -> str:
         f"{i}. {e.name}, {e.lab}: {e.score:.1f}" + ("" if e.effort else " (effort not labelled)")
         for i, e in enumerate(entries, 1)
     )
+    if cost:
+        desc += ". " + cost
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 {W} {height}" width="{W}" height="{height}"'
@@ -267,8 +311,11 @@ def render_svg(grade: str, entries: list[Entry]) -> str:
         f'<text class="sub" x="24" y="54">{_esc(subtitle)}</text>',
     ]
 
+    if cost:
+        out.append(f'<text class="costline" x="24" y="70">{_esc(cost)}</text>')
+
     for x, row, color, name in legend:
-        y = LEGEND_ROW * row
+        y = extra + LEGEND_ROW * row
         out.append(f'<rect x="{x:.1f}" y="{64 + y}" width="10" height="10" rx="2" fill="{color}"/>')
         out.append(f'<text class="legend" x="{x + 16:.1f}" y="{73 + y}">{_esc(name)}</text>')
 
@@ -297,14 +344,15 @@ def render_svg(grade: str, entries: list[Entry]) -> str:
     return "\n".join(out)
 
 
-def svg_file(grade: str, entries: list[Entry]) -> str:
-    return '<?xml version="1.0" encoding="UTF-8"?>\n' + render_svg(grade, entries) + "\n"
+def svg_file(grade: str, entries: list[Entry], cost: str | None = None) -> str:
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + render_svg(grade, entries, cost) + "\n"
 
 
 # --- the summary page --------------------------------------------------------
 
 
-def render_summary(boards: dict[str, list[Entry]], changed_at: str) -> str:
+def render_summary(boards: dict[str, list[Entry]], changed_at: str, lines: dict[str, str | None] | None = None) -> str:
+    lines = lines or {}
     views = " · ".join(f'<a href="{level_href(lv, "", "#info")}">{lv}</a>' for lv in LEVELS)
     sections = []
     for grade, rows in boards.items():
@@ -314,7 +362,7 @@ def render_summary(boards: dict[str, list[Entry]], changed_at: str) -> str:
             for i, e in enumerate(rows, 1)
         )
         sections.append(
-            f'<section id="{grade}">\n<h2>{grade} effort</h2>\n{render_svg(grade, rows)}\n'
+            f'<section id="{grade}">\n<h2>{grade} effort</h2>\n{render_svg(grade, rows, lines.get(grade))}\n'
             f"<details><summary>Table view</summary>\n"
             f"<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th></tr></thead>"
             f"<tbody>{trs}</tbody></table></details>\n</section>"
@@ -346,6 +394,12 @@ at the level appears at its highest setting below it, so a model that only has H
 xhigh and high charts. A model with no labelled effort setting could be anything up to max, so it
 appears only on the max chart, marked with a dagger. Columns use the color Artificial Analysis
 gives each lab. Data last changed {_esc(changed_at)}.</p>
+<p class="muted">The thin line under each chart's subtitle prices one full run of the index for the
+leading Claude and GPT model at that level, at API prices and on a subscription. It divides
+Artificial Analysis's cost by how much more usage the plan gives than API list prices (Claude Max
+20x, $200 a month: 45.3x; ChatGPT: 10.25x), as measured by
+<a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. These are one person's
+estimates on one model per vendor, so treat the subscription figures as rough.</p>
 <p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}.
 Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 {chr(10).join(sections)}
@@ -354,21 +408,29 @@ Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 """
 
 
-def write_charts(boards: dict[str, list[Entry]], out: Path, now: datetime | None = None) -> bool:
-    """Write summary.html, charts/<grade>.svg and charts.json under ``out``. False if nothing changed."""
+def write_charts(
+    boards: dict[str, list[Entry]], out: Path, now: datetime | None = None, runs: dict[str, float] | None = None
+) -> bool:
+    """Write summary.html, charts/<grade>.svg and charts.json under ``out``. False if nothing changed.
+
+    ``runs`` maps a variant slug to the cost in USD of a full index run at API prices; it feeds the
+    thin subscription-cost line under each chart's subtitle.
+    """
+    lines = {g: cost_line(g, rows, runs or {}) for g, rows in boards.items()}
     data = {
         g: [{"name": e.name, "lab": e.lab, "color": e.color, "effort": e.effort, "score": e.score} for e in rows]
         for g, rows in boards.items()
     }
+    state = {"grades": data, "cost_lines": lines}
     old = read_json(out / "charts.json")
-    if old and old.get("grades") == data and old.get("changed_at"):
+    if old and {k: old.get(k) for k in state} == state and old.get("changed_at"):
         changed_at = old["changed_at"]
     else:
         changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
     files = {
-        "charts.json": json.dumps({"changed_at": changed_at, "grades": data}, indent=2) + "\n",
-        "summary.html": render_summary(boards, changed_at),
+        "charts.json": json.dumps({"changed_at": changed_at, **state}, indent=2) + "\n",
+        "summary.html": render_summary(boards, changed_at, lines),
     }
     for grade, rows in boards.items():
-        files[f"charts/{grade}.svg"] = svg_file(grade, rows)
+        files[f"charts/{grade}.svg"] = svg_file(grade, rows, lines[grade])
     return any([write_text(out / rel, text) for rel, text in files.items()])

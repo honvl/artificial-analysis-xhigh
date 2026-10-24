@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-24 22:55 UTC",
+  "changed_at": "2026-10-24 23:05 UTC",
   "grades": {
     "max": [
       {
@@ -289,5 +289,11 @@
         "score": 30.1
       }
     ]
+  },
+  "cost_lines": {
+    "max": "Full index run: Claude Opus 5.5 $192 on Claude Max 20x (API $8,708) \u00b7 GPT-6 Astra $519 on ChatGPT (API $5,324)",
+    "xhigh": "Full index run: Claude Opus 5.5 $90 on Claude Max 20x (API $4,057) \u00b7 GPT-6 Astra $371 on ChatGPT (API $3,803)",
+    "high": "Full index run: Claude Opus 5.5 $48 on Claude Max 20x (API $2,172) \u00b7 GPT-6 Astra $285 on ChatGPT (API $2,925)",
+    "medium": "Full index run: Claude Opus 5.5 $36 on Claude Max 20x (API $1,627) \u00b7 GPT-6 Astra $237 on ChatGPT (API $2,434)"
   }
 }

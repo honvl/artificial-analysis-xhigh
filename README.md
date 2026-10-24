@@ -70,6 +70,11 @@ and so on), read from the same page as the scores. Because some lab colors are c
 also named in each column's tooltip and in the table views on the
 [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
 
+The thin line under each chart's subtitle prices one full run of the index for the leading Claude
+and GPT model at that level, at API prices and on a subscription, using the multipliers described
+above. For Opus 5.5 on Claude Max 20x it shows how the effort level changes what a run costs:
+$192 at max, $90 at xhigh, $48 at high and $36 at medium (2026-10-24).
+
 ### max (the Artificial Analysis default)
 
 ![Top models at max effort](docs/charts/max.svg)
@@ -107,6 +112,11 @@ chart instead.
 The charts use a second page: the site's `/leaderboards/models`, which lists an Intelligence Index,
 the lab and the lab's color for each variant. `aa_charts.py` groups the variants of each model by
 release, applies the rules above to pick one per model for each chart, and draws the SVGs.
+
+The cost line needs the cost of a full index run for each model variant, which only the
+comparison pages carry, two models per page. `aa_costs.py` fetches the few it needs (the leading
+Claude and GPT model on each chart), caches them in `docs/costs.json` and refreshes an entry once
+it is a week old, so most runs make no extra requests and a failed refresh keeps the old value.
 
 I looked at placing unlabelled models on the lower charts by speed and decided against it: time per
 task does not line up with effort across labs. In the 2026-10-24 data, Claude Haiku 5.5 at max

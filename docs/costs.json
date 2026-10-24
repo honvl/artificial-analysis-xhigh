@@ -1,0 +1,36 @@
+{
+  "runs": {
+    "claude-opus-5-5": {
+      "usd": 8708.2,
+      "fetched": "2026-10-24"
+    },
+    "claude-opus-5-5-high": {
+      "usd": 2172.43,
+      "fetched": "2026-10-24"
+    },
+    "claude-opus-5-5-medium": {
+      "usd": 1626.81,
+      "fetched": "2026-10-24"
+    },
+    "claude-opus-5-5-xhigh": {
+      "usd": 4056.65,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-astra": {
+      "usd": 5324.1,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-astra-high": {
+      "usd": 2925.01,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-astra-medium": {
+      "usd": 2434.12,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-astra-xhigh": {
+      "usd": 3802.98,
+      "fetched": "2026-10-24"
+    }
+  }
+}

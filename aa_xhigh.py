@@ -26,6 +26,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 import aa_charts
+import aa_costs
 from aa_common import (
     LEVELS,
     ORDER,
@@ -302,8 +303,18 @@ def main(argv: list[str] | None = None) -> int:
         # The charts come from a separate page, so a failure there must not hold back the links.
         try:
             boards = aa_charts.leaderboards(aa_charts.leaderboard_models(fetch(aa_charts.LEADERBOARD_URL)), variants)
-            changed = aa_charts.write_charts(boards, args.write)
+            wanted = aa_charts.wanted_slugs(boards)
+            costs_path = args.write / "costs.json"
+            cache, problems = aa_costs.refresh(aa_costs.load(costs_path), wanted, datetime.now(timezone.utc).date())
+            aa_costs.save(cache, costs_path)
+            for problem in problems:
+                print(f"warning: full-run cost: {problem}", file=sys.stderr)
+            runs = aa_costs.usd_by_slug(cache)
+            changed = aa_charts.write_charts(boards, args.write, runs=runs)
             print(f"{'updated' if changed else 'unchanged'}: summary charts", file=sys.stderr)
+            if any(slug not in runs for slug in wanted):  # a cost line is missing, and nothing cached to fall back on
+                print("error: summary charts: no full-run cost for some models, so a cost line is missing", file=sys.stderr)
+                status = 1
         except (ParseError, OSError) as exc:
             print(f"error: summary charts: {exc}", file=sys.stderr)
             status = 1
