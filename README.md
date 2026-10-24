@@ -54,8 +54,11 @@ The ten highest-scoring models on the Intelligence Index at each effort level, r
   appears only on the max chart, marked with a †.
 - A model whose every setting is above the level is left off that chart.
 
-Anthropic, OpenAI and Google have their own colors, and every other lab shares gray. Table views of
-the same numbers are on the [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
+Anthropic (amber), OpenAI (green), Google (blue) and Meta (pink) have their own colors, and every
+other lab shares gray. Those four hues are the largest set from the dataviz palette that stays
+distinguishable for every pair, including for color-blind readers, so they can't be swapped for
+arbitrary brand colors. Table views of the same numbers are on the
+[summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
 
 ### max (the Artificial Analysis default)
 

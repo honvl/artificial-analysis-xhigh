@@ -46,6 +46,8 @@ MODELS = [
     # GLM-5.3: Max and Low only
     model("glm", "GLM-5.3 (Max)", 44.8, "Z AI", release="glm"),
     model("glm-low", "GLM-5.3 (Low)", 30.0, "Z AI", release="glm"),
+    # Meta has its own color
+    model("muse", "Muse Wonder (Max)", 52.4, "Meta", release="muse"),
     # No effort label at all
     model("kimi", "Kimi K3.1 Pro", 55.0, "Kimi", release="kimi"),
     # A labelled release with a non-reasoning sibling that must be ignored
@@ -153,6 +155,7 @@ class Boards(unittest.TestCase):
         self.assertEqual(by["opus"], "anthropic")
         self.assertEqual(by["luna"], "openai")
         self.assertEqual(by["gem-high"], "google")
+        self.assertEqual(by["muse"], "meta")
         self.assertEqual(by["kimi"], "other")
 
 
@@ -224,6 +227,19 @@ class Svg(unittest.TestCase):
         self.assertIn(">56.0<", svg)
         self.assertIn(">Anthropic<", svg)
         self.assertNotIn(">Google<", ch.render_svg("medium", self.boards["medium"]))
+        self.assertNotIn(">Meta<", svg)  # Meta has no xhigh model, so no legend entry
+
+    def test_meta_has_its_own_color_and_legend_entry(self):
+        svg = ch.render_svg("max", self.boards["max"])
+        self.assertIn(">Meta<", svg)
+        self.assertIn('<path class="meta"', svg)
+        self.assertIn(">Other labs<", svg)  # Kimi still shares the neutral
+
+    def test_lab_hues_are_the_validated_set(self):
+        # blue, yellow, magenta, green pass the validator's all-pairs checks together; orange does not fit
+        hues = {name: re.search(rf"--{name}:(#[0-9a-f]{{6}})", ch.STYLE).group(1) for name in ("anthropic", "openai", "google", "meta")}
+        self.assertEqual(set(hues.values()), {"#2a78d6", "#eda100", "#e87ba4", "#008300"})
+        self.assertEqual(len(set(hues.values())), 4)
 
     def test_max_chart_labels_the_unlabelled_and_the_below_level_models(self):
         svg = ch.render_svg("max", self.boards["max"])

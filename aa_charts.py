@@ -14,8 +14,8 @@ at the best setting it has at or below that chart's level:
 
 Chart design follows the dataviz skill's specs: thin columns with a 4px rounded cap and
 the value on the cap, solid hairline grid, a legend, a table twin on the summary page,
-and the validated categorical slots for the three labs that dominate the rankings (all
-other labs share one neutral). The surface is always white, like Artificial Analysis.
+and validated categorical hues for the four labs that dominate the rankings (all other
+labs share one neutral). The surface is always white, like Artificial Analysis.
 """
 from __future__ import annotations
 
@@ -41,10 +41,14 @@ PICKER_URL = "https://artificialanalysis.ai/models/comparisons"
 GRADES = ("max", "xhigh", "high", "medium")
 TOP_N = 10
 
-# Color follows the entity, never its rank: these three labs always get the same slot.
-LABS = {"Anthropic": "anthropic", "OpenAI": "openai", "Google": "google"}
-LAB_ORDER = ("anthropic", "openai", "google", "other")
-LAB_NAMES = {"anthropic": "Anthropic", "openai": "OpenAI", "google": "Google", "other": "Other labs"}
+# Color follows the entity, never its rank: these labs always get the same hue. The four hues
+# (blue, yellow, magenta, green) pass the dataviz validator's all-pairs checks together; any
+# two labs can sit next to each other in a ranking, so every pair has to hold. No passing set
+# of four includes orange. Yellow and magenta are light on white, so the value labels and the
+# table view on the summary page are required, not optional.
+LABS = {"Anthropic": "anthropic", "OpenAI": "openai", "Google": "google", "Meta": "meta"}
+LAB_ORDER = ("anthropic", "openai", "google", "meta", "other")
+LAB_NAMES = {"anthropic": "Anthropic", "openai": "OpenAI", "google": "Google", "meta": "Meta", "other": "Other labs"}
 
 # Geometry of one chart, in SVG user units.
 W, LEFT, RIGHT = 760, 128, 24
@@ -57,7 +61,7 @@ UNLABELLED = " †"
 
 # Always light: a white card with a hairline border, like Artificial Analysis.
 STYLE = """
-.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eb6834;--openai:#1baf7a;--google:#2a78d6;--other:#898781}
+.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eda100;--openai:#008300;--google:#2a78d6;--meta:#e87ba4;--other:#898781}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
 .aa-chart .grid{stroke:var(--grid);stroke-width:1}
@@ -71,6 +75,7 @@ STYLE = """
 .aa-chart .anthropic{fill:var(--anthropic)}
 .aa-chart .openai{fill:var(--openai)}
 .aa-chart .google{fill:var(--google)}
+.aa-chart .meta{fill:var(--meta)}
 .aa-chart .other{fill:var(--other)}
 """.strip()
 

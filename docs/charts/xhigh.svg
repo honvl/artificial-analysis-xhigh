@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 482" width="760" height="482" role="img" aria-labelledby="t-xhigh d-xhigh">
 <title id="t-xhigh">Top models at xhigh effort</title>
 <desc id="d-xhigh">1. Claude Opus 5.5 (Xhigh, Default Fallback), Anthropic: 56.0; 2. Claude Fable 5.1 (Xhigh, Default Fallback), Anthropic: 53.2; 3. Gemini 4 Argon (High), Google: 52.6; 4. GPT-6 Astra (Xhigh), OpenAI: 52.4; 5. Claude Sonnet 5.5 (Xhigh, Default Fallback), Anthropic: 51.9; 6. GPT-6.1 Sol (Xhigh), OpenAI: 51.0; 7. Grok 4.7 (Xhigh), SpaceXAI: 46.4; 8. Claude Haiku 5.5 (Xhigh), Anthropic: 41.2; 9. Gemini 3.8 Flash (High), Google: 40.9; 10. Muse Spark Open (Xhigh), Meta: 38.9</desc>
-<style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eb6834;--openai:#1baf7a;--google:#2a78d6;--other:#898781}
+<style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eda100;--openai:#008300;--google:#2a78d6;--meta:#e87ba4;--other:#898781}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
 .aa-chart .grid{stroke:var(--grid);stroke-width:1}
@@ -16,6 +16,7 @@
 .aa-chart .anthropic{fill:var(--anthropic)}
 .aa-chart .openai{fill:var(--openai)}
 .aa-chart .google{fill:var(--google)}
+.aa-chart .meta{fill:var(--meta)}
 .aa-chart .other{fill:var(--other)}</style>
 <rect class="surface" x="0.5" y="0.5" width="759" height="481" rx="12"/>
 <text class="title" x="24" y="34">Top models at xhigh effort</text>
@@ -27,8 +28,10 @@
 <text class="legend" x="135.4" y="73">OpenAI</text>
 <rect class="google" x="195.0" y="64" width="10" height="10" rx="2"/>
 <text class="legend" x="211.0" y="73">Google</text>
-<rect class="other" x="270.6" y="64" width="10" height="10" rx="2"/>
-<text class="legend" x="286.6" y="73">Other labs</text>
+<rect class="meta" x="270.6" y="64" width="10" height="10" rx="2"/>
+<text class="legend" x="286.6" y="73">Meta</text>
+<rect class="other" x="333.0" y="64" width="10" height="10" rx="2"/>
+<text class="legend" x="349.0" y="73">Other labs</text>
 <line class="axis" x1="128" x2="736" y1="332.0" y2="332.0"/>
 <text class="tick" x="120" y="336.0" text-anchor="end">0</text>
 <line class="grid" x1="128" x2="736" y1="252.0" y2="252.0"/>
@@ -46,6 +49,6 @@
 <g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4</title><rect x="492.8" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M511.2,332 V150.4 Q511.2,146.4 515.2,146.4 H531.2 Q535.2,146.4 535.2,150.4 V332 Z"/><text class="val" x="523.2" y="140.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(523.2 344) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
 <g><title>Claude Haiku 5.5 (Xhigh), Anthropic: 41.2</title><rect x="553.6" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M572.0,332 V171.2 Q572.0,167.2 576.0,167.2 H592.0 Q596.0,167.2 596.0,171.2 V332 Z"/><text class="val" x="584.0" y="161.2" text-anchor="middle">41.2</text><text class="lbl" transform="translate(584.0 344) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
 <g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="614.4" y="92" width="60.8" height="240" fill="transparent"/><path class="google" d="M632.8,332 V172.4 Q632.8,168.4 636.8,168.4 H652.8 Q656.8,168.4 656.8,172.4 V332 Z"/><text class="val" x="644.8" y="162.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(644.8 344) rotate(-45)" text-anchor="end">Gemini 3.8 Flash (high)</text></g>
-<g><title>Muse Spark Open (Xhigh), Meta: 38.9</title><rect x="675.2" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M693.6,332 V180.4 Q693.6,176.4 697.6,176.4 H713.6 Q717.6,176.4 717.6,180.4 V332 Z"/><text class="val" x="705.6" y="170.4" text-anchor="middle">38.9</text><text class="lbl" transform="translate(705.6 344) rotate(-45)" text-anchor="end">Muse Spark Open</text></g>
+<g><title>Muse Spark Open (Xhigh), Meta: 38.9</title><rect x="675.2" y="92" width="60.8" height="240" fill="transparent"/><path class="meta" d="M693.6,332 V180.4 Q693.6,176.4 697.6,176.4 H713.6 Q717.6,176.4 717.6,180.4 V332 Z"/><text class="val" x="705.6" y="170.4" text-anchor="middle">38.9</text><text class="lbl" transform="translate(705.6 344) rotate(-45)" text-anchor="end">Muse Spark Open</text></g>
 <text class="note" x="24" y="468">Level in brackets: the model&#x27;s highest setting below xhigh</text>
 </svg>

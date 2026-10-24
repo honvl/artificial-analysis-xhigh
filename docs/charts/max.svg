@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 482" width="760" height="482" role="img" aria-labelledby="t-max d-max">
 <title id="t-max">Top models at max effort</title>
 <desc id="d-max">1. Claude Opus 5.5 (Max, Default Fallback), Anthropic: 57.6; 2. Claude Sonnet 5.5 (Max, Default Fallback), Anthropic: 56.0; 3. Muse Wonder Full (Max), Meta: 55.8; 4. Kimi K3.1 Pro, Kimi: 55.1 (effort not labelled); 5. Claude Fable 5.1 (Max, Default Fallback), Anthropic: 53.4; 6. GPT-6 Astra (Max), OpenAI: 52.7; 7. Gemini 4 Argon (High), Google: 52.6; 8. Muse Wonder (Max), Meta: 52.4; 9. GPT-6.1 Sol (Max), OpenAI: 51.8; 10. Grok 4.7 (Xhigh), SpaceXAI: 46.4</desc>
-<style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eb6834;--openai:#1baf7a;--google:#2a78d6;--other:#898781}
+<style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eda100;--openai:#008300;--google:#2a78d6;--meta:#e87ba4;--other:#898781}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
 .aa-chart .grid{stroke:var(--grid);stroke-width:1}
@@ -16,6 +16,7 @@
 .aa-chart .anthropic{fill:var(--anthropic)}
 .aa-chart .openai{fill:var(--openai)}
 .aa-chart .google{fill:var(--google)}
+.aa-chart .meta{fill:var(--meta)}
 .aa-chart .other{fill:var(--other)}</style>
 <rect class="surface" x="0.5" y="0.5" width="759" height="481" rx="12"/>
 <text class="title" x="24" y="34">Top models at max effort</text>
@@ -27,8 +28,10 @@
 <text class="legend" x="135.4" y="73">OpenAI</text>
 <rect class="google" x="195.0" y="64" width="10" height="10" rx="2"/>
 <text class="legend" x="211.0" y="73">Google</text>
-<rect class="other" x="270.6" y="64" width="10" height="10" rx="2"/>
-<text class="legend" x="286.6" y="73">Other labs</text>
+<rect class="meta" x="270.6" y="64" width="10" height="10" rx="2"/>
+<text class="legend" x="286.6" y="73">Meta</text>
+<rect class="other" x="333.0" y="64" width="10" height="10" rx="2"/>
+<text class="legend" x="349.0" y="73">Other labs</text>
 <line class="axis" x1="128" x2="736" y1="332.0" y2="332.0"/>
 <text class="tick" x="120" y="336.0" text-anchor="end">0</text>
 <line class="grid" x1="128" x2="736" y1="252.0" y2="252.0"/>
@@ -39,12 +42,12 @@
 <text class="tick" x="120" y="96.0" text-anchor="end">60</text>
 <g><title>Claude Opus 5.5 (Max, Default Fallback), Anthropic: 57.6</title><rect x="128.0" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M146.4,332 V105.6 Q146.4,101.6 150.4,101.6 H166.4 Q170.4,101.6 170.4,105.6 V332 Z"/><text class="val" x="158.4" y="95.6" text-anchor="middle">57.6</text><text class="lbl" transform="translate(158.4 344) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
 <g><title>Claude Sonnet 5.5 (Max, Default Fallback), Anthropic: 56.0</title><rect x="188.8" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M207.2,332 V112.0 Q207.2,108.0 211.2,108.0 H227.2 Q231.2,108.0 231.2,112.0 V332 Z"/><text class="val" x="219.2" y="102.0" text-anchor="middle">56.0</text><text class="lbl" transform="translate(219.2 344) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
-<g><title>Muse Wonder Full (Max), Meta: 55.8</title><rect x="249.6" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M268.0,332 V112.8 Q268.0,108.8 272.0,108.8 H288.0 Q292.0,108.8 292.0,112.8 V332 Z"/><text class="val" x="280.0" y="102.8" text-anchor="middle">55.8</text><text class="lbl" transform="translate(280.0 344) rotate(-45)" text-anchor="end">Muse Wonder Full</text></g>
+<g><title>Muse Wonder Full (Max), Meta: 55.8</title><rect x="249.6" y="92" width="60.8" height="240" fill="transparent"/><path class="meta" d="M268.0,332 V112.8 Q268.0,108.8 272.0,108.8 H288.0 Q292.0,108.8 292.0,112.8 V332 Z"/><text class="val" x="280.0" y="102.8" text-anchor="middle">55.8</text><text class="lbl" transform="translate(280.0 344) rotate(-45)" text-anchor="end">Muse Wonder Full</text></g>
 <g><title>Kimi K3.1 Pro, Kimi: 55.1</title><rect x="310.4" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M328.8,332 V115.6 Q328.8,111.6 332.8,111.6 H348.8 Q352.8,111.6 352.8,115.6 V332 Z"/><text class="val" x="340.8" y="105.6" text-anchor="middle">55.1</text><text class="lbl" transform="translate(340.8 344) rotate(-45)" text-anchor="end">Kimi K3.1 Pro †</text></g>
 <g><title>Claude Fable 5.1 (Max, Default Fallback), Anthropic: 53.4</title><rect x="371.2" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M389.6,332 V122.4 Q389.6,118.4 393.6,118.4 H409.6 Q413.6,118.4 413.6,122.4 V332 Z"/><text class="val" x="401.6" y="112.4" text-anchor="middle">53.4</text><text class="lbl" transform="translate(401.6 344) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
 <g><title>GPT-6 Astra (Max), OpenAI: 52.7</title><rect x="432.0" y="92" width="60.8" height="240" fill="transparent"/><path class="openai" d="M450.4,332 V125.2 Q450.4,121.2 454.4,121.2 H470.4 Q474.4,121.2 474.4,125.2 V332 Z"/><text class="val" x="462.4" y="115.2" text-anchor="middle">52.7</text><text class="lbl" transform="translate(462.4 344) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
 <g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="492.8" y="92" width="60.8" height="240" fill="transparent"/><path class="google" d="M511.2,332 V125.6 Q511.2,121.6 515.2,121.6 H531.2 Q535.2,121.6 535.2,125.6 V332 Z"/><text class="val" x="523.2" y="115.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(523.2 344) rotate(-45)" text-anchor="end">Gemini 4 Argon (high)</text></g>
-<g><title>Muse Wonder (Max), Meta: 52.4</title><rect x="553.6" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M572.0,332 V126.4 Q572.0,122.4 576.0,122.4 H592.0 Q596.0,122.4 596.0,126.4 V332 Z"/><text class="val" x="584.0" y="116.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(584.0 344) rotate(-45)" text-anchor="end">Muse Wonder</text></g>
+<g><title>Muse Wonder (Max), Meta: 52.4</title><rect x="553.6" y="92" width="60.8" height="240" fill="transparent"/><path class="meta" d="M572.0,332 V126.4 Q572.0,122.4 576.0,122.4 H592.0 Q596.0,122.4 596.0,126.4 V332 Z"/><text class="val" x="584.0" y="116.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(584.0 344) rotate(-45)" text-anchor="end">Muse Wonder</text></g>
 <g><title>GPT-6.1 Sol (Max), OpenAI: 51.8</title><rect x="614.4" y="92" width="60.8" height="240" fill="transparent"/><path class="openai" d="M632.8,332 V128.8 Q632.8,124.8 636.8,124.8 H652.8 Q656.8,124.8 656.8,128.8 V332 Z"/><text class="val" x="644.8" y="118.8" text-anchor="middle">51.8</text><text class="lbl" transform="translate(644.8 344) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
 <g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4</title><rect x="675.2" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M693.6,332 V150.4 Q693.6,146.4 697.6,146.4 H713.6 Q717.6,146.4 717.6,150.4 V332 Z"/><text class="val" x="705.6" y="140.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(705.6 344) rotate(-45)" text-anchor="end">Grok 4.7 (xhigh)</text></g>
 <text class="note" x="24" y="468">Level in brackets: the model&#x27;s highest setting below max · † effort not labelled by Artificial Analysis</text>
