@@ -24,15 +24,26 @@ Artificial Analysis charts Claude, GPT and other models at their `max` effort by
 xhigh is cheaper and faster. Artificial Analysis's own per-task measurements show it for every model
 in the default chart that has both variants (snapshot from 2026-10-24, max → xhigh):
 
-| Model | Cost per task | Time per task | Output tokens per task | Intelligence Index |
+| Model | Cost per task (API, then on a subscription) | Time per task | Output tokens per task | Intelligence Index |
 | --- | --- | --- | --- | --- |
-| Claude Opus 5.5 | $5.98 → $3.46 (−42%) | −38% | −45% | 57.6 → 56.0 |
-| Claude Sonnet 5.5 | $5.46 → $2.01 (−63%) | −55% | −62% | 56.0 → 51.9 |
-| Claude Fable 5.1 | $7.63 → $5.98 (−22%) | −18% | −22% | 53.4 → 53.2 |
-| Claude Haiku 5.5 | $0.213 → $0.124 (−42%) | −31% | −45% | 43.4 → 41.2 |
-| GPT-6 Astra | $3.26 → $2.31 (−29%) | −35% | −38% | 52.7 → 52.4 |
-| GPT-6.1 Sol | $0.724 → $0.393 (−46%) | −50% | −54% | 51.8 → 51.0 |
-| GPT-6 Luna | $0.068 → $0.042 (−38%) | −38% | −45% | 38.1 → 34.6 |
+| Claude Opus 5.5 | $5.98 → $3.46 (−42%)<br>on Max 20x: $0.132 → $0.076 | −38% | −45% | 57.6 → 56.0 |
+| Claude Sonnet 5.5 | $5.46 → $2.01 (−63%)<br>on Max 20x: $0.121 → $0.044 | −55% | −62% | 56.0 → 51.9 |
+| Claude Fable 5.1 | $7.63 → $5.98 (−22%)<br>on Max 20x: $0.168 → $0.132 | −18% | −22% | 53.4 → 53.2 |
+| Claude Haiku 5.5 | $0.213 → $0.124 (−42%)<br>on Max 20x: $0.0047 → $0.0027 | −31% | −45% | 43.4 → 41.2 |
+| GPT-6 Astra | $3.26 → $2.31 (−29%)<br>on ChatGPT: $0.318 → $0.225 | −35% | −38% | 52.7 → 52.4 |
+| GPT-6.1 Sol | $0.724 → $0.393 (−46%)<br>on ChatGPT: $0.071 → $0.038 | −50% | −54% | 51.8 → 51.0 |
+| GPT-6 Luna | $0.068 → $0.042 (−38%)<br>on ChatGPT: $0.0066 → $0.0041 | −38% | −45% | 38.1 → 34.6 |
+
+The second line in each cost cell is the same cost paid from a subscription: Artificial Analysis's
+cost divided by how much more usage the plan gives than API list prices. The multipliers, 45.3x for
+Claude Max 20x ($200 a month) and 10.25x for any ChatGPT plan, were measured by
+[Paweł Huryn](https://x.com/PawelHuryn/status/2107780775558979757) by burning real plans. He also
+re-priced a full run of the whole index this way: Opus 5.5 at max costs $8,708 at API prices but
+about $192 on Claude Max 20x, nearly a full $200 month, and about $90 at xhigh ($4,057 at API prices).
+These are one person's estimates, measured on one model per vendor. SemiAnalysis
+[found](https://x.com/SemiAnalysis_/status/2107252022424531076) that what the same $200 Claude plan
+buys depends on the model and workload, from about 12x for Fable 5.1 to about 63x for Sonnet 5.5,
+so the Fable 5.1 line in particular is probably too low by a factor of three or four.
 
 xhigh uses 22% to 62% fewer output tokens, which is where the savings come from. The trade-off is a
 slightly lower Intelligence Index score, 0.2 to 4.1 points lower in this snapshot. Anthropic's docs
@@ -54,10 +65,9 @@ The ten highest-scoring models on the Intelligence Index at each effort level, r
   appears only on the max chart, marked with a †.
 - A model whose every setting is above the level is left off that chart.
 
-Anthropic (amber), OpenAI (green), Google (blue) and Meta (pink) have their own colors, and every
-other lab shares gray. Those four hues are the largest set from the dataviz palette that stays
-distinguishable for every pair, including for color-blind readers, so they can't be swapped for
-arbitrary brand colors. Table views of the same numbers are on the
+Every column uses the color Artificial Analysis gives its lab (Anthropic's terracotta, Meta's blue
+and so on), read from the same page as the scores. Because some lab colors are close, the lab is
+also named in each column's tooltip and in the table views on the
 [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
 
 ### max (the Artificial Analysis default)
@@ -94,10 +104,9 @@ A model above the target with no sibling at it (for example GLM-5.3, which only 
 at the time of writing) stays as it is. Use `--unmatched drop` to remove such models from the
 chart instead.
 
-The charts use a second source: the model picker embedded in the site's
-`/models/comparisons` page, which lists an Intelligence Index for each variant. `aa_charts.py`
-groups the variants of each model by release, applies the rules above to pick one per model for
-each chart, and draws the SVGs.
+The charts use a second page: the site's `/leaderboards/models`, which lists an Intelligence Index,
+the lab and the lab's color for each variant. `aa_charts.py` groups the variants of each model by
+release, applies the rules above to pick one per model for each chart, and draws the SVGs.
 
 I looked at placing unlabelled models on the lower charts by speed and decided against it: time per
 task does not line up with effort across labs. In the 2026-10-24 data, Claude Haiku 5.5 at max

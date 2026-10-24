@@ -14,15 +14,31 @@ import aa_charts as ch  # noqa: E402
 import aa_common as common  # noqa: E402
 
 SVG_NS = {"s": "http://www.w3.org/2000/svg"}
+COLORS = {
+    "Anthropic": "#cc785c",
+    "OpenAI": "#1f1f1f",
+    "Google": "#34A853",
+    "Meta": "#0089f4",
+    "SpaceXAI": "#736cd3",
+    "Kimi": "#4466ee",
+    "Z AI": "#1c7ff8",
+}
 
 
-def model(slug, name, score, lab="Anthropic", release=None):
-    return {"slug": slug, "name": name, "intelligenceIndex": score, "creator": {"name": lab}, "_release": release or slug}
+def model(slug, name, score, lab="Anthropic", release=None, color="__lab__"):
+    return {
+        "slug": slug,
+        "name": name,
+        "intelligenceIndex": score,
+        "modelCreatorName": lab,
+        "modelCreatorColor": COLORS.get(lab) if color == "__lab__" else color,
+        "_release": release or slug,
+    }
 
 
 def make_page(models, chunk_size=89):
     clean = [{k: v for k, v in m.items() if k != "_release"} for m in models]
-    flight = '30:["$","x",null,{"pickerModels":' + json.dumps(clean) + "}]\n"
+    flight = '30:["$","x",null,{"initialModels":' + json.dumps(clean) + "}]\n"
     chunks = [flight[i : i + chunk_size] for i in range(0, len(flight), chunk_size)]
     pushes = "".join(f"<script>self.__next_f.push([1,{json.dumps(c)}])</script>" for c in chunks)
     return "<html>" + pushes + "</html>"
@@ -46,7 +62,7 @@ MODELS = [
     # GLM-5.3: Max and Low only
     model("glm", "GLM-5.3 (Max)", 44.8, "Z AI", release="glm"),
     model("glm-low", "GLM-5.3 (Low)", 30.0, "Z AI", release="glm"),
-    # Meta has its own color
+    # Meta
     model("muse", "Muse Wonder (Max)", 52.4, "Meta", release="muse"),
     # No effort label at all
     model("kimi", "Kimi K3.1 Pro", 55.0, "Kimi", release="kimi"),
@@ -66,15 +82,38 @@ def slugs(boards, grade):
     return [e.slug for e in boards[grade]]
 
 
-class Picker(unittest.TestCase):
-    def test_parses_picker_across_chunk_boundaries(self):
-        self.assertEqual(len(ch.picker_models(make_page(MODELS, chunk_size=7))), len(MODELS))
+class Leaderboard(unittest.TestCase):
+    def test_parses_across_chunk_boundaries(self):
+        self.assertEqual(len(ch.leaderboard_models(make_page(MODELS, chunk_size=7))), len(MODELS))
 
-    def test_missing_picker_is_a_parse_error(self):
+    def test_missing_data_is_a_parse_error(self):
         with self.assertRaises(common.ParseError):
-            ch.picker_models("<html></html>")
+            ch.leaderboard_models("<html></html>")
         with self.assertRaises(common.ParseError):
-            ch.picker_models(make_page([]))
+            ch.leaderboard_models(make_page([]))
+
+
+class Colors(unittest.TestCase):
+    def test_clean_color(self):
+        self.assertEqual(ch.clean_color("#cc785c"), "#cc785c")
+        self.assertEqual(ch.clean_color("#34A853"), "#34a853")
+        self.assertEqual(ch.clean_color(" #0AF "), "#00aaff")  # short form is expanded
+        for bad in (None, 12, "", "red", "#12", "#gggggg", "#cc785c;fill:red", '"/><script>x</script>', "url(#x)"):
+            self.assertEqual(ch.clean_color(bad), ch.NEUTRAL, bad)
+
+    def test_every_entry_carries_its_labs_color(self):
+        boards = ch.leaderboards(MODELS, VARIANTS, n=30)
+        by = {e.slug: e.color for e in boards["max"]}
+        self.assertEqual(by["opus"], "#cc785c")
+        self.assertEqual(by["luna"], "#1f1f1f")
+        self.assertEqual(by["gem-high"], "#34a853")
+        self.assertEqual(by["muse"], "#0089f4")
+        self.assertEqual(by["kimi"], "#4466ee")
+
+    def test_a_lab_without_a_usable_color_is_neutral(self):
+        models = [model("a", "A (Xhigh)", 50.0, "Nobody", color=None), model("b", "B (Xhigh)", 40.0, "Evil", color="red;x")]
+        variants = [{"slug": m["slug"], "name": m["name"], "releaseSlug": m["slug"]} for m in models]
+        self.assertEqual({e.color for e in ch.leaderboards(models, variants, grades=("xhigh",))["xhigh"]}, {ch.NEUTRAL})
 
 
 class ShortName(unittest.TestCase):
@@ -150,22 +189,13 @@ class Boards(unittest.TestCase):
         boards = ch.leaderboards(MODELS, [], grades=("max",), n=30)
         self.assertEqual(len([e for e in boards["max"] if e.slug.startswith("opus")]), 4)  # no grouping without releases
 
-    def test_lab_colors_follow_the_entity(self):
-        by = {e.slug: e.lab_class for e in self.boards["max"]}
-        self.assertEqual(by["opus"], "anthropic")
-        self.assertEqual(by["luna"], "openai")
-        self.assertEqual(by["gem-high"], "google")
-        self.assertEqual(by["muse"], "meta")
-        self.assertEqual(by["kimi"], "other")
-
 
 class Labels(unittest.TestCase):
     def entry(self, name, effort, label=None):
-        return ch.Entry("x", name, label or ch.short_name(name), "Lab", 50.0, effort)
+        return ch.Entry("x", name, label or ch.short_name(name), "Lab", "#123456", 50.0, effort)
 
     def test_at_the_level_is_plain(self):
-        e = self.entry("GPT-6 Astra (Xhigh)", "xhigh")
-        self.assertEqual(ch.axis_label(e, "xhigh"), "GPT-6 Astra")
+        self.assertEqual(ch.axis_label(self.entry("GPT-6 Astra (Xhigh)", "xhigh"), "xhigh"), "GPT-6 Astra")
 
     def test_below_the_level_names_its_setting(self):
         self.assertEqual(ch.axis_label(self.entry("Gemini 4 Argon (High)", "high"), "max"), "Gemini 4 Argon (high)")
@@ -204,11 +234,45 @@ class Svg(unittest.TestCase):
             self.assertEqual(len(root.findall(".//s:g", SVG_NS)), len(rows), grade)
             ET.fromstring(ch.svg_file(grade, rows).encode())  # the file form parses too
 
-    def test_names_are_escaped(self):
-        rows = [ch.Entry("x", 'A&B <"x"> (Xhigh)', "A&B <x>", "Lab & Co", 40.0, "xhigh")]
+    def test_each_column_wears_its_labs_color(self):
+        rows = self.boards["max"]
+        root = ET.fromstring(ch.render_svg("max", rows))
+        fills = [p.get("fill") for p in root.findall(".//s:path", SVG_NS)]
+        self.assertEqual(fills, [e.color for e in rows])
+        self.assertIn("#cc785c", fills)  # Anthropic's terracotta
+        self.assertIn("#0089f4", fills)  # Meta's blue
+
+    def test_legend_has_one_swatch_per_lab_in_rank_order(self):
+        rows = self.boards["max"]
+        root = ET.fromstring(ch.render_svg("max", rows))
+        names = [t.text for t in root.findall(".//s:text", SVG_NS) if t.get("class") == "legend"]
+        expected = list(dict.fromkeys(e.lab for e in rows))
+        self.assertEqual(names, expected)
+        swatches = [r.get("fill") for r in root.findall(".//s:rect", SVG_NS) if r.get("width") == "10"]
+        self.assertEqual(swatches, [next(e.color for e in rows if e.lab == n) for n in expected])
+        self.assertNotIn("Other labs", names)
+
+    def test_legend_wraps_and_the_plot_moves_down_to_make_room(self):
+        labs = [f"A Laboratory With A Rather Long Name Number {i}" for i in range(10)]
+        rows = [ch.Entry(f"s{i}", f"M{i} (Xhigh)", f"M{i}", lab, "#336699", 50.0 - i, "xhigh") for i, lab in enumerate(labs)]
+        items, count = ch.legend_items(rows)
+        self.assertGreater(count, 1)
+        self.assertEqual(len(items), 10)
+        for x, _row, _color, name in items:
+            self.assertLess(x + 16 + len(name) * 6.6, ch.W)  # nothing runs off the card
+        tall = ET.fromstring(ch.render_svg("xhigh", rows))
+        short = ET.fromstring(ch.render_svg("xhigh", rows[:1]))
+        self.assertGreater(float(tall.get("height")), float(short.get("height")))
+        ET.fromstring(ch.svg_file("xhigh", rows).encode())
+
+    def test_hostile_color_and_names_cannot_break_out_of_the_svg(self):
+        bad = [model("x", 'A&B <"x"> (Xhigh)', 40.0, 'Lab & "Co"', color='"/><script>alert(1)</script>')]
+        variants = [{"slug": "x", "name": bad[0]["name"], "releaseSlug": "x"}]
+        rows = ch.leaderboards(bad, variants, grades=("xhigh",))["xhigh"]
         svg = ch.render_svg("xhigh", rows)
         ET.fromstring(svg)
-        self.assertNotIn("A&B <x>", svg)
+        self.assertNotIn("<script", svg)
+        self.assertIn(ch.NEUTRAL, svg)
 
     def test_columns_are_capped_at_24px_with_square_baseline(self):
         root = ET.fromstring(ch.render_svg("max", self.boards["max"]))
@@ -222,24 +286,8 @@ class Svg(unittest.TestCase):
             self.assertLessEqual(x1 - x0, ch.MAX_BAR + 0.1)
             self.assertEqual(base0, base1)
 
-    def test_value_on_the_cap_and_only_present_labs_in_legend(self):
-        svg = ch.render_svg("xhigh", self.boards["xhigh"])
-        self.assertIn(">56.0<", svg)
-        self.assertIn(">Anthropic<", svg)
-        self.assertNotIn(">Google<", ch.render_svg("medium", self.boards["medium"]))
-        self.assertNotIn(">Meta<", svg)  # Meta has no xhigh model, so no legend entry
-
-    def test_meta_has_its_own_color_and_legend_entry(self):
-        svg = ch.render_svg("max", self.boards["max"])
-        self.assertIn(">Meta<", svg)
-        self.assertIn('<path class="meta"', svg)
-        self.assertIn(">Other labs<", svg)  # Kimi still shares the neutral
-
-    def test_lab_hues_are_the_validated_set(self):
-        # blue, yellow, magenta, green pass the validator's all-pairs checks together; orange does not fit
-        hues = {name: re.search(rf"--{name}:(#[0-9a-f]{{6}})", ch.STYLE).group(1) for name in ("anthropic", "openai", "google", "meta")}
-        self.assertEqual(set(hues.values()), {"#2a78d6", "#eda100", "#e87ba4", "#008300"})
-        self.assertEqual(len(set(hues.values())), 4)
+    def test_value_on_the_cap(self):
+        self.assertIn(">56.0<", ch.render_svg("xhigh", self.boards["xhigh"]))
 
     def test_max_chart_labels_the_unlabelled_and_the_below_level_models(self):
         svg = ch.render_svg("max", self.boards["max"])
@@ -247,11 +295,11 @@ class Svg(unittest.TestCase):
         self.assertIn("Gemini 4 Argon (high)", svg)
         self.assertIn("† effort not labelled", svg)
 
-    def test_tooltip_keeps_the_full_name(self):
-        rows = [ch.Entry("x", "A" * 60 + " (Xhigh)", "A" * 60, "OpenAI", 40.0, "xhigh")]
+    def test_tooltip_keeps_the_full_name_and_lab(self):
+        rows = [ch.Entry("x", "A" * 60 + " (Xhigh)", "A" * 60, "OpenAI", "#1f1f1f", 40.0, "xhigh")]
         svg = ch.render_svg("xhigh", rows)
         self.assertIn("…", svg)
-        self.assertIn("A" * 60 + " (Xhigh)", svg)
+        self.assertIn("A" * 60 + " (Xhigh), OpenAI: 40.0", svg)
 
     def test_scale_leaves_headroom(self):
         self.assertEqual(ch._scale(57.6), (20, 60))
@@ -270,8 +318,8 @@ class Svg(unittest.TestCase):
 
 
 class Output(unittest.TestCase):
-    def boards(self):
-        return ch.leaderboards(MODELS, VARIANTS)
+    def boards(self, models=MODELS):
+        return ch.leaderboards(models, VARIANTS)
 
     def test_writes_every_file_and_a_white_page(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -288,6 +336,7 @@ class Output(unittest.TestCase):
             self.assertIn("background: #fff", page)
             self.assertNotIn("prefers-color-scheme", page)
             self.assertIn('href="high/#info"', page)
+            self.assertEqual(json.loads((out / "charts.json").read_text())["grades"]["max"][0]["color"], "#cc785c")
 
     def test_idempotent_and_keeps_changed_at(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -296,27 +345,32 @@ class Output(unittest.TestCase):
             self.assertFalse(ch.write_charts(self.boards(), out, now=datetime(2031, 1, 1, tzinfo=timezone.utc)))
             self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2030-01-01 00:00 UTC")
 
-    def test_changed_scores_rewrite(self):
+    def test_changed_scores_or_colors_rewrite(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             ch.write_charts(self.boards(), out, now=datetime(2030, 1, 1, tzinfo=timezone.utc))
-            changed = [dict(m) for m in MODELS]
-            changed[1]["intelligenceIndex"] = 55.0
-            boards = ch.leaderboards(changed, VARIANTS)
-            self.assertTrue(ch.write_charts(boards, out, now=datetime(2031, 1, 1, tzinfo=timezone.utc)))
-            self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2031-01-01 00:00 UTC")
+            scores = [dict(m) for m in MODELS]
+            scores[1]["intelligenceIndex"] = 55.0
+            self.assertTrue(ch.write_charts(self.boards(scores), out, now=datetime(2031, 1, 1, tzinfo=timezone.utc)))
+            recolored = [dict(m) for m in scores]
+            for m in recolored:
+                if m["modelCreatorName"] == "Anthropic":
+                    m["modelCreatorColor"] = "#abcdef"
+            self.assertTrue(ch.write_charts(self.boards(recolored), out, now=datetime(2032, 1, 1, tzinfo=timezone.utc)))
+            self.assertIn("#abcdef", (out / "charts/max.svg").read_text())
 
 
 @unittest.skipUnless(os.environ.get("AA_LIVE"), "set AA_LIVE=1 to hit the real site")
 class Live(unittest.TestCase):
-    def test_real_picker(self):
+    def test_real_leaderboard(self):
         from aa_xhigh import variant_index
 
         variants = variant_index(common.flight_payload(common.fetch()))
-        boards = ch.leaderboards(ch.picker_models(common.fetch(ch.PICKER_URL)), variants)
+        boards = ch.leaderboards(ch.leaderboard_models(common.fetch(ch.LEADERBOARD_URL)), variants)
         for grade in ch.GRADES:
             self.assertGreater(len(boards[grade]), 3)
             ET.fromstring(ch.render_svg(grade, boards[grade]))
+        self.assertNotIn(ch.NEUTRAL, {e.color for e in boards["max"]})  # the top labs all have real colors
 
 
 if __name__ == "__main__":

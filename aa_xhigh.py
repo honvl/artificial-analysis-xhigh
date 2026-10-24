@@ -301,7 +301,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{'updated' if changed else 'unchanged'}: {lv}", file=sys.stderr)
         # The charts come from a separate page, so a failure there must not hold back the links.
         try:
-            boards = aa_charts.leaderboards(aa_charts.picker_models(fetch(aa_charts.PICKER_URL)), variants)
+            boards = aa_charts.leaderboards(aa_charts.leaderboard_models(fetch(aa_charts.LEADERBOARD_URL)), variants)
             changed = aa_charts.write_charts(boards, args.write)
             print(f"{'updated' if changed else 'unchanged'}: summary charts", file=sys.stderr)
         except (ParseError, OSError) as exc:

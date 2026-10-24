@@ -1,9 +1,9 @@
 """Per-effort leaderboards: the top models at each effort level, drawn as SVG column charts.
 
-Scores come from the model picker that Artificial Analysis embeds in its
-``/models/comparisons`` page (an Intelligence Index per model variant). Variants of the
-same model are grouped by the release they belong to, and each chart shows every model
-at the best setting it has at or below that chart's level:
+Scores, lab names and lab colors come from the leaderboard that Artificial Analysis embeds
+in its ``/leaderboards/models`` page. Variants of the same model are grouped by the release
+they belong to, and each chart shows every model at the best setting it has at or below that
+chart's level:
 
 * a model with a variant at the level is shown at that variant;
 * otherwise it is shown at its highest setting below the level, because that is the
@@ -12,16 +12,18 @@ at the best setting it has at or below that chart's level:
 * a model with no effort setting at all can be anything up to max, so it appears only
   on the max chart and is marked with a dagger.
 
-Chart design follows the dataviz skill's specs: thin columns with a 4px rounded cap and
-the value on the cap, solid hairline grid, a legend, a table twin on the summary page,
-and validated categorical hues for the four labs that dominate the rankings (all other
-labs share one neutral). The surface is always white, like Artificial Analysis.
+Every column wears its lab's own color, the one Artificial Analysis uses for that lab. The
+chart is a white card like Artificial Analysis's, with thin columns that have a 4px rounded
+cap, the value on the cap, a solid hairline grid, and a legend. Because lab colors can be
+close to each other, the lab is also named in each column's tooltip and in the table view
+on the summary page.
 """
 from __future__ import annotations
 
 import html
 import json
 import math
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -37,31 +39,22 @@ from aa_common import (
     write_text,
 )
 
-PICKER_URL = "https://artificialanalysis.ai/models/comparisons"
+LEADERBOARD_URL = "https://artificialanalysis.ai/leaderboards/models"
 GRADES = ("max", "xhigh", "high", "medium")
 TOP_N = 10
+NEUTRAL = "#898781"  # a lab the site gives no usable color
 
-# Color follows the entity, never its rank: these labs always get the same hue. The four hues
-# (blue, yellow, magenta, green) pass the dataviz validator's all-pairs checks together; any
-# two labs can sit next to each other in a ranking, so every pair has to hold. No passing set
-# of four includes orange. Yellow and magenta are light on white, so the value labels and the
-# table view on the summary page are required, not optional.
-LABS = {"Anthropic": "anthropic", "OpenAI": "openai", "Google": "google", "Meta": "meta"}
-LAB_ORDER = ("anthropic", "openai", "google", "meta", "other")
-LAB_NAMES = {"anthropic": "Anthropic", "openai": "OpenAI", "google": "Google", "meta": "Meta", "other": "Other labs"}
-
-# Geometry of one chart, in SVG user units.
+# Geometry of one chart, in SVG user units. The plot starts lower when the legend wraps.
 W, LEFT, RIGHT = 760, 128, 24
 TOP, PLOT_H, LABEL_BAND = 92, 240, 150
-BASE = TOP + PLOT_H
-H = BASE + LABEL_BAND
+LEGEND_ROW = 16
 MAX_BAR = 24  # columns are capped at 24px; the rest of the slot is air
 LABEL_CHARS = 34
 UNLABELLED = " †"
 
 # Always light: a white card with a hairline border, like Artificial Analysis.
 STYLE = """
-.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eda100;--openai:#008300;--google:#2a78d6;--meta:#e87ba4;--other:#898781}
+.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
 .aa-chart .grid{stroke:var(--grid);stroke-width:1}
@@ -72,12 +65,20 @@ STYLE = """
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}
-.aa-chart .anthropic{fill:var(--anthropic)}
-.aa-chart .openai{fill:var(--openai)}
-.aa-chart .google{fill:var(--google)}
-.aa-chart .meta{fill:var(--meta)}
-.aa-chart .other{fill:var(--other)}
 """.strip()
+
+_HEX = re.compile(r"#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})")
+
+
+def clean_color(value: object) -> str:
+    """A hex color from the site, or the neutral gray. The value is remote data that ends up in
+    an SVG attribute, so anything that is not a plain hex color is dropped."""
+    if isinstance(value, str) and _HEX.fullmatch(value.strip()):
+        v = value.strip().lower()
+        if len(v) == 4:
+            v = "#" + "".join(ch * 2 for ch in v[1:])
+        return v
+    return NEUTRAL
 
 
 @dataclass(frozen=True)
@@ -86,28 +87,25 @@ class Entry:
     name: str  # as the site names it, e.g. "Claude Opus 5.5 (Xhigh, Default Fallback)"
     label: str  # shorter, without the effort tag, for the axis
     lab: str
+    color: str  # the lab's color, as a lowercase 6-digit hex
     score: float
     effort: str | None  # the setting this entry is at, None when Artificial Analysis labels none
 
-    @property
-    def lab_class(self) -> str:
-        return LABS.get(self.lab, "other")
+
+# --- reading the leaderboard -------------------------------------------------
 
 
-# --- reading the picker ------------------------------------------------------
-
-
-def picker_models(page: str) -> list[dict]:
-    """The model picker embedded in a comparison page: ``{slug, name, intelligenceIndex, creator}``."""
+def leaderboard_models(page: str) -> list[dict]:
+    """The models on the leaderboard page: ``{slug, name, intelligenceIndex, modelCreatorName, modelCreatorColor}``."""
     payload = flight_payload(page)
-    key = '"pickerModels":'
+    key = '"initialModels":'
     i = payload.find(key + "[")
     if i == -1:
-        raise ParseError('"pickerModels" not found in page data')
+        raise ParseError('"initialModels" not found in the leaderboard page data')
     models, _ = json.JSONDecoder().raw_decode(payload, i + len(key))
     usable = [m for m in models if isinstance(m, dict) and {"slug", "name", "intelligenceIndex"} <= m.keys()]
     if not usable:
-        raise ParseError("model picker has no entries with an Intelligence Index")
+        raise ParseError("leaderboard has no entries with an Intelligence Index")
     return usable
 
 
@@ -158,7 +156,8 @@ def leaderboards(
             slug=m["slug"],
             name=m["name"],
             label=short_name(m["name"]),
-            lab=(m.get("creator") or {}).get("name", ""),
+            lab=m.get("modelCreatorName") or "",
+            color=clean_color(m.get("modelCreatorColor")),
             score=round(float(score), 1),
             effort=parse_label(m["name"]).effort,
         )
@@ -207,23 +206,45 @@ def footnote(grade: str, entries: list[Entry]) -> str:
     return " · ".join(parts)
 
 
+def legend_items(entries: list[Entry]) -> tuple[list[tuple[float, int, str, str]], int]:
+    """One swatch per lab in the chart, in rank order, wrapped to the chart width.
+
+    Returns ``([(x, row, color, name), ...], row_count)``.
+    """
+    labs: dict[str, str] = {}
+    for e in entries:
+        labs.setdefault(e.lab or "Unknown", e.color)
+    items, x, row = [], 24.0, 0
+    for name, color in labs.items():
+        width = 16 + len(name) * 6.6
+        if x > 24 and x + width > W - 24:
+            x, row = 24.0, row + 1
+        items.append((x, row, color, name))
+        x += width + 20
+    return items, row + 1
+
+
 def _scale(top_score: float) -> tuple[int, int]:
     """Tick step and axis maximum, with headroom above the tallest column."""
     step = 10 if top_score <= 40 else 20
     return step, (math.floor(top_score / step) + 1) * step
 
 
-def _column(x: float, width: float, top: float) -> str:
+def _column(x: float, width: float, top: float, base: float) -> str:
     """A column path: 4px rounded cap, square at the baseline."""
-    r = min(4.0, BASE - top, width / 2)
+    r = min(4.0, base - top, width / 2)
     return (
-        f"M{x:.1f},{BASE} V{top + r:.1f} Q{x:.1f},{top:.1f} {x + r:.1f},{top:.1f} "
-        f"H{x + width - r:.1f} Q{x + width:.1f},{top:.1f} {x + width:.1f},{top + r:.1f} V{BASE} Z"
+        f"M{x:.1f},{base:.1f} V{top + r:.1f} Q{x:.1f},{top:.1f} {x + r:.1f},{top:.1f} "
+        f"H{x + width - r:.1f} Q{x + width:.1f},{top:.1f} {x + width:.1f},{top + r:.1f} V{base:.1f} Z"
     )
 
 
 def render_svg(grade: str, entries: list[Entry]) -> str:
     n = len(entries)
+    legend, rows = legend_items(entries)
+    plot_top = TOP + LEGEND_ROW * (rows - 1)
+    base = plot_top + PLOT_H
+    height = base + LABEL_BAND
     step, ymax = _scale(max(e.score for e in entries))
     slot = min((W - LEFT - RIGHT) / n, 90)
     bar_w = min(float(MAX_BAR), slot * 0.5)
@@ -235,46 +256,43 @@ def render_svg(grade: str, entries: list[Entry]) -> str:
     )
 
     out = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 {W} {H}" width="{W}" height="{H}"'
+        f'<svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 {W} {height}" width="{W}" height="{height}"'
         f' role="img" aria-labelledby="t-{grade} d-{grade}">',
         f'<title id="t-{grade}">{_esc(title)}</title>',
         f'<desc id="d-{grade}">{_esc(desc)}</desc>',
         f"<style>{STYLE}</style>",
-        f'<rect class="surface" x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="12"/>',
+        f'<rect class="surface" x="0.5" y="0.5" width="{W - 1}" height="{height - 1}" rx="12"/>',
         f'<text class="title" x="24" y="34">{_esc(title)}</text>',
         f'<text class="credit" x="{W - 24}" y="34" text-anchor="end">Data: artificialanalysis.ai</text>',
         f'<text class="sub" x="24" y="54">{_esc(subtitle)}</text>',
     ]
 
-    x = 24.0
-    for key in LAB_ORDER:
-        if not any(e.lab_class == key for e in entries):
-            continue
-        out.append(f'<rect class="{key}" x="{x:.1f}" y="64" width="10" height="10" rx="2"/>')
-        out.append(f'<text class="legend" x="{x + 16:.1f}" y="73">{_esc(LAB_NAMES[key])}</text>')
-        x += 16 + len(LAB_NAMES[key]) * 6.6 + 20
+    for x, row, color, name in legend:
+        y = LEGEND_ROW * row
+        out.append(f'<rect x="{x:.1f}" y="{64 + y}" width="10" height="10" rx="2" fill="{color}"/>')
+        out.append(f'<text class="legend" x="{x + 16:.1f}" y="{73 + y}">{_esc(name)}</text>')
 
     for t in range(0, ymax + 1, step):
-        y = BASE - t / ymax * PLOT_H
+        y = base - t / ymax * PLOT_H
         out.append(f'<line class="{"axis" if t == 0 else "grid"}" x1="{LEFT}" x2="{W - RIGHT}" y1="{y:.1f}" y2="{y:.1f}"/>')
         out.append(f'<text class="tick" x="{LEFT - 8}" y="{y + 4:.1f}" text-anchor="end">{t}</text>')
 
     for i, e in enumerate(entries):
         slot_x = LEFT + i * slot
         cx = slot_x + slot / 2
-        top = BASE - e.score / ymax * PLOT_H
+        top = base - e.score / ymax * PLOT_H
         out.append(
             f"<g><title>{_esc(f'{e.name}, {e.lab}: {e.score:.1f}')}</title>"
-            f'<rect x="{slot_x:.1f}" y="{TOP}" width="{slot:.1f}" height="{PLOT_H}" fill="transparent"/>'
-            f'<path class="{e.lab_class}" d="{_column(cx - bar_w / 2, bar_w, top)}"/>'
+            f'<rect x="{slot_x:.1f}" y="{plot_top}" width="{slot:.1f}" height="{PLOT_H}" fill="transparent"/>'
+            f'<path fill="{e.color}" d="{_column(cx - bar_w / 2, bar_w, top, base)}"/>'
             f'<text class="val" x="{cx:.1f}" y="{top - 6:.1f}" text-anchor="middle">{e.score:.1f}</text>'
-            f'<text class="lbl" transform="translate({cx:.1f} {BASE + 12}) rotate(-45)" text-anchor="end">'
+            f'<text class="lbl" transform="translate({cx:.1f} {base + 12:.1f}) rotate(-45)" text-anchor="end">'
             f"{_esc(axis_label(e, grade))}</text></g>"
         )
 
     note = footnote(grade, entries)
     if note:
-        out.append(f'<text class="note" x="24" y="{H - 14}">{_esc(note)}</text>')
+        out.append(f'<text class="note" x="24" y="{height - 14}">{_esc(note)}</text>')
     out.append("</svg>")
     return "\n".join(out)
 
@@ -326,8 +344,8 @@ def render_summary(boards: dict[str, list[Entry]], changed_at: str) -> str:
 Each chart shows a model at the best setting it has at or below that level: a model with no variant
 at the level appears at its highest setting below it, so a model that only has High is on the max,
 xhigh and high charts. A model with no labelled effort setting could be anything up to max, so it
-appears only on the max chart, marked with a dagger.
-Data last changed {_esc(changed_at)}.</p>
+appears only on the max chart, marked with a dagger. Columns use the color Artificial Analysis
+gives each lab. Data last changed {_esc(changed_at)}.</p>
 <p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}.
 Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 {chr(10).join(sections)}
@@ -339,7 +357,7 @@ Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 def write_charts(boards: dict[str, list[Entry]], out: Path, now: datetime | None = None) -> bool:
     """Write summary.html, charts/<grade>.svg and charts.json under ``out``. False if nothing changed."""
     data = {
-        g: [{"name": e.name, "lab": e.lab, "effort": e.effort, "score": e.score} for e in rows]
+        g: [{"name": e.name, "lab": e.lab, "color": e.color, "effort": e.effort, "score": e.score} for e in rows]
         for g, rows in boards.items()
     }
     old = read_json(out / "charts.json")
