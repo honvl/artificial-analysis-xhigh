@@ -1,11 +1,18 @@
 # artificial-analysis-xhigh
 
-[Artificial Analysis](https://artificialanalysis.ai/models) charts Claude, GPT and others at their
-`max` effort by default. This repo keeps a link to the same default chart with every `max`
-variant swapped for its `xhigh` variant, and keeps that link current.
+An auto-updating link to the [Artificial Analysis](https://artificialanalysis.ai/models)
+Intelligence Index chart with every `max` variant swapped for its `xhigh` variant.
 
-Bookmark the GitHub Pages URL (see Setup) and it always redirects to the latest swapped link.
-Add `#info` to the end to see which models were swapped instead of redirecting.
+## Why I made this
+
+Artificial Analysis shows Claude, GPT and other models at their `max` effort by default. Max isn't
+what people actually run day to day, so those scores aren't the ones I care about. The site does
+have xhigh scores, but you have to pick every model by hand in the model selector each time. This
+repo builds the link that does that for me and keeps it current as the site's default models change.
+
+**Bookmark: https://honvl.github.io/artificial-analysis-xhigh/** redirects to the latest swapped
+link. Add `#info` to the end to see which models were swapped instead of redirecting. See
+[Add it to your bookmarks](#add-it-to-your-bookmarks) for the easy way to save it.
 
 ## How it works
 
@@ -38,8 +45,19 @@ gh workflow run update-link
 
 Or in the web UI: Settings, Pages, deploy from branch `main`, folder `/docs`.
 
-Then bookmark `https://<your-username>.github.io/artificial-analysis-xhigh/`. Raw link as text:
-`.../link.txt`. Details as JSON: `.../latest.json`.
+Then the stable URL is `https://<your-username>.github.io/artificial-analysis-xhigh/`. Raw link as
+text: `.../link.txt`. Details as JSON: `.../latest.json`.
+
+## Add it to your bookmarks
+
+The stable URL redirects, so pressing your browser's "bookmark this page" shortcut on it saves the
+long chart URL it lands on, which goes stale when the default models change. Instead:
+
+- **Drag (easiest):** open the [bookmark page](https://honvl.github.io/artificial-analysis-xhigh/bookmark.html)
+  and drag its link onto your bookmarks bar.
+- **Paste the URL:** copy `https://honvl.github.io/artificial-analysis-xhigh/`, then in Chrome press
+  Cmd/Ctrl+Shift+O, use the menu at the top right, choose Add new bookmark and paste. In Firefox,
+  Cmd/Ctrl+Shift+O, Organize, New Bookmark. Safari has no add-by-URL, so use the drag link.
 
 ## Use it locally
 
