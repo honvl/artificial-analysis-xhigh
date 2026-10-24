@@ -200,10 +200,11 @@ def render_page(result: Result, changed_at: str, prefix: str = "") -> str:
 <noscript><meta http-equiv="refresh" content="0; url={html.escape(url)}"></noscript>
 <script>if (location.hash !== "#info") location.replace({json.dumps(url)});</script>
 <style>
-  :root {{ color-scheme: light dark; }}
-  body {{ font: 16px/1.5 system-ui, sans-serif; max-width: 42rem; margin: 3rem auto; padding: 0 1rem; }}
+  :root {{ color-scheme: light; }}
+  body {{ background: #fff; color: #0b0b0b; font: 16px/1.5 system-ui, sans-serif; max-width: 42rem; margin: 3rem auto; padding: 0 1rem; }}
+  a {{ color: #2a78d6; }}
   td {{ padding: .25rem .75rem .25rem 0; vertical-align: top; }}
-  .muted {{ opacity: .6; }}
+  .muted {{ color: #52514e; }}
   code {{ word-break: break-all; }}
 </style>
 </head>
@@ -300,7 +301,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{'updated' if changed else 'unchanged'}: {lv}", file=sys.stderr)
         # The charts come from a separate page, so a failure there must not hold back the links.
         try:
-            boards = aa_charts.leaderboards(aa_charts.picker_models(fetch(aa_charts.PICKER_URL)))
+            boards = aa_charts.leaderboards(aa_charts.picker_models(fetch(aa_charts.PICKER_URL)), variants)
             changed = aa_charts.write_charts(boards, args.write)
             print(f"{'updated' if changed else 'unchanged'}: summary charts", file=sys.stderr)
         except (ParseError, OSError) as exc:

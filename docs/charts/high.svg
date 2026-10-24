@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 482" width="760" height="482" role="img" aria-labelledby="t-high d-high">
 <title id="t-high">Top models at high effort</title>
-<desc id="d-high">1. Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6; 2. Gemini 4 Argon (High), Google: 52.6; 3. Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2; 4. GPT-6 Astra (High), OpenAI: 50.9; 5. GPT-6.1 Sol (High), OpenAI: 50.2; 6. Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8; 7. Grok 4.7 (High), SpaceXAI: 46.3; 8. Gemini 3.8 Flash (High), Google: 40.9; 9. Claude Haiku 5.5 (High), Anthropic: 37.8; 10. GPT-5.6 Terra (High), OpenAI: 34.2</desc>
-<style>.aa-chart{--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,.10);--anthropic:#eb6834;--openai:#1baf7a;--google:#2a78d6;--other:#898781}
-@media (prefers-color-scheme:dark){.aa-chart{--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#898781;--grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,.10);--anthropic:#d95926;--openai:#199e70;--google:#3987e5;--other:#898781}}
+<desc id="d-high">1. Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6; 2. Gemini 4 Argon (High), Google: 52.6; 3. Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2; 4. GPT-6 Astra (High), OpenAI: 50.9; 5. GPT-6.1 Sol (High), OpenAI: 50.2; 6. Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8; 7. Grok 4.7 (High), SpaceXAI: 46.3; 8. Gemini 3.8 Flash (High), Google: 40.9; 9. Claude Haiku 5.5 (High), Anthropic: 37.8; 10. GLM-5.3 (Low), Z AI: 34.3</desc>
+<style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9;--anthropic:#eb6834;--openai:#1baf7a;--google:#2a78d6;--other:#898781}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
 .aa-chart .grid{stroke:var(--grid);stroke-width:1}
 .aa-chart .axis{stroke:var(--axis);stroke-width:1}
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
-.aa-chart .sub,.aa-chart .tick,.aa-chart .credit{fill:var(--muted);font-size:11px}
+.aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
@@ -20,6 +19,7 @@
 .aa-chart .other{fill:var(--other)}</style>
 <rect class="surface" x="0.5" y="0.5" width="759" height="481" rx="12"/>
 <text class="title" x="24" y="34">Top models at high effort</text>
+<text class="credit" x="736" y="34" text-anchor="end">Data: artificialanalysis.ai</text>
 <text class="sub" x="24" y="54">Artificial Analysis Intelligence Index, higher is better</text>
 <rect class="anthropic" x="24.0" y="64" width="10" height="10" rx="2"/>
 <text class="legend" x="40.0" y="73">Anthropic</text>
@@ -29,23 +29,23 @@
 <text class="legend" x="211.0" y="73">Google</text>
 <rect class="other" x="270.6" y="64" width="10" height="10" rx="2"/>
 <text class="legend" x="286.6" y="73">Other labs</text>
-<line class="axis" x1="100" x2="736" y1="332.0" y2="332.0"/>
-<text class="tick" x="92" y="336.0" text-anchor="end">0</text>
-<line class="grid" x1="100" x2="736" y1="252.0" y2="252.0"/>
-<text class="tick" x="92" y="256.0" text-anchor="end">20</text>
-<line class="grid" x1="100" x2="736" y1="172.0" y2="172.0"/>
-<text class="tick" x="92" y="176.0" text-anchor="end">40</text>
-<line class="grid" x1="100" x2="736" y1="92.0" y2="92.0"/>
-<text class="tick" x="92" y="96.0" text-anchor="end">60</text>
-<g><title>Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6</title><rect x="100.0" y="92" width="63.6" height="240" fill="transparent"/><path class="anthropic" d="M119.8,332 V121.6 Q119.8,117.6 123.8,117.6 H139.8 Q143.8,117.6 143.8,121.6 V332 Z"/><text class="val" x="131.8" y="111.6" text-anchor="middle">53.6</text><text class="lbl" transform="translate(131.8 344) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
-<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="163.6" y="92" width="63.6" height="240" fill="transparent"/><path class="google" d="M183.4,332 V125.6 Q183.4,121.6 187.4,121.6 H203.4 Q207.4,121.6 207.4,125.6 V332 Z"/><text class="val" x="195.4" y="115.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(195.4 344) rotate(-45)" text-anchor="end">Gemini 4 Argon</text></g>
-<g><title>Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2</title><rect x="227.2" y="92" width="63.6" height="240" fill="transparent"/><path class="anthropic" d="M247.0,332 V131.2 Q247.0,127.2 251.0,127.2 H267.0 Q271.0,127.2 271.0,131.2 V332 Z"/><text class="val" x="259.0" y="121.2" text-anchor="middle">51.2</text><text class="lbl" transform="translate(259.0 344) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
-<g><title>GPT-6 Astra (High), OpenAI: 50.9</title><rect x="290.8" y="92" width="63.6" height="240" fill="transparent"/><path class="openai" d="M310.6,332 V132.4 Q310.6,128.4 314.6,128.4 H330.6 Q334.6,128.4 334.6,132.4 V332 Z"/><text class="val" x="322.6" y="122.4" text-anchor="middle">50.9</text><text class="lbl" transform="translate(322.6 344) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
-<g><title>GPT-6.1 Sol (High), OpenAI: 50.2</title><rect x="354.4" y="92" width="63.6" height="240" fill="transparent"/><path class="openai" d="M374.2,332 V135.2 Q374.2,131.2 378.2,131.2 H394.2 Q398.2,131.2 398.2,135.2 V332 Z"/><text class="val" x="386.2" y="125.2" text-anchor="middle">50.2</text><text class="lbl" transform="translate(386.2 344) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
-<g><title>Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8</title><rect x="418.0" y="92" width="63.6" height="240" fill="transparent"/><path class="anthropic" d="M437.8,332 V148.8 Q437.8,144.8 441.8,144.8 H457.8 Q461.8,144.8 461.8,148.8 V332 Z"/><text class="val" x="449.8" y="138.8" text-anchor="middle">46.8</text><text class="lbl" transform="translate(449.8 344) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
-<g><title>Grok 4.7 (High), SpaceXAI: 46.3</title><rect x="481.6" y="92" width="63.6" height="240" fill="transparent"/><path class="other" d="M501.4,332 V150.8 Q501.4,146.8 505.4,146.8 H521.4 Q525.4,146.8 525.4,150.8 V332 Z"/><text class="val" x="513.4" y="140.8" text-anchor="middle">46.3</text><text class="lbl" transform="translate(513.4 344) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
-<g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="545.2" y="92" width="63.6" height="240" fill="transparent"/><path class="google" d="M565.0,332 V172.4 Q565.0,168.4 569.0,168.4 H585.0 Q589.0,168.4 589.0,172.4 V332 Z"/><text class="val" x="577.0" y="162.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(577.0 344) rotate(-45)" text-anchor="end">Gemini 3.8 Flash</text></g>
-<g><title>Claude Haiku 5.5 (High), Anthropic: 37.8</title><rect x="608.8" y="92" width="63.6" height="240" fill="transparent"/><path class="anthropic" d="M628.6,332 V184.8 Q628.6,180.8 632.6,180.8 H648.6 Q652.6,180.8 652.6,184.8 V332 Z"/><text class="val" x="640.6" y="174.8" text-anchor="middle">37.8</text><text class="lbl" transform="translate(640.6 344) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
-<g><title>GPT-5.6 Terra (High), OpenAI: 34.2</title><rect x="672.4" y="92" width="63.6" height="240" fill="transparent"/><path class="openai" d="M692.2,332 V199.2 Q692.2,195.2 696.2,195.2 H712.2 Q716.2,195.2 716.2,199.2 V332 Z"/><text class="val" x="704.2" y="189.2" text-anchor="middle">34.2</text><text class="lbl" transform="translate(704.2 344) rotate(-45)" text-anchor="end">GPT-5.6 Terra</text></g>
-<text class="credit" x="736" y="468" text-anchor="end">Data: artificialanalysis.ai</text>
+<line class="axis" x1="128" x2="736" y1="332.0" y2="332.0"/>
+<text class="tick" x="120" y="336.0" text-anchor="end">0</text>
+<line class="grid" x1="128" x2="736" y1="252.0" y2="252.0"/>
+<text class="tick" x="120" y="256.0" text-anchor="end">20</text>
+<line class="grid" x1="128" x2="736" y1="172.0" y2="172.0"/>
+<text class="tick" x="120" y="176.0" text-anchor="end">40</text>
+<line class="grid" x1="128" x2="736" y1="92.0" y2="92.0"/>
+<text class="tick" x="120" y="96.0" text-anchor="end">60</text>
+<g><title>Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6</title><rect x="128.0" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M146.4,332 V121.6 Q146.4,117.6 150.4,117.6 H166.4 Q170.4,117.6 170.4,121.6 V332 Z"/><text class="val" x="158.4" y="111.6" text-anchor="middle">53.6</text><text class="lbl" transform="translate(158.4 344) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
+<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="188.8" y="92" width="60.8" height="240" fill="transparent"/><path class="google" d="M207.2,332 V125.6 Q207.2,121.6 211.2,121.6 H227.2 Q231.2,121.6 231.2,125.6 V332 Z"/><text class="val" x="219.2" y="115.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(219.2 344) rotate(-45)" text-anchor="end">Gemini 4 Argon</text></g>
+<g><title>Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2</title><rect x="249.6" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M268.0,332 V131.2 Q268.0,127.2 272.0,127.2 H288.0 Q292.0,127.2 292.0,131.2 V332 Z"/><text class="val" x="280.0" y="121.2" text-anchor="middle">51.2</text><text class="lbl" transform="translate(280.0 344) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
+<g><title>GPT-6 Astra (High), OpenAI: 50.9</title><rect x="310.4" y="92" width="60.8" height="240" fill="transparent"/><path class="openai" d="M328.8,332 V132.4 Q328.8,128.4 332.8,128.4 H348.8 Q352.8,128.4 352.8,132.4 V332 Z"/><text class="val" x="340.8" y="122.4" text-anchor="middle">50.9</text><text class="lbl" transform="translate(340.8 344) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
+<g><title>GPT-6.1 Sol (High), OpenAI: 50.2</title><rect x="371.2" y="92" width="60.8" height="240" fill="transparent"/><path class="openai" d="M389.6,332 V135.2 Q389.6,131.2 393.6,131.2 H409.6 Q413.6,131.2 413.6,135.2 V332 Z"/><text class="val" x="401.6" y="125.2" text-anchor="middle">50.2</text><text class="lbl" transform="translate(401.6 344) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
+<g><title>Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8</title><rect x="432.0" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M450.4,332 V148.8 Q450.4,144.8 454.4,144.8 H470.4 Q474.4,144.8 474.4,148.8 V332 Z"/><text class="val" x="462.4" y="138.8" text-anchor="middle">46.8</text><text class="lbl" transform="translate(462.4 344) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
+<g><title>Grok 4.7 (High), SpaceXAI: 46.3</title><rect x="492.8" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M511.2,332 V150.8 Q511.2,146.8 515.2,146.8 H531.2 Q535.2,146.8 535.2,150.8 V332 Z"/><text class="val" x="523.2" y="140.8" text-anchor="middle">46.3</text><text class="lbl" transform="translate(523.2 344) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
+<g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="553.6" y="92" width="60.8" height="240" fill="transparent"/><path class="google" d="M572.0,332 V172.4 Q572.0,168.4 576.0,168.4 H592.0 Q596.0,168.4 596.0,172.4 V332 Z"/><text class="val" x="584.0" y="162.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(584.0 344) rotate(-45)" text-anchor="end">Gemini 3.8 Flash</text></g>
+<g><title>Claude Haiku 5.5 (High), Anthropic: 37.8</title><rect x="614.4" y="92" width="60.8" height="240" fill="transparent"/><path class="anthropic" d="M632.8,332 V184.8 Q632.8,180.8 636.8,180.8 H652.8 Q656.8,180.8 656.8,184.8 V332 Z"/><text class="val" x="644.8" y="174.8" text-anchor="middle">37.8</text><text class="lbl" transform="translate(644.8 344) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
+<g><title>GLM-5.3 (Low), Z AI: 34.3</title><rect x="675.2" y="92" width="60.8" height="240" fill="transparent"/><path class="other" d="M693.6,332 V198.8 Q693.6,194.8 697.6,194.8 H713.6 Q717.6,194.8 717.6,198.8 V332 Z"/><text class="val" x="705.6" y="188.8" text-anchor="middle">34.3</text><text class="lbl" transform="translate(705.6 344) rotate(-45)" text-anchor="end">GLM-5.3 (low)</text></g>
+<text class="note" x="24" y="468">Level in brackets: the model&#x27;s highest setting below high</text>
 </svg>

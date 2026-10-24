@@ -45,9 +45,17 @@ change. The high and medium links do the same for lower effort levels.
 ## Top models at each effort level
 
 The ten highest-scoring models on the Intelligence Index at each effort level, regenerated every
-3 hours. Only models Artificial Analysis lists with an explicit effort setting appear. Anthropic,
-OpenAI and Google have their own colors, and every other lab shares gray. Table views of the same
-numbers are on the [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
+3 hours. Each chart shows a model at the best setting it has at or below that level:
+
+- A model with a variant at the level is shown at that variant.
+- Otherwise it is shown at its highest setting below the level, with that setting in brackets. A
+  model that only has High, like Gemini 4 Argon, is on the max, xhigh and high charts.
+- A model with no labelled effort setting, like Kimi K3.1 Pro, could be anything up to max, so it
+  appears only on the max chart, marked with a †.
+- A model whose every setting is above the level is left off that chart.
+
+Anthropic, OpenAI and Google have their own colors, and every other lab shares gray. Table views of
+the same numbers are on the [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
 
 ### max (the Artificial Analysis default)
 
@@ -85,7 +93,13 @@ chart instead.
 
 The charts use a second source: the model picker embedded in the site's
 `/models/comparisons` page, which lists an Intelligence Index for each variant. `aa_charts.py`
-ranks the models carrying each effort tag and draws the SVGs.
+groups the variants of each model by release, applies the rules above to pick one per model for
+each chart, and draws the SVGs.
+
+I looked at placing unlabelled models on the lower charts by speed and decided against it: time per
+task does not line up with effort across labs. In the 2026-10-24 data, Claude Haiku 5.5 at max
+takes 430 s per task while Qwen3.8 27B at xhigh takes 1,227 s, and Kimi K3.1 Pro's 618 s sits
+inside the max, xhigh and high ranges at once.
 
 The scheduled workflow re-runs everything every 3 hours and commits `docs/` only when something
 changes.

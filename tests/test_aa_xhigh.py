@@ -183,6 +183,8 @@ class Output(unittest.TestCase):
         self.assertIn("every max variant swapped for xhigh", root)
         self.assertIn("every xhigh or max variant swapped for high", high)
         self.assertIn("location.replace", root)
+        self.assertIn("color-scheme: light;", root)  # always a white page
+        self.assertNotIn("dark", root)
         self.assertIn('href="high/#info"', root)  # root links down to the other levels, keeping the info view
         self.assertIn('href="../#info"', high)  # a level folder links back up to xhigh
         self.assertIn('href="../medium/#info"', high)
