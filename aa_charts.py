@@ -12,11 +12,14 @@ chart's level:
 * a model with no effort setting at all can be anything up to max, so it appears only
   on the max chart and is marked with a dagger.
 
-Every column wears its lab's own color, the one Artificial Analysis uses for that lab. The
-chart is a white card like Artificial Analysis's, with thin columns that have a 4px rounded
-cap, the value on the cap, a solid hairline grid, and a legend. Because lab colors can be
-close to each other, the lab is also named in each column's tooltip and in the table view
-on the summary page.
+Every column wears its lab's own color, the one Artificial Analysis uses for that lab. Beside
+each column of a lab we know a subscription multiplier for there is a thin bar: what one full
+run of the index costs on that lab's subscription. It is a second measure, so it has its own
+labelled axis on the right, and that axis is shared by all four charts so the effort levels
+can be compared. The chart is a white card like Artificial Analysis's, with thin columns that
+have a 4px rounded cap, the value on the cap, a solid hairline grid, and a legend. Because lab
+colors can be close to each other, the lab is also named in each column's tooltip and in the
+table view on the summary page.
 """
 from __future__ import annotations
 
@@ -44,13 +47,17 @@ LEADERBOARD_URL = "https://artificialanalysis.ai/leaderboards/models"
 GRADES = ("max", "xhigh", "high", "medium")
 TOP_N = 10
 NEUTRAL = "#898781"  # a lab the site gives no usable color
+THIN_COLOR = "#52514e"  # the cost bars: one neutral, since they are a measure, not a lab
+THIN_LABEL = "Cost of one full index run on a subscription (right axis)"
 
 # Geometry of one chart, in SVG user units. The plot starts lower when the legend wraps.
 W, LEFT, RIGHT = 760, 128, 24
+RIGHT_AXIS = 60  # room on the right for the dollar axis when cost bars are drawn
 TOP, PLOT_H, LABEL_BAND = 92, 240, 150
 LEGEND_ROW = 16
-COST_LINE = 16  # extra height when the thin subscription-cost line is shown under the subtitle
 MAX_BAR = 24  # columns are capped at 24px; the rest of the slot is air
+THIN_BAR = 8
+BAR_GAP = 2  # surface gap between the two touching bars
 LABEL_CHARS = 34
 UNLABELLED = " †"
 
@@ -64,7 +71,6 @@ STYLE = """
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
 .aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
-.aa-chart .costline{fill:var(--ink2);font-size:11px}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}
@@ -93,6 +99,13 @@ class Entry:
     color: str  # the lab's color, as a lowercase 6-digit hex
     score: float
     effort: str | None  # the setting this entry is at, None when Artificial Analysis labels none
+
+
+@dataclass(frozen=True)
+class Cost:
+    api: float  # one full index run at API prices, USD
+    sub: float  # the same run paid from the lab's subscription, USD
+    plan: str
 
 
 # --- reading the leaderboard -------------------------------------------------
@@ -176,6 +189,42 @@ def leaderboards(
     return boards
 
 
+# --- subscription cost -------------------------------------------------------
+
+
+def usd(value: float) -> str:
+    if value >= 100:
+        return f"${value:,.0f}"
+    if value >= 10:
+        return f"${value:.0f}"
+    return f"${value:.2f}"
+
+
+def subscription_cost(e: Entry, runs: dict[str, float]) -> Cost | None:
+    """What a full index run costs for ``e`` on its lab's plan, or None when we have no measured
+    multiplier for the lab or no cost for this variant. ``runs`` maps a slug to the API cost."""
+    plan = PLANS.get(e.lab)
+    api = runs.get(e.slug)
+    if plan is None or api is None:
+        return None
+    return Cost(api, api / plan[1], plan[0])
+
+
+def wanted_slugs(boards: dict[str, list[Entry]]) -> list[str]:
+    """The variants whose full-run cost the cost bars need: every column of a lab with a plan."""
+    return list(dict.fromkeys(e.slug for rows in boards.values() for e in rows if e.lab in PLANS))
+
+
+def cost_axis(boards: dict[str, list[Entry]], runs: dict[str, float]) -> tuple[int, int] | None:
+    """Tick step and maximum of the dollar axis, shared by every chart so effort levels compare."""
+    values = [c.sub for rows in boards.values() for e in rows if (c := subscription_cost(e, runs))]
+    if not values:
+        return None
+    top = max(values)
+    step = next(m * 10**p for p in range(10) for m in (1, 2, 5) if math.ceil(top / (m * 10**p)) <= 4)
+    return step, math.ceil(top / step) * step
+
+
 # --- drawing -----------------------------------------------------------------
 
 
@@ -209,60 +258,23 @@ def footnote(grade: str, entries: list[Entry]) -> str:
     return " · ".join(parts)
 
 
-def legend_items(entries: list[Entry]) -> tuple[list[tuple[float, int, str, str]], int]:
-    """One swatch per lab in the chart, in rank order, wrapped to the chart width.
-
-    Returns ``([(x, row, color, name), ...], row_count)``.
-    """
+def legend_items(entries: list[Entry], thin_label: str | None = None) -> tuple[list[tuple[float, int, str, str, int]], int]:
+    """One swatch per lab in the chart, in rank order, then the cost bar's key, wrapped to the
+    chart width. Returns ``([(x, row, fill, name, swatch_width), ...], row_count)``."""
     labs: dict[str, str] = {}
     for e in entries:
         labs.setdefault(e.lab or "Unknown", e.color)
+    keys = [(name, color, 10) for name, color in labs.items()]
+    if thin_label:
+        keys.append((thin_label, THIN_COLOR, THIN_BAR // 2))
     items, x, row = [], 24.0, 0
-    for name, color in labs.items():
+    for name, color, swatch in keys:
         width = 16 + len(name) * 6.6
         if x > 24 and x + width > W - 24:
             x, row = 24.0, row + 1
-        items.append((x, row, color, name))
+        items.append((x, row, color, name, swatch))
         x += width + 20
     return items, row + 1
-
-
-def usd(value: float) -> str:
-    if value >= 100:
-        return f"${value:,.0f}"
-    if value >= 10:
-        return f"${value:.0f}"
-    return f"${value:.2f}"
-
-
-def reference_entries(entries: list[Entry]) -> list[Entry]:
-    """The top-ranked entry of each lab we know a subscription multiplier for, best first."""
-    refs = [e for e in (next((e for e in entries if e.lab == lab), None) for lab in PLANS) if e]
-    return sorted(refs, key=lambda e: (-e.score, e.name))
-
-
-def wanted_slugs(boards: dict[str, list[Entry]]) -> list[str]:
-    """The model variants whose full-run cost the cost lines need."""
-    return list(dict.fromkeys(e.slug for rows in boards.values() for e in reference_entries(rows)))
-
-
-def cost_line(grade: str, entries: list[Entry], runs: dict[str, float]) -> str | None:
-    """A thin line pricing one full index run for the leading model of each plan we know.
-
-    ``runs`` maps a variant slug to the full-run cost in USD at API prices. The subscription
-    figure is that cost divided by the plan's multiplier.
-    """
-    parts = []
-    for e in reference_entries(entries):
-        api = runs.get(e.slug)
-        if api is None:
-            continue
-        plan, multiplier = PLANS[e.lab]
-        name = re.sub(r"\s*\([^()]*\)\s*$", "", e.label)  # "Claude Opus 5.5 (fallback)" -> "Claude Opus 5.5"
-        if e.effort and e.effort != grade:
-            name += f" ({e.effort})"
-        parts.append(f"{name} {usd(api / multiplier)} on {plan} (API {usd(api)})")
-    return "Full index run: " + " · ".join(parts) if parts else None
 
 
 def _scale(top_score: float) -> tuple[int, int]:
@@ -280,24 +292,34 @@ def _column(x: float, width: float, top: float, base: float) -> str:
     )
 
 
-def render_svg(grade: str, entries: list[Entry], cost: str | None = None) -> str:
+def render_svg(
+    grade: str,
+    entries: list[Entry],
+    runs: dict[str, float] | None = None,
+    axis: tuple[int, int] | None = None,
+) -> str:
+    """One chart. With ``runs`` (slug -> full-run API cost) and ``axis`` (the shared dollar axis),
+    each column of a lab with a subscription plan gets a thin cost bar beside it."""
     n = len(entries)
-    legend, rows = legend_items(entries)
-    extra = COST_LINE if cost else 0
-    plot_top = TOP + extra + LEGEND_ROW * (rows - 1)
+    costs = [subscription_cost(e, runs or {}) for e in entries]
+    thin = axis is not None and any(costs)
+    right = RIGHT_AXIS if thin else RIGHT
+    legend, rows = legend_items(entries, THIN_LABEL if thin else None)
+    plot_top = TOP + LEGEND_ROW * (rows - 1)
     base = plot_top + PLOT_H
     height = base + LABEL_BAND
     step, ymax = _scale(max(e.score for e in entries))
-    slot = min((W - LEFT - RIGHT) / n, 90)
-    bar_w = min(float(MAX_BAR), slot * 0.5)
+    slot = min((W - LEFT - right) / n, 90)
+    bar_w = min(float(MAX_BAR), slot * 0.45)
+    group_w = bar_w + (BAR_GAP + THIN_BAR if thin else 0)
     title = f"Top models at {grade} effort"
     subtitle = "Artificial Analysis Intelligence Index, higher is better"
     desc = "; ".join(
-        f"{i}. {e.name}, {e.lab}: {e.score:.1f}" + ("" if e.effort else " (effort not labelled)")
-        for i, e in enumerate(entries, 1)
+        f"{i}. {e.name}, {e.lab}: {e.score:.1f}"
+        + ("" if e.effort else " (effort not labelled)")
+        + (f", full index run on {c.plan} {usd(c.sub)}" if c and thin else "")
+        for i, (e, c) in enumerate(zip(entries, costs), 1)
     )
-    if cost:
-        desc += ". " + cost
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 {W} {height}" width="{W}" height="{height}"'
@@ -311,27 +333,39 @@ def render_svg(grade: str, entries: list[Entry], cost: str | None = None) -> str
         f'<text class="sub" x="24" y="54">{_esc(subtitle)}</text>',
     ]
 
-    if cost:
-        out.append(f'<text class="costline" x="24" y="70">{_esc(cost)}</text>')
-
-    for x, row, color, name in legend:
-        y = extra + LEGEND_ROW * row
-        out.append(f'<rect x="{x:.1f}" y="{64 + y}" width="10" height="10" rx="2" fill="{color}"/>')
+    for x, row, fill, name, swatch in legend:
+        y = LEGEND_ROW * row
+        out.append(f'<rect x="{x:.1f}" y="{64 + y}" width="{swatch}" height="10" rx="2" fill="{fill}"/>')
         out.append(f'<text class="legend" x="{x + 16:.1f}" y="{73 + y}">{_esc(name)}</text>')
 
     for t in range(0, ymax + 1, step):
         y = base - t / ymax * PLOT_H
-        out.append(f'<line class="{"axis" if t == 0 else "grid"}" x1="{LEFT}" x2="{W - RIGHT}" y1="{y:.1f}" y2="{y:.1f}"/>')
+        out.append(f'<line class="{"axis" if t == 0 else "grid"}" x1="{LEFT}" x2="{W - right}" y1="{y:.1f}" y2="{y:.1f}"/>')
         out.append(f'<text class="tick" x="{LEFT - 8}" y="{y + 4:.1f}" text-anchor="end">{t}</text>')
 
-    for i, e in enumerate(entries):
+    if thin:
+        cstep, cmax = axis
+        out.append(f'<line class="axis" x1="{W - right}" x2="{W - right}" y1="{plot_top}" y2="{base}"/>')
+        for t in range(0, cmax + 1, cstep):
+            y = base - t / cmax * PLOT_H
+            out.append(f'<line class="axis" x1="{W - right}" x2="{W - right + 4}" y1="{y:.1f}" y2="{y:.1f}"/>')
+            out.append(f'<text class="tick" x="{W - right + 8}" y="{y + 4:.1f}">${t:,}</text>')
+
+    for i, (e, c) in enumerate(zip(entries, costs)):
         slot_x = LEFT + i * slot
-        cx = slot_x + slot / 2
+        left_edge = slot_x + slot / 2 - group_w / 2
+        cx = left_edge + bar_w / 2
         top = base - e.score / ymax * PLOT_H
+        tip = f"{e.name}, {e.lab}: {e.score:.1f}"
+        shapes = f'<path fill="{e.color}" d="{_column(left_edge, bar_w, top, base)}"/>'
+        if thin and c:
+            tip += f" · one full index run costs {usd(c.sub)} on {c.plan} ({usd(c.api)} at API prices)"
+            cost_top = base - c.sub / axis[1] * PLOT_H
+            shapes += f'<path fill="{THIN_COLOR}" d="{_column(left_edge + bar_w + BAR_GAP, THIN_BAR, cost_top, base)}"/>'
         out.append(
-            f"<g><title>{_esc(f'{e.name}, {e.lab}: {e.score:.1f}')}</title>"
+            f"<g><title>{_esc(tip)}</title>"
             f'<rect x="{slot_x:.1f}" y="{plot_top}" width="{slot:.1f}" height="{PLOT_H}" fill="transparent"/>'
-            f'<path fill="{e.color}" d="{_column(cx - bar_w / 2, bar_w, top, base)}"/>'
+            f"{shapes}"
             f'<text class="val" x="{cx:.1f}" y="{top - 6:.1f}" text-anchor="middle">{e.score:.1f}</text>'
             f'<text class="lbl" transform="translate({cx:.1f} {base + 12:.1f}) rotate(-45)" text-anchor="end">'
             f"{_esc(axis_label(e, grade))}</text></g>"
@@ -344,28 +378,40 @@ def render_svg(grade: str, entries: list[Entry], cost: str | None = None) -> str
     return "\n".join(out)
 
 
-def svg_file(grade: str, entries: list[Entry], cost: str | None = None) -> str:
-    return '<?xml version="1.0" encoding="UTF-8"?>\n' + render_svg(grade, entries, cost) + "\n"
+def svg_file(
+    grade: str, entries: list[Entry], runs: dict[str, float] | None = None, axis: tuple[int, int] | None = None
+) -> str:
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + render_svg(grade, entries, runs, axis) + "\n"
 
 
 # --- the summary page --------------------------------------------------------
 
 
-def render_summary(boards: dict[str, list[Entry]], changed_at: str, lines: dict[str, str | None] | None = None) -> str:
-    lines = lines or {}
+def render_summary(
+    boards: dict[str, list[Entry]],
+    changed_at: str,
+    runs: dict[str, float] | None = None,
+    axis: tuple[int, int] | None = None,
+) -> str:
+    runs = runs or {}
     views = " · ".join(f'<a href="{level_href(lv, "", "#info")}">{lv}</a>' for lv in LEVELS)
+    plans = ", ".join(f"{lab}: {plan} {mult:g}x" for lab, (plan, mult) in PLANS.items())
     sections = []
     for grade, rows in boards.items():
-        trs = "".join(
-            f'<tr><td class="num">{i}</td><td>{_esc(e.name)}</td><td>{_esc(e.lab)}</td>'
-            f'<td>{_esc(e.effort or "not labelled")}</td><td class="num">{e.score:.1f}</td></tr>'
-            for i, e in enumerate(rows, 1)
-        )
+        cells = []
+        for i, e in enumerate(rows, 1):
+            c = subscription_cost(e, runs)
+            full = f"{usd(c.api)} → {usd(c.sub)} on {_esc(c.plan)}" if c else "–"
+            cells.append(
+                f'<tr><td class="num">{i}</td><td>{_esc(e.name)}</td><td>{_esc(e.lab)}</td>'
+                f'<td>{_esc(e.effort or "not labelled")}</td><td class="num">{e.score:.1f}</td><td>{full}</td></tr>'
+            )
         sections.append(
-            f'<section id="{grade}">\n<h2>{grade} effort</h2>\n{render_svg(grade, rows, lines.get(grade))}\n'
+            f'<section id="{grade}">\n<h2>{grade} effort</h2>\n{render_svg(grade, rows, runs, axis)}\n'
             f"<details><summary>Table view</summary>\n"
-            f"<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th></tr></thead>"
-            f"<tbody>{trs}</tbody></table></details>\n</section>"
+            f"<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th>"
+            f"<th>Full index run: API → subscription</th></tr></thead>"
+            f"<tbody>{''.join(cells)}</tbody></table></details>\n</section>"
         )
     return f"""<!doctype html>
 <html lang="en">
@@ -394,12 +440,14 @@ at the level appears at its highest setting below it, so a model that only has H
 xhigh and high charts. A model with no labelled effort setting could be anything up to max, so it
 appears only on the max chart, marked with a dagger. Columns use the color Artificial Analysis
 gives each lab. Data last changed {_esc(changed_at)}.</p>
-<p class="muted">The thin line under each chart's subtitle prices one full run of the index for the
-leading Claude and GPT model at that level, at API prices and on a subscription. It divides
-Artificial Analysis's cost by how much more usage the plan gives than API list prices (Claude Max
-20x, $200 a month: 45.3x; ChatGPT: 10.25x), as measured by
-<a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. These are one person's
-estimates on one model per vendor, so treat the subscription figures as rough.</p>
+<p class="muted">The thin bar beside a column is what one full run of the index costs on that lab's
+subscription, read off the dollar axis on the right. That axis is shared by all four charts, so the
+bars show how cost falls as effort drops, and it is a different measure from the score, so it has
+its own scale. It is Artificial Analysis's cost for the run divided by how much more usage the plan
+gives than API list prices ({_esc(plans)}), as measured by
+<a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. Only labs with a
+measured multiplier get a bar. These are one person's estimates on one model per vendor, so treat
+the bars as rough. The table views give the exact figures.</p>
 <p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}.
 Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 {chr(10).join(sections)}
@@ -414,14 +462,27 @@ def write_charts(
     """Write summary.html, charts/<grade>.svg and charts.json under ``out``. False if nothing changed.
 
     ``runs`` maps a variant slug to the cost in USD of a full index run at API prices; it feeds the
-    thin subscription-cost line under each chart's subtitle.
+    thin subscription-cost bars.
     """
-    lines = {g: cost_line(g, rows, runs or {}) for g, rows in boards.items()}
-    data = {
-        g: [{"name": e.name, "lab": e.lab, "color": e.color, "effort": e.effort, "score": e.score} for e in rows]
-        for g, rows in boards.items()
-    }
-    state = {"grades": data, "cost_lines": lines}
+    runs = runs or {}
+    axis = cost_axis(boards, runs)
+    data = {}
+    for g, rows in boards.items():
+        data[g] = []
+        for e in rows:
+            c = subscription_cost(e, runs)
+            data[g].append(
+                {
+                    "name": e.name,
+                    "lab": e.lab,
+                    "color": e.color,
+                    "effort": e.effort,
+                    "score": e.score,
+                    "full_run_api": c and round(c.api, 2),
+                    "full_run_subscription": c and round(c.sub, 2),
+                }
+            )
+    state = {"grades": data, "cost_axis": list(axis) if axis else None}
     old = read_json(out / "charts.json")
     if old and {k: old.get(k) for k in state} == state and old.get("changed_at"):
         changed_at = old["changed_at"]
@@ -429,8 +490,8 @@ def write_charts(
         changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
     files = {
         "charts.json": json.dumps({"changed_at": changed_at, **state}, indent=2) + "\n",
-        "summary.html": render_summary(boards, changed_at, lines),
+        "summary.html": render_summary(boards, changed_at, runs, axis),
     }
     for grade, rows in boards.items():
-        files[f"charts/{grade}.svg"] = svg_file(grade, rows, lines[grade])
+        files[f"charts/{grade}.svg"] = svg_file(grade, rows, runs, axis)
     return any([write_text(out / rel, text) for rel, text in files.items()])

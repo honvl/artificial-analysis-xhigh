@@ -36,7 +36,8 @@ in the default chart that has both variants (snapshot from 2026-10-24, max → x
 
 The second line in each cost cell is the same cost paid from a subscription: Artificial Analysis's
 cost divided by how much more usage the plan gives than API list prices. The multipliers, 45.3x for
-Claude Max 20x ($200 a month) and 10.25x for any ChatGPT plan, were measured by
+Claude Max 20x ($200 a month), 10.25x for any ChatGPT plan and 80x for SuperGrok plus X Premium+
+(used by the chart bars below), were measured by
 [Paweł Huryn](https://x.com/PawelHuryn/status/2107780775558979757) by burning real plans. He also
 re-priced a full run of the whole index this way: Opus 5.5 at max costs $8,708 at API prices but
 about $192 on Claude Max 20x, nearly a full $200 month, and about $90 at xhigh ($4,057 at API prices).
@@ -70,10 +71,13 @@ and so on), read from the same page as the scores. Because some lab colors are c
 also named in each column's tooltip and in the table views on the
 [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html).
 
-The thin line under each chart's subtitle prices one full run of the index for the leading Claude
-and GPT model at that level, at API prices and on a subscription, using the multipliers described
-above. For Opus 5.5 on Claude Max 20x it shows how the effort level changes what a run costs:
-$192 at max, $90 at xhigh, $48 at high and $36 at medium (2026-10-24).
+The thin dark bar beside a column is what one full run of the index costs on that lab's
+subscription, using the multipliers described above, read off the dollar axis on the right. It is a
+different measure from the score, so it has its own scale, and that scale is shared by all four
+charts so you can see cost fall as effort drops: Opus 5.5 on Claude Max 20x is $192 at max, $90 at
+xhigh, $48 at high and $36 at medium (2026-10-24). Only labs with a measured multiplier get a bar
+(Anthropic, OpenAI and xAI), so Google, Meta, Kimi and the rest have none. The exact figures are in
+the table views on the summary page.
 
 ### max (the Artificial Analysis default)
 
@@ -113,10 +117,10 @@ The charts use a second page: the site's `/leaderboards/models`, which lists an 
 the lab and the lab's color for each variant. `aa_charts.py` groups the variants of each model by
 release, applies the rules above to pick one per model for each chart, and draws the SVGs.
 
-The cost line needs the cost of a full index run for each model variant, which only the
-comparison pages carry, two models per page. `aa_costs.py` fetches the few it needs (the leading
-Claude and GPT model on each chart), caches them in `docs/costs.json` and refreshes an entry once
-it is a week old, so most runs make no extra requests and a failed refresh keeps the old value.
+The cost bars need the cost of a full index run for each model variant, which only the comparison
+pages carry, two models per page. `aa_costs.py` fetches the variants it needs (every column of a
+lab with a plan multiplier), caches them in `docs/costs.json` and refreshes an entry once it is a
+week old, so most runs make no extra requests and a failed refresh keeps the old value.
 
 I looked at placing unlabelled models on the lower charts by speed and decided against it: time per
 task does not line up with effort across labs. In the 2026-10-24 data, Claude Haiku 5.5 at max

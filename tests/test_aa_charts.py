@@ -77,9 +77,34 @@ MODELS = [
 ]
 VARIANTS = [{"slug": m["slug"], "name": m["name"], "releaseSlug": m["_release"]} for m in MODELS]
 
+# Full index run at API prices, by variant slug. Gemini, Meta, Kimi and Z AI have no measured plan multiplier.
+RUNS = {
+    "opus": 8708.0,
+    "opus-xhigh": 4057.0,
+    "opus-high": 2172.0,
+    "opus-medium": 1627.0,
+    "astra-xhigh": 3803.0,
+    "astra-high": 2925.0,
+    "luna": 122.0,
+    "grok-xhigh": 4967.0,
+    "grok-high": 2000.0,
+    "gem-high": 999.0,  # a cost we have but no plan for: must be ignored
+}
+
 
 def slugs(boards, grade):
     return [e.slug for e in boards[grade]]
+
+
+def bar_geometry(d):
+    """(left x, right x, height) of a column path from `_column`."""
+    m = re.fullmatch(
+        r"M([\d.]+),([\d.]+) V[\d.]+ Q[\d.]+,([\d.]+) [\d.]+,[\d.]+ H[\d.]+ Q[\d.]+,[\d.]+ ([\d.]+),[\d.]+ V([\d.]+) Z", d
+    )
+    assert m, d
+    x0, base, top, x1, base2 = (float(g) for g in m.groups())
+    assert base == base2
+    return x0, x1, base - top
 
 
 class Leaderboard(unittest.TestCase):
@@ -223,6 +248,156 @@ class Labels(unittest.TestCase):
         self.assertIn(" · ", ch.footnote("max", [below, none]))
 
 
+class SubscriptionCost(unittest.TestCase):
+    def setUp(self):
+        self.boards = ch.leaderboards(MODELS, VARIANTS, n=10)
+        self.by_slug = {e.slug: e for rows in self.boards.values() for e in rows}
+
+    def test_usd(self):
+        self.assertEqual(ch.usd(8708), "$8,708")
+        self.assertEqual(ch.usd(192.23), "$192")
+        self.assertEqual(ch.usd(89.55), "$90")
+        self.assertEqual(ch.usd(7.294), "$7.29")
+
+    def test_the_run_is_divided_by_the_labs_plan_multiplier(self):
+        c = ch.subscription_cost(self.by_slug["opus"], RUNS)
+        self.assertEqual((c.plan, c.api), ("Claude Max 20x", 8708.0))
+        self.assertAlmostEqual(c.sub, 8708 / 45.3)
+        self.assertAlmostEqual(ch.subscription_cost(self.by_slug["astra-xhigh"], RUNS).sub, 3803 / 10.25)
+        grok = ch.subscription_cost(self.by_slug["grok-xhigh"], RUNS)
+        self.assertEqual(grok.plan, "SuperGrok + X Premium+")
+        self.assertAlmostEqual(grok.sub, 4967 / 80)
+
+    def test_no_plan_or_no_cost_means_no_bar(self):
+        self.assertIsNone(ch.subscription_cost(self.by_slug["gem-high"], RUNS))  # a cost, but no measured plan
+        self.assertIsNone(ch.subscription_cost(self.by_slug["muse"], RUNS))  # Meta: no measured plan
+        self.assertIsNone(ch.subscription_cost(self.by_slug["opus"], {}))  # a plan, but no cost yet
+
+    def test_wanted_slugs_are_only_labs_with_a_plan_and_unique(self):
+        wanted = ch.wanted_slugs(self.boards)
+        self.assertEqual(len(wanted), len(set(wanted)))
+        self.assertTrue({"opus", "opus-xhigh", "opus-high", "opus-medium", "astra-xhigh", "grok-xhigh"} <= set(wanted))
+        for slug in wanted:
+            self.assertIn(self.by_slug[slug].lab, ("Anthropic", "OpenAI", "SpaceXAI"))
+        self.assertNotIn("gem-high", wanted)
+        self.assertNotIn("muse", wanted)
+
+    def test_the_axis_is_shared_and_has_at_most_four_steps(self):
+        self.assertEqual(ch.cost_axis(self.boards, RUNS), (100, 400))  # the tallest bar is Astra xhigh at $371
+        self.assertIsNone(ch.cost_axis(self.boards, {}))
+
+        def axis_for(sub):
+            e = ch.Entry("a", "A (Max)", "A", "Anthropic", "#111111", 50.0, "max")
+            return ch.cost_axis({"max": [e]}, {"a": sub * 45.3})
+
+        self.assertEqual(axis_for(519), (200, 600))
+        self.assertEqual(axis_for(192), (50, 200))
+        self.assertEqual(axis_for(36), (10, 40))
+        self.assertEqual(axis_for(8), (2, 8))
+        for sub in (0.5, 3, 77, 400, 1999, 12345):
+            step, top = axis_for(sub)
+            self.assertGreaterEqual(top, sub)
+            self.assertLessEqual(top // step, 4)
+
+
+class ThinBars(unittest.TestCase):
+    def setUp(self):
+        self.boards = ch.leaderboards(MODELS, VARIANTS, n=10)
+        self.axis = ch.cost_axis(self.boards, RUNS)
+
+    def parse(self, grade, runs=RUNS, axis="shared"):
+        svg = ch.render_svg(grade, self.boards[grade], runs, self.axis if axis == "shared" else axis)
+        root = ET.fromstring(svg)
+        paths = root.findall(".//s:path", SVG_NS)
+        thin = [p for p in paths if p.get("fill") == ch.THIN_COLOR]
+        main = [p for p in paths if p.get("fill") != ch.THIN_COLOR]
+        return svg, root, main, thin
+
+    def test_a_thin_bar_sits_beside_each_column_of_a_lab_with_a_plan(self):
+        for grade, rows in self.boards.items():
+            _, _, main, thin = self.parse(grade)
+            self.assertEqual(len(main), len(rows), grade)
+            self.assertEqual(len(thin), sum(1 for e in rows if ch.subscription_cost(e, RUNS)), grade)
+        _, _, main, thin = self.parse("xhigh")
+        self.assertGreater(len(thin), 0)
+        self.assertLess(len(thin), len(main))  # Gemini has no plan, so not every column has one
+
+    def test_the_thin_bar_is_8px_next_to_the_main_bar_with_a_2px_gap(self):
+        _, root, main, thin = self.parse("xhigh")
+        entries = self.boards["xhigh"]
+        priced = [i for i, e in enumerate(entries) if ch.subscription_cost(e, RUNS)]
+        for path, i in zip(thin, priced):
+            tx0, tx1, _ = bar_geometry(path.get("d"))
+            mx0, mx1, _ = bar_geometry(main[i].get("d"))
+            self.assertAlmostEqual(tx1 - tx0, ch.THIN_BAR, delta=0.2)
+            self.assertAlmostEqual(tx0 - mx1, ch.BAR_GAP, delta=0.2)
+            self.assertLessEqual(mx1 - mx0, ch.MAX_BAR + 0.1)
+
+    def test_heights_follow_the_shared_dollar_axis(self):
+        for grade in ("xhigh", "high", "max"):
+            _, _, _, thin = self.parse(grade)
+            priced = [ch.subscription_cost(e, RUNS) for e in self.boards[grade]]
+            for path, c in zip(thin, [c for c in priced if c]):
+                _, _, height = bar_geometry(path.get("d"))
+                self.assertAlmostEqual(height, ch.PLOT_H * c.sub / self.axis[1], delta=0.2, msg=grade)
+
+    def test_the_same_model_gets_a_shorter_bar_on_a_lower_effort_chart(self):
+        def opus_bar(grade):
+            _, _, main, thin = self.parse(grade)
+            entries = self.boards[grade]
+            priced = [i for i, e in enumerate(entries) if ch.subscription_cost(e, RUNS)]
+            idx = next(k for k, i in enumerate(priced) if entries[i].slug.startswith("opus"))
+            return bar_geometry(thin[idx].get("d"))[2]
+
+        self.assertGreater(opus_bar("max"), opus_bar("xhigh"))
+        self.assertGreater(opus_bar("xhigh"), opus_bar("high"))
+
+    def test_main_bars_keep_their_slots_whether_or_not_a_column_has_a_thin_bar(self):
+        _, _, main, _ = self.parse("xhigh")
+        lefts = [bar_geometry(p.get("d"))[0] for p in main]
+        gaps = {round(b - a, 1) for a, b in zip(lefts, lefts[1:])}
+        self.assertEqual(len(gaps), 1)  # evenly spaced, so Gemini's bare column lines up with the rest
+
+    def test_the_right_axis_is_labelled_and_the_legend_explains_the_thin_bar(self):
+        svg, root, _, _ = self.parse("xhigh")
+        ticks = [t.text for t in root.findall(".//s:text", SVG_NS) if t.get("class") == "tick" and t.text.startswith("$")]
+        self.assertEqual(ticks, ["$0", "$100", "$200", "$300", "$400"])
+        self.assertIn(ch.THIN_LABEL, svg)
+        self.assertIn("(right axis)", ch.THIN_LABEL)
+
+    def test_no_costs_means_no_thin_bars_axis_or_legend_key(self):
+        for runs, axis in ((None, None), ({}, None), (RUNS, None)):
+            svg = ch.render_svg("xhigh", self.boards["xhigh"], runs, axis)
+            root = ET.fromstring(svg)
+            self.assertEqual([p for p in root.findall(".//s:path", SVG_NS) if p.get("fill") == ch.THIN_COLOR], [])
+            self.assertNotIn(ch.THIN_LABEL, svg)
+            self.assertFalse([t for t in root.findall(".//s:text", SVG_NS) if (t.text or "").startswith("$")])
+
+    def test_the_plot_narrows_to_make_room_for_the_axis(self):
+        _, _, main_thin, _ = self.parse("xhigh")
+        plain = ET.fromstring(ch.render_svg("xhigh", self.boards["xhigh"]))
+        plain_main = plain.findall(".//s:path", SVG_NS)
+        last_thin = bar_geometry(main_thin[-1].get("d"))[1]
+        self.assertLess(last_thin, ch.W - ch.RIGHT_AXIS)  # the bars stop before the axis labels
+        self.assertGreater(bar_geometry(plain_main[-1].get("d"))[1], last_thin)  # and the plain chart uses the room
+
+    def test_the_tooltip_gives_the_exact_figures(self):
+        svg, _, _, _ = self.parse("xhigh")
+        self.assertIn("one full index run costs $90 on Claude Max 20x ($4,057 at API prices)", svg)
+        self.assertIn("one full index run costs $371 on ChatGPT ($3,803 at API prices)", svg)
+        self.assertNotIn("Gemini 4 Argon (High), Google: 52.6 · one full", svg)  # no plan, so no cost in its tooltip
+
+    def test_well_formed_in_both_forms_and_the_legend_wraps_cleanly(self):
+        for grade, rows in self.boards.items():
+            ET.fromstring(ch.render_svg(grade, rows, RUNS, self.axis))
+            ET.fromstring(ch.svg_file(grade, rows, RUNS, self.axis).encode())
+
+    def test_the_thin_bar_is_one_neutral_not_a_lab_color(self):
+        _, _, _, thin = self.parse("max")
+        self.assertEqual({p.get("fill") for p in thin}, {ch.THIN_COLOR})
+        self.assertNotIn(ch.THIN_COLOR, set(COLORS.values()))
+
+
 class Svg(unittest.TestCase):
     def setUp(self):
         self.boards = ch.leaderboards(MODELS, VARIANTS, n=10)
@@ -258,7 +433,7 @@ class Svg(unittest.TestCase):
         items, count = ch.legend_items(rows)
         self.assertGreater(count, 1)
         self.assertEqual(len(items), 10)
-        for x, _row, _color, name in items:
+        for x, _row, _fill, name, _swatch in items:
             self.assertLess(x + 16 + len(name) * 6.6, ch.W)  # nothing runs off the card
         tall = ET.fromstring(ch.render_svg("xhigh", rows))
         short = ET.fromstring(ch.render_svg("xhigh", rows[:1]))
@@ -276,15 +451,11 @@ class Svg(unittest.TestCase):
 
     def test_columns_are_capped_at_24px_with_square_baseline(self):
         root = ET.fromstring(ch.render_svg("max", self.boards["max"]))
-        pattern = re.compile(r"M([\d.]+),([\d.]+) V[\d.]+ Q[\d.]+,[\d.]+ [\d.]+,[\d.]+ H[\d.]+ Q[\d.]+,[\d.]+ ([\d.]+),[\d.]+ V([\d.]+) Z")
         paths = root.findall(".//s:path", SVG_NS)
         self.assertTrue(paths)
         for p in paths:
-            m = pattern.fullmatch(p.get("d"))
-            self.assertIsNotNone(m, p.get("d"))
-            x0, base0, x1, base1 = (float(g) for g in m.groups())
+            x0, x1, _ = bar_geometry(p.get("d"))
             self.assertLessEqual(x1 - x0, ch.MAX_BAR + 0.1)
-            self.assertEqual(base0, base1)
 
     def test_value_on_the_cap(self):
         self.assertIn(">56.0<", ch.render_svg("xhigh", self.boards["xhigh"]))
@@ -317,108 +488,9 @@ class Svg(unittest.TestCase):
         self.assertNotIn("serif", svg.replace("sans-serif", ""))
 
 
-RUNS = {  # full index run at API prices, by variant slug
-    "opus": 8708.0,
-    "opus-xhigh": 4057.0,
-    "astra-xhigh": 3803.0,
-    "astra-high": 2925.0,
-    "luna": 122.0,
-    "opus-high": 2172.0,
-}
-
-
-class CostLine(unittest.TestCase):
-    def setUp(self):
-        self.boards = ch.leaderboards(MODELS, VARIANTS, n=10)
-
-    def test_usd(self):
-        self.assertEqual(ch.usd(8708), "$8,708")
-        self.assertEqual(ch.usd(192.23), "$192")
-        self.assertEqual(ch.usd(89.55), "$90")
-        self.assertEqual(ch.usd(7.294), "$7.29")
-
-    def test_reference_entries_are_the_top_model_of_each_known_plan(self):
-        refs = ch.reference_entries(self.boards["xhigh"])
-        self.assertEqual([e.slug for e in refs], ["opus-xhigh", "astra-xhigh"])  # best first, one per lab
-        self.assertEqual({e.lab for e in ch.reference_entries(self.boards["max"])}, {"Anthropic", "OpenAI"})
-
-    def test_labs_without_a_known_plan_are_never_referenced(self):
-        refs = ch.reference_entries(self.boards["max"])
-        self.assertFalse({"Google", "Meta", "Kimi", "SpaceXAI"} & {e.lab for e in refs})
-
-    def test_the_line_prices_a_run_at_api_and_on_the_plan(self):
-        line = ch.cost_line("xhigh", self.boards["xhigh"], RUNS)
-        self.assertEqual(
-            line,
-            "Full index run: Claude Opus 5.5 $90 on Claude Max 20x (API $4,057) · GPT-6 Astra $371 on ChatGPT (API $3,803)",
-        )
-
-    def test_a_model_below_the_chart_level_names_its_setting(self):
-        line = ch.cost_line("max", self.boards["max"], RUNS)
-        self.assertIn("GPT-6 Astra (xhigh)", line)  # no Max variant, so the chart shows its Xhigh
-        self.assertIn("Claude Opus 5.5 $192 on Claude Max 20x (API $8,708)", line)
-
-    def test_models_without_a_known_cost_are_left_out_and_no_costs_means_no_line(self):
-        only_opus = ch.cost_line("xhigh", self.boards["xhigh"], {"opus-xhigh": 4057.0})
-        self.assertNotIn("GPT-6", only_opus)
-        self.assertIsNone(ch.cost_line("xhigh", self.boards["xhigh"], {}))
-
-    def test_wanted_slugs_are_unique_and_cover_every_chart(self):
-        wanted = ch.wanted_slugs(self.boards)
-        self.assertEqual(len(wanted), len(set(wanted)))
-        self.assertTrue({"opus", "opus-xhigh", "opus-high", "opus-medium"} <= set(wanted))
-
-    def test_the_svg_makes_room_for_the_line_and_stays_well_formed(self):
-        rows = self.boards["xhigh"]
-        plain = ET.fromstring(ch.render_svg("xhigh", rows))
-        line = ch.cost_line("xhigh", rows, RUNS)
-        with_line = ET.fromstring(ch.render_svg("xhigh", rows, line))
-        self.assertEqual(float(with_line.get("height")) - float(plain.get("height")), ch.COST_LINE)
-        texts = {t.get("class"): t.text for t in with_line.findall(".//s:text", SVG_NS) if t.get("class") in ("costline",)}
-        self.assertEqual(texts["costline"], line)
-        legend_y = lambda root: min(float(r.get("y")) for r in root.findall(".//s:rect", SVG_NS) if r.get("width") == "10")
-        self.assertEqual(legend_y(with_line) - legend_y(plain), ch.COST_LINE)  # legend moves down, nothing overlaps
-        ET.fromstring(ch.svg_file("xhigh", rows, line).encode())
-
-    def test_the_line_fits_inside_the_card(self):
-        for grade, rows in self.boards.items():
-            line = ch.cost_line(grade, rows, RUNS)
-            if line:
-                self.assertLess(24 + len(line) * 6.0, ch.W - 24, grade)  # about 6px a character at 11px
-
-
 class Output(unittest.TestCase):
     def boards(self, models=MODELS):
         return ch.leaderboards(models, VARIANTS)
-
-    def test_cost_lines_reach_the_svgs_the_page_and_the_state(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            ch.write_charts(self.boards(), out, runs=RUNS)
-            self.assertIn("Full index run: Claude Opus 5.5 $192", (out / "charts/max.svg").read_text())
-            page = (out / "summary.html").read_text()
-            self.assertIn("Full index run:", page)
-            self.assertIn("Paweł Huryn", page)  # the multipliers are credited on the page
-            self.assertIn("45.3x", page)
-            state = json.loads((out / "charts.json").read_text())
-            self.assertIn("Claude Max 20x", state["cost_lines"]["xhigh"])
-            self.assertIsNone(state["cost_lines"]["medium"])  # no cost known for that chart's leaders
-
-    def test_no_runs_means_no_lines_and_charts_still_render(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            ch.write_charts(self.boards(), out)
-            self.assertNotIn("Full index run:", (out / "charts/xhigh.svg").read_text())
-
-    def test_a_changed_cost_rewrites_and_an_unchanged_one_does_not(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            t1, t2, t3 = (datetime(y, 1, 1, tzinfo=timezone.utc) for y in (2030, 2031, 2032))
-            self.assertTrue(ch.write_charts(self.boards(), out, now=t1, runs=RUNS))
-            self.assertFalse(ch.write_charts(self.boards(), out, now=t2, runs=dict(RUNS)))
-            self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2030-01-01 00:00 UTC")
-            self.assertTrue(ch.write_charts(self.boards(), out, now=t3, runs={**RUNS, "opus": 9000.0}))
-            self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2032-01-01 00:00 UTC")
 
     def test_writes_every_file_and_a_white_page(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -437,25 +509,59 @@ class Output(unittest.TestCase):
             self.assertIn('href="high/#info"', page)
             self.assertEqual(json.loads((out / "charts.json").read_text())["grades"]["max"][0]["color"], "#cc785c")
 
+    def test_cost_bars_reach_the_svgs_the_page_and_the_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            ch.write_charts(self.boards(), out, runs=RUNS)
+            svg = (out / "charts/xhigh.svg").read_text()
+            self.assertIn(ch.THIN_LABEL, svg)
+            self.assertIn(f'fill="{ch.THIN_COLOR}"', svg)
+            page = (out / "summary.html").read_text()
+            self.assertIn("thin bar beside a column", page)
+            self.assertIn("Paweł Huryn", page)  # the multipliers are credited on the page
+            self.assertIn("Claude Max 20x 45.3x", page)
+            self.assertIn("SuperGrok + X Premium+ 80x", page)
+            self.assertIn("$4,057 → $90 on Claude Max 20x", page)  # exact figures in the table view
+            self.assertIn("<td>–</td>", page)  # a lab with no measured plan shows a dash
+            self.assertNotIn('class="subline"', page)  # no text-line version of this
+            self.assertNotIn("costline", page)
+            state = json.loads((out / "charts.json").read_text())
+            self.assertEqual(state["cost_axis"], [100, 400])
+            first = state["grades"]["xhigh"][0]
+            self.assertEqual(first["full_run_api"], 4057.0)
+            self.assertAlmostEqual(first["full_run_subscription"], 4057 / 45.3, places=2)
+            unpriced = next(e for e in state["grades"]["xhigh"] if e["lab"] == "Google")
+            self.assertIsNone(unpriced["full_run_subscription"])
+
+    def test_no_runs_means_plain_charts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            ch.write_charts(self.boards(), out)
+            self.assertNotIn(ch.THIN_LABEL, (out / "charts/xhigh.svg").read_text())
+            self.assertIsNone(json.loads((out / "charts.json").read_text())["cost_axis"])
+
     def test_idempotent_and_keeps_changed_at(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
-            self.assertTrue(ch.write_charts(self.boards(), out, now=datetime(2030, 1, 1, tzinfo=timezone.utc)))
-            self.assertFalse(ch.write_charts(self.boards(), out, now=datetime(2031, 1, 1, tzinfo=timezone.utc)))
+            self.assertTrue(ch.write_charts(self.boards(), out, now=datetime(2030, 1, 1, tzinfo=timezone.utc), runs=RUNS))
+            self.assertFalse(ch.write_charts(self.boards(), out, now=datetime(2031, 1, 1, tzinfo=timezone.utc), runs=dict(RUNS)))
             self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2030-01-01 00:00 UTC")
 
-    def test_changed_scores_or_colors_rewrite(self):
+    def test_changed_scores_costs_or_colors_rewrite(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
-            ch.write_charts(self.boards(), out, now=datetime(2030, 1, 1, tzinfo=timezone.utc))
+            t = [datetime(y, 1, 1, tzinfo=timezone.utc) for y in (2030, 2031, 2032, 2033)]
+            ch.write_charts(self.boards(), out, now=t[0], runs=RUNS)
             scores = [dict(m) for m in MODELS]
             scores[1]["intelligenceIndex"] = 55.0
-            self.assertTrue(ch.write_charts(self.boards(scores), out, now=datetime(2031, 1, 1, tzinfo=timezone.utc)))
+            self.assertTrue(ch.write_charts(self.boards(scores), out, now=t[1], runs=RUNS))
+            self.assertTrue(ch.write_charts(self.boards(scores), out, now=t[2], runs={**RUNS, "opus": 9000.0}))
+            self.assertEqual(json.loads((out / "charts.json").read_text())["changed_at"], "2032-01-01 00:00 UTC")
             recolored = [dict(m) for m in scores]
             for m in recolored:
                 if m["modelCreatorName"] == "Anthropic":
                     m["modelCreatorColor"] = "#abcdef"
-            self.assertTrue(ch.write_charts(self.boards(recolored), out, now=datetime(2032, 1, 1, tzinfo=timezone.utc)))
+            self.assertTrue(ch.write_charts(self.boards(recolored), out, now=t[3], runs={**RUNS, "opus": 9000.0}))
             self.assertIn("#abcdef", (out / "charts/max.svg").read_text())
 
 

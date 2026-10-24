@@ -25,10 +25,13 @@ from aa_common import ParseError, fetch, flight_payload, read_json, write_text
 COMPARE_URL = "https://artificialanalysis.ai/models/comparisons/{a}-vs-{b}"
 MAX_AGE_DAYS = 7
 
-# Lab -> (plan, how many times more usage than API list prices it gives).
+# Lab (as Artificial Analysis names it) -> (plan, how many times more usage than API list prices it
+# gives). Only labs with a multiplier that was measured by burning the plan are listed: Meta's
+# figure was derived from its stated allowances rather than measured, so it is left out.
 PLANS: dict[str, tuple[str, float]] = {
     "Anthropic": ("Claude Max 20x", 45.3),
     "OpenAI": ("ChatGPT", 10.25),
+    "SpaceXAI": ("SuperGrok + X Premium+", 80.0),
 }
 
 Fetcher = Callable[[str], str]

@@ -24,20 +24,22 @@ Each chart shows a model at the best setting it has at or below that level: a mo
 at the level appears at its highest setting below it, so a model that only has High is on the max,
 xhigh and high charts. A model with no labelled effort setting could be anything up to max, so it
 appears only on the max chart, marked with a dagger. Columns use the color Artificial Analysis
-gives each lab. Data last changed 2026-10-24 23:05 UTC.</p>
-<p class="muted">The thin line under each chart's subtitle prices one full run of the index for the
-leading Claude and GPT model at that level, at API prices and on a subscription. It divides
-Artificial Analysis's cost by how much more usage the plan gives than API list prices (Claude Max
-20x, $200 a month: 45.3x; ChatGPT: 10.25x), as measured by
-<a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. These are one person's
-estimates on one model per vendor, so treat the subscription figures as rough.</p>
+gives each lab. Data last changed 2026-10-24 23:26 UTC.</p>
+<p class="muted">The thin bar beside a column is what one full run of the index costs on that lab's
+subscription, read off the dollar axis on the right. That axis is shared by all four charts, so the
+bars show how cost falls as effort drops, and it is a different measure from the score, so it has
+its own scale. It is Artificial Analysis's cost for the run divided by how much more usage the plan
+gives than API list prices (Anthropic: Claude Max 20x 45.3x, OpenAI: ChatGPT 10.25x, SpaceXAI: SuperGrok + X Premium+ 80x), as measured by
+<a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. Only labs with a
+measured multiplier get a bar. These are one person's estimates on one model per vendor, so treat
+the bars as rough. The table views give the exact figures.</p>
 <p class="muted">Charts for: <a href="#max">max</a> · <a href="#xhigh">xhigh</a> · <a href="#high">high</a> · <a href="#medium">medium</a>.
 Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a href="medium/#info">medium</a> · <a href="bookmark.html">bookmark</a></p>
 <section id="max">
 <h2>max effort</h2>
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 498" width="760" height="498" role="img" aria-labelledby="t-max d-max">
 <title id="t-max">Top models at max effort</title>
-<desc id="d-max">1. Claude Opus 5.5 (Max, Default Fallback), Anthropic: 57.6; 2. Claude Sonnet 5.5 (Max, Default Fallback), Anthropic: 56.0; 3. Muse Wonder Full (Max), Meta: 55.8; 4. Kimi K3.1 Pro, Kimi: 55.1 (effort not labelled); 5. Claude Fable 5.1 (Max, Default Fallback), Anthropic: 53.4; 6. GPT-6 Astra (Max), OpenAI: 52.7; 7. Gemini 4 Argon (High), Google: 52.6; 8. Muse Wonder (Max), Meta: 52.4; 9. GPT-6.1 Sol (Max), OpenAI: 51.8; 10. Grok 4.7 (Xhigh), SpaceXAI: 46.4. Full index run: Claude Opus 5.5 $192 on Claude Max 20x (API $8,708) · GPT-6 Astra $519 on ChatGPT (API $5,324)</desc>
+<desc id="d-max">1. Claude Opus 5.5 (Max, Default Fallback), Anthropic: 57.6, full index run on Claude Max 20x $192; 2. Claude Sonnet 5.5 (Max, Default Fallback), Anthropic: 56.0, full index run on Claude Max 20x $160; 3. Muse Wonder Full (Max), Meta: 55.8; 4. Kimi K3.1 Pro, Kimi: 55.1 (effort not labelled); 5. Claude Fable 5.1 (Max, Default Fallback), Anthropic: 53.4, full index run on Claude Max 20x $290; 6. GPT-6 Astra (Max), OpenAI: 52.7, full index run on ChatGPT $519; 7. Gemini 4 Argon (High), Google: 52.6; 8. Muse Wonder (Max), Meta: 52.4; 9. GPT-6.1 Sol (Max), OpenAI: 51.8, full index run on ChatGPT $106; 10. Grok 4.7 (Xhigh), SpaceXAI: 46.4, full index run on SuperGrok + X Premium+ $62</desc>
 <style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
@@ -46,7 +48,6 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
 .aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
-.aa-chart .costline{fill:var(--ink2);font-size:11px}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}</style>
@@ -54,47 +55,57 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 <text class="title" x="24" y="34">Top models at max effort</text>
 <text class="credit" x="736" y="34" text-anchor="end">Data: artificialanalysis.ai</text>
 <text class="sub" x="24" y="54">Artificial Analysis Intelligence Index, higher is better</text>
-<text class="costline" x="24" y="70">Full index run: Claude Opus 5.5 $192 on Claude Max 20x (API $8,708) · GPT-6 Astra $519 on ChatGPT (API $5,324)</text>
-<rect x="24.0" y="80" width="10" height="10" rx="2" fill="#cc785c"/>
-<text class="legend" x="40.0" y="89">Anthropic</text>
-<rect x="119.4" y="80" width="10" height="10" rx="2" fill="#0089f4"/>
-<text class="legend" x="135.4" y="89">Meta</text>
-<rect x="181.8" y="80" width="10" height="10" rx="2" fill="#047afe"/>
-<text class="legend" x="197.8" y="89">Kimi</text>
-<rect x="244.2" y="80" width="10" height="10" rx="2" fill="#1f1f1f"/>
-<text class="legend" x="260.2" y="89">OpenAI</text>
-<rect x="319.8" y="80" width="10" height="10" rx="2" fill="#34a853"/>
-<text class="legend" x="335.8" y="89">Google</text>
-<rect x="395.4" y="80" width="10" height="10" rx="2" fill="#736cd3"/>
-<text class="legend" x="411.4" y="89">SpaceXAI</text>
-<line class="axis" x1="128" x2="736" y1="348.0" y2="348.0"/>
+<rect x="24.0" y="64" width="10" height="10" rx="2" fill="#cc785c"/>
+<text class="legend" x="40.0" y="73">Anthropic</text>
+<rect x="119.4" y="64" width="10" height="10" rx="2" fill="#0089f4"/>
+<text class="legend" x="135.4" y="73">Meta</text>
+<rect x="181.8" y="64" width="10" height="10" rx="2" fill="#047afe"/>
+<text class="legend" x="197.8" y="73">Kimi</text>
+<rect x="244.2" y="64" width="10" height="10" rx="2" fill="#1f1f1f"/>
+<text class="legend" x="260.2" y="73">OpenAI</text>
+<rect x="319.8" y="64" width="10" height="10" rx="2" fill="#34a853"/>
+<text class="legend" x="335.8" y="73">Google</text>
+<rect x="395.4" y="64" width="10" height="10" rx="2" fill="#736cd3"/>
+<text class="legend" x="411.4" y="73">SpaceXAI</text>
+<rect x="24.0" y="80" width="4" height="10" rx="2" fill="#52514e"/>
+<text class="legend" x="40.0" y="89">Cost of one full index run on a subscription (right axis)</text>
+<line class="axis" x1="128" x2="700" y1="348.0" y2="348.0"/>
 <text class="tick" x="120" y="352.0" text-anchor="end">0</text>
-<line class="grid" x1="128" x2="736" y1="268.0" y2="268.0"/>
+<line class="grid" x1="128" x2="700" y1="268.0" y2="268.0"/>
 <text class="tick" x="120" y="272.0" text-anchor="end">20</text>
-<line class="grid" x1="128" x2="736" y1="188.0" y2="188.0"/>
+<line class="grid" x1="128" x2="700" y1="188.0" y2="188.0"/>
 <text class="tick" x="120" y="192.0" text-anchor="end">40</text>
-<line class="grid" x1="128" x2="736" y1="108.0" y2="108.0"/>
+<line class="grid" x1="128" x2="700" y1="108.0" y2="108.0"/>
 <text class="tick" x="120" y="112.0" text-anchor="end">60</text>
-<g><title>Claude Opus 5.5 (Max, Default Fallback), Anthropic: 57.6</title><rect x="128.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M146.4,348.0 V121.6 Q146.4,117.6 150.4,117.6 H166.4 Q170.4,117.6 170.4,121.6 V348.0 Z"/><text class="val" x="158.4" y="111.6" text-anchor="middle">57.6</text><text class="lbl" transform="translate(158.4 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
-<g><title>Claude Sonnet 5.5 (Max, Default Fallback), Anthropic: 56.0</title><rect x="188.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M207.2,348.0 V128.0 Q207.2,124.0 211.2,124.0 H227.2 Q231.2,124.0 231.2,128.0 V348.0 Z"/><text class="val" x="219.2" y="118.0" text-anchor="middle">56.0</text><text class="lbl" transform="translate(219.2 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
-<g><title>Muse Wonder Full (Max), Meta: 55.8</title><rect x="249.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#0089f4" d="M268.0,348.0 V128.8 Q268.0,124.8 272.0,124.8 H288.0 Q292.0,124.8 292.0,128.8 V348.0 Z"/><text class="val" x="280.0" y="118.8" text-anchor="middle">55.8</text><text class="lbl" transform="translate(280.0 360.0) rotate(-45)" text-anchor="end">Muse Wonder Full</text></g>
-<g><title>Kimi K3.1 Pro, Kimi: 55.1</title><rect x="310.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#047afe" d="M328.8,348.0 V131.6 Q328.8,127.6 332.8,127.6 H348.8 Q352.8,127.6 352.8,131.6 V348.0 Z"/><text class="val" x="340.8" y="121.6" text-anchor="middle">55.1</text><text class="lbl" transform="translate(340.8 360.0) rotate(-45)" text-anchor="end">Kimi K3.1 Pro †</text></g>
-<g><title>Claude Fable 5.1 (Max, Default Fallback), Anthropic: 53.4</title><rect x="371.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M389.6,348.0 V138.4 Q389.6,134.4 393.6,134.4 H409.6 Q413.6,134.4 413.6,138.4 V348.0 Z"/><text class="val" x="401.6" y="128.4" text-anchor="middle">53.4</text><text class="lbl" transform="translate(401.6 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
-<g><title>GPT-6 Astra (Max), OpenAI: 52.7</title><rect x="432.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M450.4,348.0 V141.2 Q450.4,137.2 454.4,137.2 H470.4 Q474.4,137.2 474.4,141.2 V348.0 Z"/><text class="val" x="462.4" y="131.2" text-anchor="middle">52.7</text><text class="lbl" transform="translate(462.4 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
-<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="492.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#34a853" d="M511.2,348.0 V141.6 Q511.2,137.6 515.2,137.6 H531.2 Q535.2,137.6 535.2,141.6 V348.0 Z"/><text class="val" x="523.2" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(523.2 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon (high)</text></g>
-<g><title>Muse Wonder (Max), Meta: 52.4</title><rect x="553.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#0089f4" d="M572.0,348.0 V142.4 Q572.0,138.4 576.0,138.4 H592.0 Q596.0,138.4 596.0,142.4 V348.0 Z"/><text class="val" x="584.0" y="132.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(584.0 360.0) rotate(-45)" text-anchor="end">Muse Wonder</text></g>
-<g><title>GPT-6.1 Sol (Max), OpenAI: 51.8</title><rect x="614.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M632.8,348.0 V144.8 Q632.8,140.8 636.8,140.8 H652.8 Q656.8,140.8 656.8,144.8 V348.0 Z"/><text class="val" x="644.8" y="134.8" text-anchor="middle">51.8</text><text class="lbl" transform="translate(644.8 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
-<g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4</title><rect x="675.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#736cd3" d="M693.6,348.0 V166.4 Q693.6,162.4 697.6,162.4 H713.6 Q717.6,162.4 717.6,166.4 V348.0 Z"/><text class="val" x="705.6" y="156.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(705.6 360.0) rotate(-45)" text-anchor="end">Grok 4.7 (xhigh)</text></g>
+<line class="axis" x1="700" x2="700" y1="108" y2="348"/>
+<line class="axis" x1="700" x2="704" y1="348.0" y2="348.0"/>
+<text class="tick" x="708" y="352.0">$0</text>
+<line class="axis" x1="700" x2="704" y1="268.0" y2="268.0"/>
+<text class="tick" x="708" y="272.0">$200</text>
+<line class="axis" x1="700" x2="704" y1="188.0" y2="188.0"/>
+<text class="tick" x="708" y="192.0">$400</text>
+<line class="axis" x1="700" x2="704" y1="108.0" y2="108.0"/>
+<text class="tick" x="708" y="112.0">$600</text>
+<g><title>Claude Opus 5.5 (Max, Default Fallback), Anthropic: 57.6 · one full index run costs $192 on Claude Max 20x ($8,708 at API prices)</title><rect x="128.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M139.6,348.0 V121.6 Q139.6,117.6 143.6,117.6 H159.6 Q163.6,117.6 163.6,121.6 V348.0 Z"/><path fill="#52514e" d="M165.6,348.0 V275.1 Q165.6,271.1 169.6,271.1 H169.6 Q173.6,271.1 173.6,275.1 V348.0 Z"/><text class="val" x="151.6" y="111.6" text-anchor="middle">57.6</text><text class="lbl" transform="translate(151.6 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
+<g><title>Claude Sonnet 5.5 (Max, Default Fallback), Anthropic: 56.0 · one full index run costs $160 on Claude Max 20x ($7,260 at API prices)</title><rect x="185.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M196.8,348.0 V128.0 Q196.8,124.0 200.8,124.0 H216.8 Q220.8,124.0 220.8,128.0 V348.0 Z"/><path fill="#52514e" d="M222.8,348.0 V287.9 Q222.8,283.9 226.8,283.9 H226.8 Q230.8,283.9 230.8,287.9 V348.0 Z"/><text class="val" x="208.8" y="118.0" text-anchor="middle">56.0</text><text class="lbl" transform="translate(208.8 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
+<g><title>Muse Wonder Full (Max), Meta: 55.8</title><rect x="242.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#0089f4" d="M254.0,348.0 V128.8 Q254.0,124.8 258.0,124.8 H274.0 Q278.0,124.8 278.0,128.8 V348.0 Z"/><text class="val" x="266.0" y="118.8" text-anchor="middle">55.8</text><text class="lbl" transform="translate(266.0 360.0) rotate(-45)" text-anchor="end">Muse Wonder Full</text></g>
+<g><title>Kimi K3.1 Pro, Kimi: 55.1</title><rect x="299.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#047afe" d="M311.2,348.0 V131.6 Q311.2,127.6 315.2,127.6 H331.2 Q335.2,127.6 335.2,131.6 V348.0 Z"/><text class="val" x="323.2" y="121.6" text-anchor="middle">55.1</text><text class="lbl" transform="translate(323.2 360.0) rotate(-45)" text-anchor="end">Kimi K3.1 Pro †</text></g>
+<g><title>Claude Fable 5.1 (Max, Default Fallback), Anthropic: 53.4 · one full index run costs $290 on Claude Max 20x ($13,129 at API prices)</title><rect x="356.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M368.4,348.0 V138.4 Q368.4,134.4 372.4,134.4 H388.4 Q392.4,134.4 392.4,138.4 V348.0 Z"/><path fill="#52514e" d="M394.4,348.0 V236.1 Q394.4,232.1 398.4,232.1 H398.4 Q402.4,232.1 402.4,236.1 V348.0 Z"/><text class="val" x="380.4" y="128.4" text-anchor="middle">53.4</text><text class="lbl" transform="translate(380.4 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
+<g><title>GPT-6 Astra (Max), OpenAI: 52.7 · one full index run costs $519 on ChatGPT ($5,324 at API prices)</title><rect x="414.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M425.6,348.0 V141.2 Q425.6,137.2 429.6,137.2 H445.6 Q449.6,137.2 449.6,141.2 V348.0 Z"/><path fill="#52514e" d="M451.6,348.0 V144.2 Q451.6,140.2 455.6,140.2 H455.6 Q459.6,140.2 459.6,144.2 V348.0 Z"/><text class="val" x="437.6" y="131.2" text-anchor="middle">52.7</text><text class="lbl" transform="translate(437.6 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
+<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="471.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M482.8,348.0 V141.6 Q482.8,137.6 486.8,137.6 H502.8 Q506.8,137.6 506.8,141.6 V348.0 Z"/><text class="val" x="494.8" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(494.8 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon (high)</text></g>
+<g><title>Muse Wonder (Max), Meta: 52.4</title><rect x="528.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#0089f4" d="M540.0,348.0 V142.4 Q540.0,138.4 544.0,138.4 H560.0 Q564.0,138.4 564.0,142.4 V348.0 Z"/><text class="val" x="552.0" y="132.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(552.0 360.0) rotate(-45)" text-anchor="end">Muse Wonder</text></g>
+<g><title>GPT-6.1 Sol (Max), OpenAI: 51.8 · one full index run costs $106 on ChatGPT ($1,082 at API prices)</title><rect x="585.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M597.2,348.0 V144.8 Q597.2,140.8 601.2,140.8 H617.2 Q621.2,140.8 621.2,144.8 V348.0 Z"/><path fill="#52514e" d="M623.2,348.0 V309.8 Q623.2,305.8 627.2,305.8 H627.2 Q631.2,305.8 631.2,309.8 V348.0 Z"/><text class="val" x="609.2" y="134.8" text-anchor="middle">51.8</text><text class="lbl" transform="translate(609.2 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
+<g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4 · one full index run costs $62 on SuperGrok + X Premium+ ($4,967 at API prices)</title><rect x="642.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#736cd3" d="M654.4,348.0 V166.4 Q654.4,162.4 658.4,162.4 H674.4 Q678.4,162.4 678.4,166.4 V348.0 Z"/><path fill="#52514e" d="M680.4,348.0 V327.2 Q680.4,323.2 684.4,323.2 H684.4 Q688.4,323.2 688.4,327.2 V348.0 Z"/><text class="val" x="666.4" y="156.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(666.4 360.0) rotate(-45)" text-anchor="end">Grok 4.7 (xhigh)</text></g>
 <text class="note" x="24" y="484">Level in brackets: the model&#x27;s highest setting below max · † effort not labelled by Artificial Analysis</text>
 </svg>
 <details><summary>Table view</summary>
-<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (Max, Default Fallback)</td><td>Anthropic</td><td>max</td><td class="num">57.6</td></tr><tr><td class="num">2</td><td>Claude Sonnet 5.5 (Max, Default Fallback)</td><td>Anthropic</td><td>max</td><td class="num">56.0</td></tr><tr><td class="num">3</td><td>Muse Wonder Full (Max)</td><td>Meta</td><td>max</td><td class="num">55.8</td></tr><tr><td class="num">4</td><td>Kimi K3.1 Pro</td><td>Kimi</td><td>not labelled</td><td class="num">55.1</td></tr><tr><td class="num">5</td><td>Claude Fable 5.1 (Max, Default Fallback)</td><td>Anthropic</td><td>max</td><td class="num">53.4</td></tr><tr><td class="num">6</td><td>GPT-6 Astra (Max)</td><td>OpenAI</td><td>max</td><td class="num">52.7</td></tr><tr><td class="num">7</td><td>Gemini 4 Argon (High)</td><td>Google</td><td>high</td><td class="num">52.6</td></tr><tr><td class="num">8</td><td>Muse Wonder (Max)</td><td>Meta</td><td>max</td><td class="num">52.4</td></tr><tr><td class="num">9</td><td>GPT-6.1 Sol (Max)</td><td>OpenAI</td><td>max</td><td class="num">51.8</td></tr><tr><td class="num">10</td><td>Grok 4.7 (Xhigh)</td><td>SpaceXAI</td><td>xhigh</td><td class="num">46.4</td></tr></tbody></table></details>
+<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th><th>Full index run: API → subscription</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (Max, Default Fallback)</td><td>Anthropic</td><td>max</td><td class="num">57.6</td><td>$8,708 → $192 on Claude Max 20x</td></tr><tr><td class="num">2</td><td>Claude Sonnet 5.5 (Max, Default Fallback)</td><td>Anthropic</td><td>max</td><td class="num">56.0</td><td>$7,260 → $160 on Claude Max 20x</td></tr><tr><td class="num">3</td><td>Muse Wonder Full (Max)</td><td>Meta</td><td>max</td><td class="num">55.8</td><td>–</td></tr><tr><td class="num">4</td><td>Kimi K3.1 Pro</td><td>Kimi</td><td>not labelled</td><td class="num">55.1</td><td>–</td></tr><tr><td class="num">5</td><td>Claude Fable 5.1 (Max, Default Fallback)</td><td>Anthropic</td><td>max</td><td class="num">53.4</td><td>$13,129 → $290 on Claude Max 20x</td></tr><tr><td class="num">6</td><td>GPT-6 Astra (Max)</td><td>OpenAI</td><td>max</td><td class="num">52.7</td><td>$5,324 → $519 on ChatGPT</td></tr><tr><td class="num">7</td><td>Gemini 4 Argon (High)</td><td>Google</td><td>high</td><td class="num">52.6</td><td>–</td></tr><tr><td class="num">8</td><td>Muse Wonder (Max)</td><td>Meta</td><td>max</td><td class="num">52.4</td><td>–</td></tr><tr><td class="num">9</td><td>GPT-6.1 Sol (Max)</td><td>OpenAI</td><td>max</td><td class="num">51.8</td><td>$1,082 → $106 on ChatGPT</td></tr><tr><td class="num">10</td><td>Grok 4.7 (Xhigh)</td><td>SpaceXAI</td><td>xhigh</td><td class="num">46.4</td><td>$4,967 → $62 on SuperGrok + X Premium+</td></tr></tbody></table></details>
 </section>
 <section id="xhigh">
 <h2>xhigh effort</h2>
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 498" width="760" height="498" role="img" aria-labelledby="t-xhigh d-xhigh">
 <title id="t-xhigh">Top models at xhigh effort</title>
-<desc id="d-xhigh">1. Claude Opus 5.5 (Xhigh, Default Fallback), Anthropic: 56.0; 2. Claude Fable 5.1 (Xhigh, Default Fallback), Anthropic: 53.2; 3. Gemini 4 Argon (High), Google: 52.6; 4. GPT-6 Astra (Xhigh), OpenAI: 52.4; 5. Claude Sonnet 5.5 (Xhigh, Default Fallback), Anthropic: 51.9; 6. GPT-6.1 Sol (Xhigh), OpenAI: 51.0; 7. Grok 4.7 (Xhigh), SpaceXAI: 46.4; 8. Claude Haiku 5.5 (Xhigh), Anthropic: 41.2; 9. Gemini 3.8 Flash (High), Google: 40.9; 10. Muse Spark Open (Xhigh), Meta: 38.9. Full index run: Claude Opus 5.5 $90 on Claude Max 20x (API $4,057) · GPT-6 Astra $371 on ChatGPT (API $3,803)</desc>
+<desc id="d-xhigh">1. Claude Opus 5.5 (Xhigh, Default Fallback), Anthropic: 56.0, full index run on Claude Max 20x $90; 2. Claude Fable 5.1 (Xhigh, Default Fallback), Anthropic: 53.2, full index run on Claude Max 20x $200; 3. Gemini 4 Argon (High), Google: 52.6; 4. GPT-6 Astra (Xhigh), OpenAI: 52.4, full index run on ChatGPT $371; 5. Claude Sonnet 5.5 (Xhigh, Default Fallback), Anthropic: 51.9, full index run on Claude Max 20x $48; 6. GPT-6.1 Sol (Xhigh), OpenAI: 51.0, full index run on ChatGPT $65; 7. Grok 4.7 (Xhigh), SpaceXAI: 46.4, full index run on SuperGrok + X Premium+ $62; 8. Claude Haiku 5.5 (Xhigh), Anthropic: 41.2, full index run on Claude Max 20x $3.48; 9. Gemini 3.8 Flash (High), Google: 40.9; 10. Muse Spark Open (Xhigh), Meta: 38.9</desc>
 <style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
@@ -103,7 +114,6 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
 .aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
-.aa-chart .costline{fill:var(--ink2);font-size:11px}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}</style>
@@ -111,45 +121,55 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 <text class="title" x="24" y="34">Top models at xhigh effort</text>
 <text class="credit" x="736" y="34" text-anchor="end">Data: artificialanalysis.ai</text>
 <text class="sub" x="24" y="54">Artificial Analysis Intelligence Index, higher is better</text>
-<text class="costline" x="24" y="70">Full index run: Claude Opus 5.5 $90 on Claude Max 20x (API $4,057) · GPT-6 Astra $371 on ChatGPT (API $3,803)</text>
-<rect x="24.0" y="80" width="10" height="10" rx="2" fill="#cc785c"/>
-<text class="legend" x="40.0" y="89">Anthropic</text>
-<rect x="119.4" y="80" width="10" height="10" rx="2" fill="#34a853"/>
-<text class="legend" x="135.4" y="89">Google</text>
-<rect x="195.0" y="80" width="10" height="10" rx="2" fill="#1f1f1f"/>
-<text class="legend" x="211.0" y="89">OpenAI</text>
-<rect x="270.6" y="80" width="10" height="10" rx="2" fill="#736cd3"/>
-<text class="legend" x="286.6" y="89">SpaceXAI</text>
-<rect x="359.4" y="80" width="10" height="10" rx="2" fill="#0089f4"/>
-<text class="legend" x="375.4" y="89">Meta</text>
-<line class="axis" x1="128" x2="736" y1="348.0" y2="348.0"/>
+<rect x="24.0" y="64" width="10" height="10" rx="2" fill="#cc785c"/>
+<text class="legend" x="40.0" y="73">Anthropic</text>
+<rect x="119.4" y="64" width="10" height="10" rx="2" fill="#34a853"/>
+<text class="legend" x="135.4" y="73">Google</text>
+<rect x="195.0" y="64" width="10" height="10" rx="2" fill="#1f1f1f"/>
+<text class="legend" x="211.0" y="73">OpenAI</text>
+<rect x="270.6" y="64" width="10" height="10" rx="2" fill="#736cd3"/>
+<text class="legend" x="286.6" y="73">SpaceXAI</text>
+<rect x="359.4" y="64" width="10" height="10" rx="2" fill="#0089f4"/>
+<text class="legend" x="375.4" y="73">Meta</text>
+<rect x="24.0" y="80" width="4" height="10" rx="2" fill="#52514e"/>
+<text class="legend" x="40.0" y="89">Cost of one full index run on a subscription (right axis)</text>
+<line class="axis" x1="128" x2="700" y1="348.0" y2="348.0"/>
 <text class="tick" x="120" y="352.0" text-anchor="end">0</text>
-<line class="grid" x1="128" x2="736" y1="268.0" y2="268.0"/>
+<line class="grid" x1="128" x2="700" y1="268.0" y2="268.0"/>
 <text class="tick" x="120" y="272.0" text-anchor="end">20</text>
-<line class="grid" x1="128" x2="736" y1="188.0" y2="188.0"/>
+<line class="grid" x1="128" x2="700" y1="188.0" y2="188.0"/>
 <text class="tick" x="120" y="192.0" text-anchor="end">40</text>
-<line class="grid" x1="128" x2="736" y1="108.0" y2="108.0"/>
+<line class="grid" x1="128" x2="700" y1="108.0" y2="108.0"/>
 <text class="tick" x="120" y="112.0" text-anchor="end">60</text>
-<g><title>Claude Opus 5.5 (Xhigh, Default Fallback), Anthropic: 56.0</title><rect x="128.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M146.4,348.0 V128.0 Q146.4,124.0 150.4,124.0 H166.4 Q170.4,124.0 170.4,128.0 V348.0 Z"/><text class="val" x="158.4" y="118.0" text-anchor="middle">56.0</text><text class="lbl" transform="translate(158.4 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
-<g><title>Claude Fable 5.1 (Xhigh, Default Fallback), Anthropic: 53.2</title><rect x="188.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M207.2,348.0 V139.2 Q207.2,135.2 211.2,135.2 H227.2 Q231.2,135.2 231.2,139.2 V348.0 Z"/><text class="val" x="219.2" y="129.2" text-anchor="middle">53.2</text><text class="lbl" transform="translate(219.2 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
-<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="249.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#34a853" d="M268.0,348.0 V141.6 Q268.0,137.6 272.0,137.6 H288.0 Q292.0,137.6 292.0,141.6 V348.0 Z"/><text class="val" x="280.0" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(280.0 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon (high)</text></g>
-<g><title>GPT-6 Astra (Xhigh), OpenAI: 52.4</title><rect x="310.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M328.8,348.0 V142.4 Q328.8,138.4 332.8,138.4 H348.8 Q352.8,138.4 352.8,142.4 V348.0 Z"/><text class="val" x="340.8" y="132.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(340.8 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
-<g><title>Claude Sonnet 5.5 (Xhigh, Default Fallback), Anthropic: 51.9</title><rect x="371.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M389.6,348.0 V144.4 Q389.6,140.4 393.6,140.4 H409.6 Q413.6,140.4 413.6,144.4 V348.0 Z"/><text class="val" x="401.6" y="134.4" text-anchor="middle">51.9</text><text class="lbl" transform="translate(401.6 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
-<g><title>GPT-6.1 Sol (Xhigh), OpenAI: 51.0</title><rect x="432.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M450.4,348.0 V148.0 Q450.4,144.0 454.4,144.0 H470.4 Q474.4,144.0 474.4,148.0 V348.0 Z"/><text class="val" x="462.4" y="138.0" text-anchor="middle">51.0</text><text class="lbl" transform="translate(462.4 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
-<g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4</title><rect x="492.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#736cd3" d="M511.2,348.0 V166.4 Q511.2,162.4 515.2,162.4 H531.2 Q535.2,162.4 535.2,166.4 V348.0 Z"/><text class="val" x="523.2" y="156.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(523.2 360.0) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
-<g><title>Claude Haiku 5.5 (Xhigh), Anthropic: 41.2</title><rect x="553.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M572.0,348.0 V187.2 Q572.0,183.2 576.0,183.2 H592.0 Q596.0,183.2 596.0,187.2 V348.0 Z"/><text class="val" x="584.0" y="177.2" text-anchor="middle">41.2</text><text class="lbl" transform="translate(584.0 360.0) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
-<g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="614.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#34a853" d="M632.8,348.0 V188.4 Q632.8,184.4 636.8,184.4 H652.8 Q656.8,184.4 656.8,188.4 V348.0 Z"/><text class="val" x="644.8" y="178.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(644.8 360.0) rotate(-45)" text-anchor="end">Gemini 3.8 Flash (high)</text></g>
-<g><title>Muse Spark Open (Xhigh), Meta: 38.9</title><rect x="675.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#0089f4" d="M693.6,348.0 V196.4 Q693.6,192.4 697.6,192.4 H713.6 Q717.6,192.4 717.6,196.4 V348.0 Z"/><text class="val" x="705.6" y="186.4" text-anchor="middle">38.9</text><text class="lbl" transform="translate(705.6 360.0) rotate(-45)" text-anchor="end">Muse Spark Open</text></g>
+<line class="axis" x1="700" x2="700" y1="108" y2="348"/>
+<line class="axis" x1="700" x2="704" y1="348.0" y2="348.0"/>
+<text class="tick" x="708" y="352.0">$0</text>
+<line class="axis" x1="700" x2="704" y1="268.0" y2="268.0"/>
+<text class="tick" x="708" y="272.0">$200</text>
+<line class="axis" x1="700" x2="704" y1="188.0" y2="188.0"/>
+<text class="tick" x="708" y="192.0">$400</text>
+<line class="axis" x1="700" x2="704" y1="108.0" y2="108.0"/>
+<text class="tick" x="708" y="112.0">$600</text>
+<g><title>Claude Opus 5.5 (Xhigh, Default Fallback), Anthropic: 56.0 · one full index run costs $90 on Claude Max 20x ($4,057 at API prices)</title><rect x="128.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M139.6,348.0 V128.0 Q139.6,124.0 143.6,124.0 H159.6 Q163.6,124.0 163.6,128.0 V348.0 Z"/><path fill="#52514e" d="M165.6,348.0 V316.2 Q165.6,312.2 169.6,312.2 H169.6 Q173.6,312.2 173.6,316.2 V348.0 Z"/><text class="val" x="151.6" y="118.0" text-anchor="middle">56.0</text><text class="lbl" transform="translate(151.6 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
+<g><title>Claude Fable 5.1 (Xhigh, Default Fallback), Anthropic: 53.2 · one full index run costs $200 on Claude Max 20x ($9,063 at API prices)</title><rect x="185.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M196.8,348.0 V139.2 Q196.8,135.2 200.8,135.2 H216.8 Q220.8,135.2 220.8,139.2 V348.0 Z"/><path fill="#52514e" d="M222.8,348.0 V272.0 Q222.8,268.0 226.8,268.0 H226.8 Q230.8,268.0 230.8,272.0 V348.0 Z"/><text class="val" x="208.8" y="129.2" text-anchor="middle">53.2</text><text class="lbl" transform="translate(208.8 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
+<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="242.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M254.0,348.0 V141.6 Q254.0,137.6 258.0,137.6 H274.0 Q278.0,137.6 278.0,141.6 V348.0 Z"/><text class="val" x="266.0" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(266.0 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon (high)</text></g>
+<g><title>GPT-6 Astra (Xhigh), OpenAI: 52.4 · one full index run costs $371 on ChatGPT ($3,803 at API prices)</title><rect x="299.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M311.2,348.0 V142.4 Q311.2,138.4 315.2,138.4 H331.2 Q335.2,138.4 335.2,142.4 V348.0 Z"/><path fill="#52514e" d="M337.2,348.0 V203.6 Q337.2,199.6 341.2,199.6 H341.2 Q345.2,199.6 345.2,203.6 V348.0 Z"/><text class="val" x="323.2" y="132.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(323.2 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
+<g><title>Claude Sonnet 5.5 (Xhigh, Default Fallback), Anthropic: 51.9 · one full index run costs $48 on Claude Max 20x ($2,177 at API prices)</title><rect x="356.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M368.4,348.0 V144.4 Q368.4,140.4 372.4,140.4 H388.4 Q392.4,140.4 392.4,144.4 V348.0 Z"/><path fill="#52514e" d="M394.4,348.0 V332.8 Q394.4,328.8 398.4,328.8 H398.4 Q402.4,328.8 402.4,332.8 V348.0 Z"/><text class="val" x="380.4" y="134.4" text-anchor="middle">51.9</text><text class="lbl" transform="translate(380.4 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
+<g><title>GPT-6.1 Sol (Xhigh), OpenAI: 51.0 · one full index run costs $65 on ChatGPT ($662 at API prices)</title><rect x="414.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M425.6,348.0 V148.0 Q425.6,144.0 429.6,144.0 H445.6 Q449.6,144.0 449.6,148.0 V348.0 Z"/><path fill="#52514e" d="M451.6,348.0 V326.2 Q451.6,322.2 455.6,322.2 H455.6 Q459.6,322.2 459.6,326.2 V348.0 Z"/><text class="val" x="437.6" y="138.0" text-anchor="middle">51.0</text><text class="lbl" transform="translate(437.6 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
+<g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4 · one full index run costs $62 on SuperGrok + X Premium+ ($4,967 at API prices)</title><rect x="471.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#736cd3" d="M482.8,348.0 V166.4 Q482.8,162.4 486.8,162.4 H502.8 Q506.8,162.4 506.8,166.4 V348.0 Z"/><path fill="#52514e" d="M508.8,348.0 V327.2 Q508.8,323.2 512.8,323.2 H512.8 Q516.8,323.2 516.8,327.2 V348.0 Z"/><text class="val" x="494.8" y="156.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(494.8 360.0) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
+<g><title>Claude Haiku 5.5 (Xhigh), Anthropic: 41.2 · one full index run costs $3.48 on Claude Max 20x ($158 at API prices)</title><rect x="528.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M540.0,348.0 V187.2 Q540.0,183.2 544.0,183.2 H560.0 Q564.0,183.2 564.0,187.2 V348.0 Z"/><path fill="#52514e" d="M566.0,348.0 V348.0 Q566.0,346.6 567.4,346.6 H572.6 Q574.0,346.6 574.0,348.0 V348.0 Z"/><text class="val" x="552.0" y="177.2" text-anchor="middle">41.2</text><text class="lbl" transform="translate(552.0 360.0) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
+<g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="585.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M597.2,348.0 V188.4 Q597.2,184.4 601.2,184.4 H617.2 Q621.2,184.4 621.2,188.4 V348.0 Z"/><text class="val" x="609.2" y="178.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(609.2 360.0) rotate(-45)" text-anchor="end">Gemini 3.8 Flash (high)</text></g>
+<g><title>Muse Spark Open (Xhigh), Meta: 38.9</title><rect x="642.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#0089f4" d="M654.4,348.0 V196.4 Q654.4,192.4 658.4,192.4 H674.4 Q678.4,192.4 678.4,196.4 V348.0 Z"/><text class="val" x="666.4" y="186.4" text-anchor="middle">38.9</text><text class="lbl" transform="translate(666.4 360.0) rotate(-45)" text-anchor="end">Muse Spark Open</text></g>
 <text class="note" x="24" y="484">Level in brackets: the model&#x27;s highest setting below xhigh</text>
 </svg>
 <details><summary>Table view</summary>
-<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (Xhigh, Default Fallback)</td><td>Anthropic</td><td>xhigh</td><td class="num">56.0</td></tr><tr><td class="num">2</td><td>Claude Fable 5.1 (Xhigh, Default Fallback)</td><td>Anthropic</td><td>xhigh</td><td class="num">53.2</td></tr><tr><td class="num">3</td><td>Gemini 4 Argon (High)</td><td>Google</td><td>high</td><td class="num">52.6</td></tr><tr><td class="num">4</td><td>GPT-6 Astra (Xhigh)</td><td>OpenAI</td><td>xhigh</td><td class="num">52.4</td></tr><tr><td class="num">5</td><td>Claude Sonnet 5.5 (Xhigh, Default Fallback)</td><td>Anthropic</td><td>xhigh</td><td class="num">51.9</td></tr><tr><td class="num">6</td><td>GPT-6.1 Sol (Xhigh)</td><td>OpenAI</td><td>xhigh</td><td class="num">51.0</td></tr><tr><td class="num">7</td><td>Grok 4.7 (Xhigh)</td><td>SpaceXAI</td><td>xhigh</td><td class="num">46.4</td></tr><tr><td class="num">8</td><td>Claude Haiku 5.5 (Xhigh)</td><td>Anthropic</td><td>xhigh</td><td class="num">41.2</td></tr><tr><td class="num">9</td><td>Gemini 3.8 Flash (High)</td><td>Google</td><td>high</td><td class="num">40.9</td></tr><tr><td class="num">10</td><td>Muse Spark Open (Xhigh)</td><td>Meta</td><td>xhigh</td><td class="num">38.9</td></tr></tbody></table></details>
+<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th><th>Full index run: API → subscription</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (Xhigh, Default Fallback)</td><td>Anthropic</td><td>xhigh</td><td class="num">56.0</td><td>$4,057 → $90 on Claude Max 20x</td></tr><tr><td class="num">2</td><td>Claude Fable 5.1 (Xhigh, Default Fallback)</td><td>Anthropic</td><td>xhigh</td><td class="num">53.2</td><td>$9,063 → $200 on Claude Max 20x</td></tr><tr><td class="num">3</td><td>Gemini 4 Argon (High)</td><td>Google</td><td>high</td><td class="num">52.6</td><td>–</td></tr><tr><td class="num">4</td><td>GPT-6 Astra (Xhigh)</td><td>OpenAI</td><td>xhigh</td><td class="num">52.4</td><td>$3,803 → $371 on ChatGPT</td></tr><tr><td class="num">5</td><td>Claude Sonnet 5.5 (Xhigh, Default Fallback)</td><td>Anthropic</td><td>xhigh</td><td class="num">51.9</td><td>$2,177 → $48 on Claude Max 20x</td></tr><tr><td class="num">6</td><td>GPT-6.1 Sol (Xhigh)</td><td>OpenAI</td><td>xhigh</td><td class="num">51.0</td><td>$662 → $65 on ChatGPT</td></tr><tr><td class="num">7</td><td>Grok 4.7 (Xhigh)</td><td>SpaceXAI</td><td>xhigh</td><td class="num">46.4</td><td>$4,967 → $62 on SuperGrok + X Premium+</td></tr><tr><td class="num">8</td><td>Claude Haiku 5.5 (Xhigh)</td><td>Anthropic</td><td>xhigh</td><td class="num">41.2</td><td>$158 → $3.48 on Claude Max 20x</td></tr><tr><td class="num">9</td><td>Gemini 3.8 Flash (High)</td><td>Google</td><td>high</td><td class="num">40.9</td><td>–</td></tr><tr><td class="num">10</td><td>Muse Spark Open (Xhigh)</td><td>Meta</td><td>xhigh</td><td class="num">38.9</td><td>–</td></tr></tbody></table></details>
 </section>
 <section id="high">
 <h2>high effort</h2>
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 498" width="760" height="498" role="img" aria-labelledby="t-high d-high">
 <title id="t-high">Top models at high effort</title>
-<desc id="d-high">1. Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6; 2. Gemini 4 Argon (High), Google: 52.6; 3. Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2; 4. GPT-6 Astra (High), OpenAI: 50.9; 5. GPT-6.1 Sol (High), OpenAI: 50.2; 6. Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8; 7. Grok 4.7 (High), SpaceXAI: 46.3; 8. Gemini 3.8 Flash (High), Google: 40.9; 9. Claude Haiku 5.5 (High), Anthropic: 37.8; 10. GLM-5.3 (Low), Z AI: 34.3. Full index run: Claude Opus 5.5 $48 on Claude Max 20x (API $2,172) · GPT-6 Astra $285 on ChatGPT (API $2,925)</desc>
+<desc id="d-high">1. Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6, full index run on Claude Max 20x $48; 2. Gemini 4 Argon (High), Google: 52.6; 3. Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2, full index run on Claude Max 20x $116; 4. GPT-6 Astra (High), OpenAI: 50.9, full index run on ChatGPT $285; 5. GPT-6.1 Sol (High), OpenAI: 50.2, full index run on ChatGPT $51; 6. Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8, full index run on Claude Max 20x $23; 7. Grok 4.7 (High), SpaceXAI: 46.3, full index run on SuperGrok + X Premium+ $49; 8. Gemini 3.8 Flash (High), Google: 40.9; 9. Claude Haiku 5.5 (High), Anthropic: 37.8, full index run on Claude Max 20x $2.08; 10. GLM-5.3 (Low), Z AI: 34.3</desc>
 <style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
@@ -158,7 +178,6 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
 .aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
-.aa-chart .costline{fill:var(--ink2);font-size:11px}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}</style>
@@ -166,45 +185,55 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 <text class="title" x="24" y="34">Top models at high effort</text>
 <text class="credit" x="736" y="34" text-anchor="end">Data: artificialanalysis.ai</text>
 <text class="sub" x="24" y="54">Artificial Analysis Intelligence Index, higher is better</text>
-<text class="costline" x="24" y="70">Full index run: Claude Opus 5.5 $48 on Claude Max 20x (API $2,172) · GPT-6 Astra $285 on ChatGPT (API $2,925)</text>
-<rect x="24.0" y="80" width="10" height="10" rx="2" fill="#cc785c"/>
-<text class="legend" x="40.0" y="89">Anthropic</text>
-<rect x="119.4" y="80" width="10" height="10" rx="2" fill="#34a853"/>
-<text class="legend" x="135.4" y="89">Google</text>
-<rect x="195.0" y="80" width="10" height="10" rx="2" fill="#1f1f1f"/>
-<text class="legend" x="211.0" y="89">OpenAI</text>
-<rect x="270.6" y="80" width="10" height="10" rx="2" fill="#736cd3"/>
-<text class="legend" x="286.6" y="89">SpaceXAI</text>
-<rect x="359.4" y="80" width="10" height="10" rx="2" fill="#1c7ff8"/>
-<text class="legend" x="375.4" y="89">Z AI</text>
-<line class="axis" x1="128" x2="736" y1="348.0" y2="348.0"/>
+<rect x="24.0" y="64" width="10" height="10" rx="2" fill="#cc785c"/>
+<text class="legend" x="40.0" y="73">Anthropic</text>
+<rect x="119.4" y="64" width="10" height="10" rx="2" fill="#34a853"/>
+<text class="legend" x="135.4" y="73">Google</text>
+<rect x="195.0" y="64" width="10" height="10" rx="2" fill="#1f1f1f"/>
+<text class="legend" x="211.0" y="73">OpenAI</text>
+<rect x="270.6" y="64" width="10" height="10" rx="2" fill="#736cd3"/>
+<text class="legend" x="286.6" y="73">SpaceXAI</text>
+<rect x="359.4" y="64" width="10" height="10" rx="2" fill="#1c7ff8"/>
+<text class="legend" x="375.4" y="73">Z AI</text>
+<rect x="24.0" y="80" width="4" height="10" rx="2" fill="#52514e"/>
+<text class="legend" x="40.0" y="89">Cost of one full index run on a subscription (right axis)</text>
+<line class="axis" x1="128" x2="700" y1="348.0" y2="348.0"/>
 <text class="tick" x="120" y="352.0" text-anchor="end">0</text>
-<line class="grid" x1="128" x2="736" y1="268.0" y2="268.0"/>
+<line class="grid" x1="128" x2="700" y1="268.0" y2="268.0"/>
 <text class="tick" x="120" y="272.0" text-anchor="end">20</text>
-<line class="grid" x1="128" x2="736" y1="188.0" y2="188.0"/>
+<line class="grid" x1="128" x2="700" y1="188.0" y2="188.0"/>
 <text class="tick" x="120" y="192.0" text-anchor="end">40</text>
-<line class="grid" x1="128" x2="736" y1="108.0" y2="108.0"/>
+<line class="grid" x1="128" x2="700" y1="108.0" y2="108.0"/>
 <text class="tick" x="120" y="112.0" text-anchor="end">60</text>
-<g><title>Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6</title><rect x="128.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M146.4,348.0 V137.6 Q146.4,133.6 150.4,133.6 H166.4 Q170.4,133.6 170.4,137.6 V348.0 Z"/><text class="val" x="158.4" y="127.6" text-anchor="middle">53.6</text><text class="lbl" transform="translate(158.4 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
-<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="188.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#34a853" d="M207.2,348.0 V141.6 Q207.2,137.6 211.2,137.6 H227.2 Q231.2,137.6 231.2,141.6 V348.0 Z"/><text class="val" x="219.2" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(219.2 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon</text></g>
-<g><title>Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2</title><rect x="249.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M268.0,348.0 V147.2 Q268.0,143.2 272.0,143.2 H288.0 Q292.0,143.2 292.0,147.2 V348.0 Z"/><text class="val" x="280.0" y="137.2" text-anchor="middle">51.2</text><text class="lbl" transform="translate(280.0 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
-<g><title>GPT-6 Astra (High), OpenAI: 50.9</title><rect x="310.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M328.8,348.0 V148.4 Q328.8,144.4 332.8,144.4 H348.8 Q352.8,144.4 352.8,148.4 V348.0 Z"/><text class="val" x="340.8" y="138.4" text-anchor="middle">50.9</text><text class="lbl" transform="translate(340.8 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
-<g><title>GPT-6.1 Sol (High), OpenAI: 50.2</title><rect x="371.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M389.6,348.0 V151.2 Q389.6,147.2 393.6,147.2 H409.6 Q413.6,147.2 413.6,151.2 V348.0 Z"/><text class="val" x="401.6" y="141.2" text-anchor="middle">50.2</text><text class="lbl" transform="translate(401.6 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
-<g><title>Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8</title><rect x="432.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M450.4,348.0 V164.8 Q450.4,160.8 454.4,160.8 H470.4 Q474.4,160.8 474.4,164.8 V348.0 Z"/><text class="val" x="462.4" y="154.8" text-anchor="middle">46.8</text><text class="lbl" transform="translate(462.4 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
-<g><title>Grok 4.7 (High), SpaceXAI: 46.3</title><rect x="492.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#736cd3" d="M511.2,348.0 V166.8 Q511.2,162.8 515.2,162.8 H531.2 Q535.2,162.8 535.2,166.8 V348.0 Z"/><text class="val" x="523.2" y="156.8" text-anchor="middle">46.3</text><text class="lbl" transform="translate(523.2 360.0) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
-<g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="553.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#34a853" d="M572.0,348.0 V188.4 Q572.0,184.4 576.0,184.4 H592.0 Q596.0,184.4 596.0,188.4 V348.0 Z"/><text class="val" x="584.0" y="178.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(584.0 360.0) rotate(-45)" text-anchor="end">Gemini 3.8 Flash</text></g>
-<g><title>Claude Haiku 5.5 (High), Anthropic: 37.8</title><rect x="614.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M632.8,348.0 V200.8 Q632.8,196.8 636.8,196.8 H652.8 Q656.8,196.8 656.8,200.8 V348.0 Z"/><text class="val" x="644.8" y="190.8" text-anchor="middle">37.8</text><text class="lbl" transform="translate(644.8 360.0) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
-<g><title>GLM-5.3 (Low), Z AI: 34.3</title><rect x="675.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1c7ff8" d="M693.6,348.0 V214.8 Q693.6,210.8 697.6,210.8 H713.6 Q717.6,210.8 717.6,214.8 V348.0 Z"/><text class="val" x="705.6" y="204.8" text-anchor="middle">34.3</text><text class="lbl" transform="translate(705.6 360.0) rotate(-45)" text-anchor="end">GLM-5.3 (low)</text></g>
+<line class="axis" x1="700" x2="700" y1="108" y2="348"/>
+<line class="axis" x1="700" x2="704" y1="348.0" y2="348.0"/>
+<text class="tick" x="708" y="352.0">$0</text>
+<line class="axis" x1="700" x2="704" y1="268.0" y2="268.0"/>
+<text class="tick" x="708" y="272.0">$200</text>
+<line class="axis" x1="700" x2="704" y1="188.0" y2="188.0"/>
+<text class="tick" x="708" y="192.0">$400</text>
+<line class="axis" x1="700" x2="704" y1="108.0" y2="108.0"/>
+<text class="tick" x="708" y="112.0">$600</text>
+<g><title>Claude Opus 5.5 (High, Default Fallback), Anthropic: 53.6 · one full index run costs $48 on Claude Max 20x ($2,172 at API prices)</title><rect x="128.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M139.6,348.0 V137.6 Q139.6,133.6 143.6,133.6 H159.6 Q163.6,133.6 163.6,137.6 V348.0 Z"/><path fill="#52514e" d="M165.6,348.0 V332.8 Q165.6,328.8 169.6,328.8 H169.6 Q173.6,328.8 173.6,332.8 V348.0 Z"/><text class="val" x="151.6" y="127.6" text-anchor="middle">53.6</text><text class="lbl" transform="translate(151.6 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
+<g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="185.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M196.8,348.0 V141.6 Q196.8,137.6 200.8,137.6 H216.8 Q220.8,137.6 220.8,141.6 V348.0 Z"/><text class="val" x="208.8" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(208.8 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon</text></g>
+<g><title>Claude Fable 5.1 (High, Default Fallback), Anthropic: 51.2 · one full index run costs $116 on Claude Max 20x ($5,242 at API prices)</title><rect x="242.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M254.0,348.0 V147.2 Q254.0,143.2 258.0,143.2 H274.0 Q278.0,143.2 278.0,147.2 V348.0 Z"/><path fill="#52514e" d="M280.0,348.0 V305.7 Q280.0,301.7 284.0,301.7 H284.0 Q288.0,301.7 288.0,305.7 V348.0 Z"/><text class="val" x="266.0" y="137.2" text-anchor="middle">51.2</text><text class="lbl" transform="translate(266.0 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
+<g><title>GPT-6 Astra (High), OpenAI: 50.9 · one full index run costs $285 on ChatGPT ($2,925 at API prices)</title><rect x="299.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M311.2,348.0 V148.4 Q311.2,144.4 315.2,144.4 H331.2 Q335.2,144.4 335.2,148.4 V348.0 Z"/><path fill="#52514e" d="M337.2,348.0 V237.9 Q337.2,233.9 341.2,233.9 H341.2 Q345.2,233.9 345.2,237.9 V348.0 Z"/><text class="val" x="323.2" y="138.4" text-anchor="middle">50.9</text><text class="lbl" transform="translate(323.2 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
+<g><title>GPT-6.1 Sol (High), OpenAI: 50.2 · one full index run costs $51 on ChatGPT ($521 at API prices)</title><rect x="356.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M368.4,348.0 V151.2 Q368.4,147.2 372.4,147.2 H388.4 Q392.4,147.2 392.4,151.2 V348.0 Z"/><path fill="#52514e" d="M394.4,348.0 V331.7 Q394.4,327.7 398.4,327.7 H398.4 Q402.4,327.7 402.4,331.7 V348.0 Z"/><text class="val" x="380.4" y="141.2" text-anchor="middle">50.2</text><text class="lbl" transform="translate(380.4 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
+<g><title>Claude Sonnet 5.5 (High, Default Fallback), Anthropic: 46.8 · one full index run costs $23 on Claude Max 20x ($1,027 at API prices)</title><rect x="414.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M425.6,348.0 V164.8 Q425.6,160.8 429.6,160.8 H445.6 Q449.6,160.8 449.6,164.8 V348.0 Z"/><path fill="#52514e" d="M451.6,348.0 V342.9 Q451.6,338.9 455.6,338.9 H455.6 Q459.6,338.9 459.6,342.9 V348.0 Z"/><text class="val" x="437.6" y="154.8" text-anchor="middle">46.8</text><text class="lbl" transform="translate(437.6 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
+<g><title>Grok 4.7 (High), SpaceXAI: 46.3 · one full index run costs $49 on SuperGrok + X Premium+ ($3,881 at API prices)</title><rect x="471.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#736cd3" d="M482.8,348.0 V166.8 Q482.8,162.8 486.8,162.8 H502.8 Q506.8,162.8 506.8,166.8 V348.0 Z"/><path fill="#52514e" d="M508.8,348.0 V332.6 Q508.8,328.6 512.8,328.6 H512.8 Q516.8,328.6 516.8,332.6 V348.0 Z"/><text class="val" x="494.8" y="156.8" text-anchor="middle">46.3</text><text class="lbl" transform="translate(494.8 360.0) rotate(-45)" text-anchor="end">Grok 4.7</text></g>
+<g><title>Gemini 3.8 Flash (High), Google: 40.9</title><rect x="528.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M540.0,348.0 V188.4 Q540.0,184.4 544.0,184.4 H560.0 Q564.0,184.4 564.0,188.4 V348.0 Z"/><text class="val" x="552.0" y="178.4" text-anchor="middle">40.9</text><text class="lbl" transform="translate(552.0 360.0) rotate(-45)" text-anchor="end">Gemini 3.8 Flash</text></g>
+<g><title>Claude Haiku 5.5 (High), Anthropic: 37.8 · one full index run costs $2.08 on Claude Max 20x ($94 at API prices)</title><rect x="585.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M597.2,348.0 V200.8 Q597.2,196.8 601.2,196.8 H617.2 Q621.2,196.8 621.2,200.8 V348.0 Z"/><path fill="#52514e" d="M623.2,348.0 V348.0 Q623.2,347.2 624.0,347.2 H630.4 Q631.2,347.2 631.2,348.0 V348.0 Z"/><text class="val" x="609.2" y="190.8" text-anchor="middle">37.8</text><text class="lbl" transform="translate(609.2 360.0) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
+<g><title>GLM-5.3 (Low), Z AI: 34.3</title><rect x="642.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1c7ff8" d="M654.4,348.0 V214.8 Q654.4,210.8 658.4,210.8 H674.4 Q678.4,210.8 678.4,214.8 V348.0 Z"/><text class="val" x="666.4" y="204.8" text-anchor="middle">34.3</text><text class="lbl" transform="translate(666.4 360.0) rotate(-45)" text-anchor="end">GLM-5.3 (low)</text></g>
 <text class="note" x="24" y="484">Level in brackets: the model&#x27;s highest setting below high</text>
 </svg>
 <details><summary>Table view</summary>
-<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (High, Default Fallback)</td><td>Anthropic</td><td>high</td><td class="num">53.6</td></tr><tr><td class="num">2</td><td>Gemini 4 Argon (High)</td><td>Google</td><td>high</td><td class="num">52.6</td></tr><tr><td class="num">3</td><td>Claude Fable 5.1 (High, Default Fallback)</td><td>Anthropic</td><td>high</td><td class="num">51.2</td></tr><tr><td class="num">4</td><td>GPT-6 Astra (High)</td><td>OpenAI</td><td>high</td><td class="num">50.9</td></tr><tr><td class="num">5</td><td>GPT-6.1 Sol (High)</td><td>OpenAI</td><td>high</td><td class="num">50.2</td></tr><tr><td class="num">6</td><td>Claude Sonnet 5.5 (High, Default Fallback)</td><td>Anthropic</td><td>high</td><td class="num">46.8</td></tr><tr><td class="num">7</td><td>Grok 4.7 (High)</td><td>SpaceXAI</td><td>high</td><td class="num">46.3</td></tr><tr><td class="num">8</td><td>Gemini 3.8 Flash (High)</td><td>Google</td><td>high</td><td class="num">40.9</td></tr><tr><td class="num">9</td><td>Claude Haiku 5.5 (High)</td><td>Anthropic</td><td>high</td><td class="num">37.8</td></tr><tr><td class="num">10</td><td>GLM-5.3 (Low)</td><td>Z AI</td><td>low</td><td class="num">34.3</td></tr></tbody></table></details>
+<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th><th>Full index run: API → subscription</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (High, Default Fallback)</td><td>Anthropic</td><td>high</td><td class="num">53.6</td><td>$2,172 → $48 on Claude Max 20x</td></tr><tr><td class="num">2</td><td>Gemini 4 Argon (High)</td><td>Google</td><td>high</td><td class="num">52.6</td><td>–</td></tr><tr><td class="num">3</td><td>Claude Fable 5.1 (High, Default Fallback)</td><td>Anthropic</td><td>high</td><td class="num">51.2</td><td>$5,242 → $116 on Claude Max 20x</td></tr><tr><td class="num">4</td><td>GPT-6 Astra (High)</td><td>OpenAI</td><td>high</td><td class="num">50.9</td><td>$2,925 → $285 on ChatGPT</td></tr><tr><td class="num">5</td><td>GPT-6.1 Sol (High)</td><td>OpenAI</td><td>high</td><td class="num">50.2</td><td>$521 → $51 on ChatGPT</td></tr><tr><td class="num">6</td><td>Claude Sonnet 5.5 (High, Default Fallback)</td><td>Anthropic</td><td>high</td><td class="num">46.8</td><td>$1,027 → $23 on Claude Max 20x</td></tr><tr><td class="num">7</td><td>Grok 4.7 (High)</td><td>SpaceXAI</td><td>high</td><td class="num">46.3</td><td>$3,881 → $49 on SuperGrok + X Premium+</td></tr><tr><td class="num">8</td><td>Gemini 3.8 Flash (High)</td><td>Google</td><td>high</td><td class="num">40.9</td><td>–</td></tr><tr><td class="num">9</td><td>Claude Haiku 5.5 (High)</td><td>Anthropic</td><td>high</td><td class="num">37.8</td><td>$94 → $2.08 on Claude Max 20x</td></tr><tr><td class="num">10</td><td>GLM-5.3 (Low)</td><td>Z AI</td><td>low</td><td class="num">34.3</td><td>–</td></tr></tbody></table></details>
 </section>
 <section id="medium">
 <h2>medium effort</h2>
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 498" width="760" height="498" role="img" aria-labelledby="t-medium d-medium">
 <title id="t-medium">Top models at medium effort</title>
-<desc id="d-medium">1. Claude Opus 5.5 (Medium, Default Fallback), Anthropic: 51.2; 2. GPT-6 Astra (Medium), OpenAI: 49.6; 3. Claude Fable 5.1 (Medium, Default Fallback), Anthropic: 48.9; 4. GPT-6.1 Sol (Medium), OpenAI: 47.8; 5. Grok 4.7 (Low), SpaceXAI: 42.2; 6. Claude Sonnet 5.5 (Medium, Default Fallback), Anthropic: 40.8; 7. Gemini 3.8 Flash (Medium), Google: 39.8; 8. Claude Haiku 5.5 (Medium), Anthropic: 34.5; 9. GLM-5.3 (Low), Z AI: 34.3; 10. GPT-5.6 Terra (Medium), OpenAI: 30.1. Full index run: Claude Opus 5.5 $36 on Claude Max 20x (API $1,627) · GPT-6 Astra $237 on ChatGPT (API $2,434)</desc>
+<desc id="d-medium">1. Claude Opus 5.5 (Medium, Default Fallback), Anthropic: 51.2, full index run on Claude Max 20x $36; 2. GPT-6 Astra (Medium), OpenAI: 49.6, full index run on ChatGPT $237; 3. Claude Fable 5.1 (Medium, Default Fallback), Anthropic: 48.9, full index run on Claude Max 20x $88; 4. GPT-6.1 Sol (Medium), OpenAI: 47.8, full index run on ChatGPT $35; 5. Grok 4.7 (Low), SpaceXAI: 42.2, full index run on SuperGrok + X Premium+ $20; 6. Claude Sonnet 5.5 (Medium, Default Fallback), Anthropic: 40.8, full index run on Claude Max 20x $14; 7. Gemini 3.8 Flash (Medium), Google: 39.8; 8. Claude Haiku 5.5 (Medium), Anthropic: 34.5, full index run on Claude Max 20x $1.24; 9. GLM-5.3 (Low), Z AI: 34.3; 10. GPT-5.6 Terra (Medium), OpenAI: 30.1, full index run on ChatGPT $44</desc>
 <style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
@@ -213,7 +242,6 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 .aa-chart .title{fill:var(--ink);font-size:16px;font-weight:600}
 .aa-chart .sub,.aa-chart .tick,.aa-chart .credit,.aa-chart .note{fill:var(--muted);font-size:11px}
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
-.aa-chart .costline{fill:var(--ink2);font-size:11px}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}</style>
@@ -221,39 +249,49 @@ Links at: <a href="./#info">xhigh</a> · <a href="high/#info">high</a> · <a hre
 <text class="title" x="24" y="34">Top models at medium effort</text>
 <text class="credit" x="736" y="34" text-anchor="end">Data: artificialanalysis.ai</text>
 <text class="sub" x="24" y="54">Artificial Analysis Intelligence Index, higher is better</text>
-<text class="costline" x="24" y="70">Full index run: Claude Opus 5.5 $36 on Claude Max 20x (API $1,627) · GPT-6 Astra $237 on ChatGPT (API $2,434)</text>
-<rect x="24.0" y="80" width="10" height="10" rx="2" fill="#cc785c"/>
-<text class="legend" x="40.0" y="89">Anthropic</text>
-<rect x="119.4" y="80" width="10" height="10" rx="2" fill="#1f1f1f"/>
-<text class="legend" x="135.4" y="89">OpenAI</text>
-<rect x="195.0" y="80" width="10" height="10" rx="2" fill="#736cd3"/>
-<text class="legend" x="211.0" y="89">SpaceXAI</text>
-<rect x="283.8" y="80" width="10" height="10" rx="2" fill="#34a853"/>
-<text class="legend" x="299.8" y="89">Google</text>
-<rect x="359.4" y="80" width="10" height="10" rx="2" fill="#1c7ff8"/>
-<text class="legend" x="375.4" y="89">Z AI</text>
-<line class="axis" x1="128" x2="736" y1="348.0" y2="348.0"/>
+<rect x="24.0" y="64" width="10" height="10" rx="2" fill="#cc785c"/>
+<text class="legend" x="40.0" y="73">Anthropic</text>
+<rect x="119.4" y="64" width="10" height="10" rx="2" fill="#1f1f1f"/>
+<text class="legend" x="135.4" y="73">OpenAI</text>
+<rect x="195.0" y="64" width="10" height="10" rx="2" fill="#736cd3"/>
+<text class="legend" x="211.0" y="73">SpaceXAI</text>
+<rect x="283.8" y="64" width="10" height="10" rx="2" fill="#34a853"/>
+<text class="legend" x="299.8" y="73">Google</text>
+<rect x="359.4" y="64" width="10" height="10" rx="2" fill="#1c7ff8"/>
+<text class="legend" x="375.4" y="73">Z AI</text>
+<rect x="24.0" y="80" width="4" height="10" rx="2" fill="#52514e"/>
+<text class="legend" x="40.0" y="89">Cost of one full index run on a subscription (right axis)</text>
+<line class="axis" x1="128" x2="700" y1="348.0" y2="348.0"/>
 <text class="tick" x="120" y="352.0" text-anchor="end">0</text>
-<line class="grid" x1="128" x2="736" y1="268.0" y2="268.0"/>
+<line class="grid" x1="128" x2="700" y1="268.0" y2="268.0"/>
 <text class="tick" x="120" y="272.0" text-anchor="end">20</text>
-<line class="grid" x1="128" x2="736" y1="188.0" y2="188.0"/>
+<line class="grid" x1="128" x2="700" y1="188.0" y2="188.0"/>
 <text class="tick" x="120" y="192.0" text-anchor="end">40</text>
-<line class="grid" x1="128" x2="736" y1="108.0" y2="108.0"/>
+<line class="grid" x1="128" x2="700" y1="108.0" y2="108.0"/>
 <text class="tick" x="120" y="112.0" text-anchor="end">60</text>
-<g><title>Claude Opus 5.5 (Medium, Default Fallback), Anthropic: 51.2</title><rect x="128.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M146.4,348.0 V147.2 Q146.4,143.2 150.4,143.2 H166.4 Q170.4,143.2 170.4,147.2 V348.0 Z"/><text class="val" x="158.4" y="137.2" text-anchor="middle">51.2</text><text class="lbl" transform="translate(158.4 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
-<g><title>GPT-6 Astra (Medium), OpenAI: 49.6</title><rect x="188.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M207.2,348.0 V153.6 Q207.2,149.6 211.2,149.6 H227.2 Q231.2,149.6 231.2,153.6 V348.0 Z"/><text class="val" x="219.2" y="143.6" text-anchor="middle">49.6</text><text class="lbl" transform="translate(219.2 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
-<g><title>Claude Fable 5.1 (Medium, Default Fallback), Anthropic: 48.9</title><rect x="249.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M268.0,348.0 V156.4 Q268.0,152.4 272.0,152.4 H288.0 Q292.0,152.4 292.0,156.4 V348.0 Z"/><text class="val" x="280.0" y="146.4" text-anchor="middle">48.9</text><text class="lbl" transform="translate(280.0 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
-<g><title>GPT-6.1 Sol (Medium), OpenAI: 47.8</title><rect x="310.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M328.8,348.0 V160.8 Q328.8,156.8 332.8,156.8 H348.8 Q352.8,156.8 352.8,160.8 V348.0 Z"/><text class="val" x="340.8" y="150.8" text-anchor="middle">47.8</text><text class="lbl" transform="translate(340.8 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
-<g><title>Grok 4.7 (Low), SpaceXAI: 42.2</title><rect x="371.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#736cd3" d="M389.6,348.0 V183.2 Q389.6,179.2 393.6,179.2 H409.6 Q413.6,179.2 413.6,183.2 V348.0 Z"/><text class="val" x="401.6" y="173.2" text-anchor="middle">42.2</text><text class="lbl" transform="translate(401.6 360.0) rotate(-45)" text-anchor="end">Grok 4.7 (low)</text></g>
-<g><title>Claude Sonnet 5.5 (Medium, Default Fallback), Anthropic: 40.8</title><rect x="432.0" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M450.4,348.0 V188.8 Q450.4,184.8 454.4,184.8 H470.4 Q474.4,184.8 474.4,188.8 V348.0 Z"/><text class="val" x="462.4" y="178.8" text-anchor="middle">40.8</text><text class="lbl" transform="translate(462.4 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
-<g><title>Gemini 3.8 Flash (Medium), Google: 39.8</title><rect x="492.8" y="108" width="60.8" height="240" fill="transparent"/><path fill="#34a853" d="M511.2,348.0 V192.8 Q511.2,188.8 515.2,188.8 H531.2 Q535.2,188.8 535.2,192.8 V348.0 Z"/><text class="val" x="523.2" y="182.8" text-anchor="middle">39.8</text><text class="lbl" transform="translate(523.2 360.0) rotate(-45)" text-anchor="end">Gemini 3.8 Flash</text></g>
-<g><title>Claude Haiku 5.5 (Medium), Anthropic: 34.5</title><rect x="553.6" y="108" width="60.8" height="240" fill="transparent"/><path fill="#cc785c" d="M572.0,348.0 V214.0 Q572.0,210.0 576.0,210.0 H592.0 Q596.0,210.0 596.0,214.0 V348.0 Z"/><text class="val" x="584.0" y="204.0" text-anchor="middle">34.5</text><text class="lbl" transform="translate(584.0 360.0) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
-<g><title>GLM-5.3 (Low), Z AI: 34.3</title><rect x="614.4" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1c7ff8" d="M632.8,348.0 V214.8 Q632.8,210.8 636.8,210.8 H652.8 Q656.8,210.8 656.8,214.8 V348.0 Z"/><text class="val" x="644.8" y="204.8" text-anchor="middle">34.3</text><text class="lbl" transform="translate(644.8 360.0) rotate(-45)" text-anchor="end">GLM-5.3 (low)</text></g>
-<g><title>GPT-5.6 Terra (Medium), OpenAI: 30.1</title><rect x="675.2" y="108" width="60.8" height="240" fill="transparent"/><path fill="#1f1f1f" d="M693.6,348.0 V231.6 Q693.6,227.6 697.6,227.6 H713.6 Q717.6,227.6 717.6,231.6 V348.0 Z"/><text class="val" x="705.6" y="221.6" text-anchor="middle">30.1</text><text class="lbl" transform="translate(705.6 360.0) rotate(-45)" text-anchor="end">GPT-5.6 Terra</text></g>
+<line class="axis" x1="700" x2="700" y1="108" y2="348"/>
+<line class="axis" x1="700" x2="704" y1="348.0" y2="348.0"/>
+<text class="tick" x="708" y="352.0">$0</text>
+<line class="axis" x1="700" x2="704" y1="268.0" y2="268.0"/>
+<text class="tick" x="708" y="272.0">$200</text>
+<line class="axis" x1="700" x2="704" y1="188.0" y2="188.0"/>
+<text class="tick" x="708" y="192.0">$400</text>
+<line class="axis" x1="700" x2="704" y1="108.0" y2="108.0"/>
+<text class="tick" x="708" y="112.0">$600</text>
+<g><title>Claude Opus 5.5 (Medium, Default Fallback), Anthropic: 51.2 · one full index run costs $36 on Claude Max 20x ($1,627 at API prices)</title><rect x="128.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M139.6,348.0 V147.2 Q139.6,143.2 143.6,143.2 H159.6 Q163.6,143.2 163.6,147.2 V348.0 Z"/><path fill="#52514e" d="M165.6,348.0 V337.6 Q165.6,333.6 169.6,333.6 H169.6 Q173.6,333.6 173.6,337.6 V348.0 Z"/><text class="val" x="151.6" y="137.2" text-anchor="middle">51.2</text><text class="lbl" transform="translate(151.6 360.0) rotate(-45)" text-anchor="end">Claude Opus 5.5 (fallback)</text></g>
+<g><title>GPT-6 Astra (Medium), OpenAI: 49.6 · one full index run costs $237 on ChatGPT ($2,434 at API prices)</title><rect x="185.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M196.8,348.0 V153.6 Q196.8,149.6 200.8,149.6 H216.8 Q220.8,149.6 220.8,153.6 V348.0 Z"/><path fill="#52514e" d="M222.8,348.0 V257.0 Q222.8,253.0 226.8,253.0 H226.8 Q230.8,253.0 230.8,257.0 V348.0 Z"/><text class="val" x="208.8" y="143.6" text-anchor="middle">49.6</text><text class="lbl" transform="translate(208.8 360.0) rotate(-45)" text-anchor="end">GPT-6 Astra</text></g>
+<g><title>Claude Fable 5.1 (Medium, Default Fallback), Anthropic: 48.9 · one full index run costs $88 on Claude Max 20x ($3,983 at API prices)</title><rect x="242.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M254.0,348.0 V156.4 Q254.0,152.4 258.0,152.4 H274.0 Q278.0,152.4 278.0,156.4 V348.0 Z"/><path fill="#52514e" d="M280.0,348.0 V316.8 Q280.0,312.8 284.0,312.8 H284.0 Q288.0,312.8 288.0,316.8 V348.0 Z"/><text class="val" x="266.0" y="146.4" text-anchor="middle">48.9</text><text class="lbl" transform="translate(266.0 360.0) rotate(-45)" text-anchor="end">Claude Fable 5.1 (fallback)</text></g>
+<g><title>GPT-6.1 Sol (Medium), OpenAI: 47.8 · one full index run costs $35 on ChatGPT ($361 at API prices)</title><rect x="299.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M311.2,348.0 V160.8 Q311.2,156.8 315.2,156.8 H331.2 Q335.2,156.8 335.2,160.8 V348.0 Z"/><path fill="#52514e" d="M337.2,348.0 V337.9 Q337.2,333.9 341.2,333.9 H341.2 Q345.2,333.9 345.2,337.9 V348.0 Z"/><text class="val" x="323.2" y="150.8" text-anchor="middle">47.8</text><text class="lbl" transform="translate(323.2 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
+<g><title>Grok 4.7 (Low), SpaceXAI: 42.2 · one full index run costs $20 on SuperGrok + X Premium+ ($1,631 at API prices)</title><rect x="356.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#736cd3" d="M368.4,348.0 V183.2 Q368.4,179.2 372.4,179.2 H388.4 Q392.4,179.2 392.4,183.2 V348.0 Z"/><path fill="#52514e" d="M394.4,348.0 V343.8 Q394.4,339.8 398.4,339.8 H398.4 Q402.4,339.8 402.4,343.8 V348.0 Z"/><text class="val" x="380.4" y="173.2" text-anchor="middle">42.2</text><text class="lbl" transform="translate(380.4 360.0) rotate(-45)" text-anchor="end">Grok 4.7 (low)</text></g>
+<g><title>Claude Sonnet 5.5 (Medium, Default Fallback), Anthropic: 40.8 · one full index run costs $14 on Claude Max 20x ($622 at API prices)</title><rect x="414.0" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M425.6,348.0 V188.8 Q425.6,184.8 429.6,184.8 H445.6 Q449.6,184.8 449.6,188.8 V348.0 Z"/><path fill="#52514e" d="M451.6,348.0 V346.5 Q451.6,342.5 455.6,342.5 H455.6 Q459.6,342.5 459.6,346.5 V348.0 Z"/><text class="val" x="437.6" y="178.8" text-anchor="middle">40.8</text><text class="lbl" transform="translate(437.6 360.0) rotate(-45)" text-anchor="end">Claude Sonnet 5.5 (fallback)</text></g>
+<g><title>Gemini 3.8 Flash (Medium), Google: 39.8</title><rect x="471.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M482.8,348.0 V192.8 Q482.8,188.8 486.8,188.8 H502.8 Q506.8,188.8 506.8,192.8 V348.0 Z"/><text class="val" x="494.8" y="182.8" text-anchor="middle">39.8</text><text class="lbl" transform="translate(494.8 360.0) rotate(-45)" text-anchor="end">Gemini 3.8 Flash</text></g>
+<g><title>Claude Haiku 5.5 (Medium), Anthropic: 34.5 · one full index run costs $1.24 on Claude Max 20x ($56 at API prices)</title><rect x="528.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#cc785c" d="M540.0,348.0 V214.0 Q540.0,210.0 544.0,210.0 H560.0 Q564.0,210.0 564.0,214.0 V348.0 Z"/><path fill="#52514e" d="M566.0,348.0 V348.0 Q566.0,347.5 566.5,347.5 H573.5 Q574.0,347.5 574.0,348.0 V348.0 Z"/><text class="val" x="552.0" y="204.0" text-anchor="middle">34.5</text><text class="lbl" transform="translate(552.0 360.0) rotate(-45)" text-anchor="end">Claude Haiku 5.5</text></g>
+<g><title>GLM-5.3 (Low), Z AI: 34.3</title><rect x="585.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1c7ff8" d="M597.2,348.0 V214.8 Q597.2,210.8 601.2,210.8 H617.2 Q621.2,210.8 621.2,214.8 V348.0 Z"/><text class="val" x="609.2" y="204.8" text-anchor="middle">34.3</text><text class="lbl" transform="translate(609.2 360.0) rotate(-45)" text-anchor="end">GLM-5.3 (low)</text></g>
+<g><title>GPT-5.6 Terra (Medium), OpenAI: 30.1 · one full index run costs $44 on ChatGPT ($447 at API prices)</title><rect x="642.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M654.4,348.0 V231.6 Q654.4,227.6 658.4,227.6 H674.4 Q678.4,227.6 678.4,231.6 V348.0 Z"/><path fill="#52514e" d="M680.4,348.0 V334.6 Q680.4,330.6 684.4,330.6 H684.4 Q688.4,330.6 688.4,334.6 V348.0 Z"/><text class="val" x="666.4" y="221.6" text-anchor="middle">30.1</text><text class="lbl" transform="translate(666.4 360.0) rotate(-45)" text-anchor="end">GPT-5.6 Terra</text></g>
 <text class="note" x="24" y="484">Level in brackets: the model&#x27;s highest setting below medium</text>
 </svg>
 <details><summary>Table view</summary>
-<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (Medium, Default Fallback)</td><td>Anthropic</td><td>medium</td><td class="num">51.2</td></tr><tr><td class="num">2</td><td>GPT-6 Astra (Medium)</td><td>OpenAI</td><td>medium</td><td class="num">49.6</td></tr><tr><td class="num">3</td><td>Claude Fable 5.1 (Medium, Default Fallback)</td><td>Anthropic</td><td>medium</td><td class="num">48.9</td></tr><tr><td class="num">4</td><td>GPT-6.1 Sol (Medium)</td><td>OpenAI</td><td>medium</td><td class="num">47.8</td></tr><tr><td class="num">5</td><td>Grok 4.7 (Low)</td><td>SpaceXAI</td><td>low</td><td class="num">42.2</td></tr><tr><td class="num">6</td><td>Claude Sonnet 5.5 (Medium, Default Fallback)</td><td>Anthropic</td><td>medium</td><td class="num">40.8</td></tr><tr><td class="num">7</td><td>Gemini 3.8 Flash (Medium)</td><td>Google</td><td>medium</td><td class="num">39.8</td></tr><tr><td class="num">8</td><td>Claude Haiku 5.5 (Medium)</td><td>Anthropic</td><td>medium</td><td class="num">34.5</td></tr><tr><td class="num">9</td><td>GLM-5.3 (Low)</td><td>Z AI</td><td>low</td><td class="num">34.3</td></tr><tr><td class="num">10</td><td>GPT-5.6 Terra (Medium)</td><td>OpenAI</td><td>medium</td><td class="num">30.1</td></tr></tbody></table></details>
+<table><thead><tr><th>#</th><th>Model</th><th>Lab</th><th>Setting</th><th>Index</th><th>Full index run: API → subscription</th></tr></thead><tbody><tr><td class="num">1</td><td>Claude Opus 5.5 (Medium, Default Fallback)</td><td>Anthropic</td><td>medium</td><td class="num">51.2</td><td>$1,627 → $36 on Claude Max 20x</td></tr><tr><td class="num">2</td><td>GPT-6 Astra (Medium)</td><td>OpenAI</td><td>medium</td><td class="num">49.6</td><td>$2,434 → $237 on ChatGPT</td></tr><tr><td class="num">3</td><td>Claude Fable 5.1 (Medium, Default Fallback)</td><td>Anthropic</td><td>medium</td><td class="num">48.9</td><td>$3,983 → $88 on Claude Max 20x</td></tr><tr><td class="num">4</td><td>GPT-6.1 Sol (Medium)</td><td>OpenAI</td><td>medium</td><td class="num">47.8</td><td>$361 → $35 on ChatGPT</td></tr><tr><td class="num">5</td><td>Grok 4.7 (Low)</td><td>SpaceXAI</td><td>low</td><td class="num">42.2</td><td>$1,631 → $20 on SuperGrok + X Premium+</td></tr><tr><td class="num">6</td><td>Claude Sonnet 5.5 (Medium, Default Fallback)</td><td>Anthropic</td><td>medium</td><td class="num">40.8</td><td>$622 → $14 on Claude Max 20x</td></tr><tr><td class="num">7</td><td>Gemini 3.8 Flash (Medium)</td><td>Google</td><td>medium</td><td class="num">39.8</td><td>–</td></tr><tr><td class="num">8</td><td>Claude Haiku 5.5 (Medium)</td><td>Anthropic</td><td>medium</td><td class="num">34.5</td><td>$56 → $1.24 on Claude Max 20x</td></tr><tr><td class="num">9</td><td>GLM-5.3 (Low)</td><td>Z AI</td><td>low</td><td class="num">34.3</td><td>–</td></tr><tr><td class="num">10</td><td>GPT-5.6 Terra (Medium)</td><td>OpenAI</td><td>medium</td><td class="num">30.1</td><td>$447 → $44 on ChatGPT</td></tr></tbody></table></details>
 </section>
 </body>
 </html>

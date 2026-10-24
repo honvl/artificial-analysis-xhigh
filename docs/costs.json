@@ -1,5 +1,33 @@
 {
   "runs": {
+    "claude-fable-5-1": {
+      "usd": 13128.86,
+      "fetched": "2026-10-24"
+    },
+    "claude-fable-5-1-high": {
+      "usd": 5241.59,
+      "fetched": "2026-10-24"
+    },
+    "claude-fable-5-1-medium": {
+      "usd": 3983.28,
+      "fetched": "2026-10-24"
+    },
+    "claude-fable-5-1-xhigh": {
+      "usd": 9063.11,
+      "fetched": "2026-10-24"
+    },
+    "claude-haiku-5-5-high": {
+      "usd": 94.07,
+      "fetched": "2026-10-24"
+    },
+    "claude-haiku-5-5-medium": {
+      "usd": 56.36,
+      "fetched": "2026-10-24"
+    },
+    "claude-haiku-5-5-xhigh": {
+      "usd": 157.58,
+      "fetched": "2026-10-24"
+    },
     "claude-opus-5-5": {
       "usd": 8708.2,
       "fetched": "2026-10-24"
@@ -16,6 +44,42 @@
       "usd": 4056.65,
       "fetched": "2026-10-24"
     },
+    "claude-sonnet-5-5": {
+      "usd": 7259.5,
+      "fetched": "2026-10-24"
+    },
+    "claude-sonnet-5-5-high": {
+      "usd": 1027.4,
+      "fetched": "2026-10-24"
+    },
+    "claude-sonnet-5-5-medium": {
+      "usd": 622.28,
+      "fetched": "2026-10-24"
+    },
+    "claude-sonnet-5-5-xhigh": {
+      "usd": 2176.82,
+      "fetched": "2026-10-24"
+    },
+    "gpt-5-6-terra-medium": {
+      "usd": 446.53,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-1-sol": {
+      "usd": 1081.55,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-1-sol-high": {
+      "usd": 521.32,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-1-sol-medium": {
+      "usd": 361.37,
+      "fetched": "2026-10-24"
+    },
+    "gpt-6-1-sol-xhigh": {
+      "usd": 662.28,
+      "fetched": "2026-10-24"
+    },
     "gpt-6-astra": {
       "usd": 5324.1,
       "fetched": "2026-10-24"
@@ -30,6 +94,18 @@
     },
     "gpt-6-astra-xhigh": {
       "usd": 3802.98,
+      "fetched": "2026-10-24"
+    },
+    "grok-4-7": {
+      "usd": 4967.35,
+      "fetched": "2026-10-24"
+    },
+    "grok-4-7-high": {
+      "usd": 3880.88,
+      "fetched": "2026-10-24"
+    },
+    "grok-4-7-low": {
+      "usd": 1630.69,
       "fetched": "2026-10-24"
     }
   }

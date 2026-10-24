@@ -153,6 +153,8 @@ class Plans(unittest.TestCase):
     def test_multipliers_are_the_measured_ones(self):
         self.assertEqual(costs.PLANS["Anthropic"], ("Claude Max 20x", 45.3))
         self.assertEqual(costs.PLANS["OpenAI"], ("ChatGPT", 10.25))
+        self.assertEqual(costs.PLANS["SpaceXAI"], ("SuperGrok + X Premium+", 80.0))
+        self.assertNotIn("Meta", costs.PLANS)  # Meta's multiplier was derived from allowances, not measured
 
 
 @unittest.skipUnless(os.environ.get("AA_LIVE"), "set AA_LIVE=1 to hit the real site")
