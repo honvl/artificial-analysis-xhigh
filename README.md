@@ -5,10 +5,27 @@ Intelligence Index chart with every `max` variant swapped for its `xhigh` varian
 
 ## Why I made this
 
-Artificial Analysis shows Claude, GPT and other models at their `max` effort by default. Max isn't
-what people actually run day to day, so those scores aren't the ones I care about. The site does
-have xhigh scores, but you have to pick every model by hand in the model selector each time. This
-repo builds the link that does that for me and keeps it current as the site's default models change.
+Artificial Analysis charts Claude, GPT and other models at their `max` effort by default, and
+xhigh is cheaper and faster. Artificial Analysis's own per-task measurements show it for every model
+in the default chart that has both variants (snapshot from 2026-10-24, max → xhigh):
+
+| Model | Cost per task | Time per task | Output tokens per task | Intelligence Index |
+| --- | --- | --- | --- | --- |
+| Claude Opus 5.5 | $5.98 → $3.46 (−42%) | −38% | −45% | 57.6 → 56.0 |
+| Claude Sonnet 5.5 | $5.46 → $2.01 (−63%) | −55% | −62% | 56.0 → 51.9 |
+| Claude Fable 5.1 | $7.63 → $5.98 (−22%) | −18% | −22% | 53.4 → 53.2 |
+| Claude Haiku 5.5 | $0.213 → $0.124 (−42%) | −31% | −45% | 43.4 → 41.2 |
+| GPT-6 Astra | $3.26 → $2.31 (−29%) | −35% | −38% | 52.7 → 52.4 |
+| GPT-6.1 Sol | $0.724 → $0.393 (−46%) | −50% | −54% | 51.8 → 51.0 |
+| GPT-6 Luna | $0.068 → $0.042 (−38%) | −38% | −45% | 38.1 → 34.6 |
+
+xhigh uses 22% to 62% fewer output tokens, which is where the savings come from. The trade-off is a
+slightly lower Intelligence Index score, 0.2 to 4.1 points lower in this snapshot. Anthropic's docs
+describe `max` as ["absolute maximum capability with no constraints on token spending"](https://platform.claude.com/docs/en/build-with-claude/effort#effort-levels).
+
+The site does show xhigh scores, but you have to pick every model by hand in its model selector.
+This repo builds the link that does that for me and keeps it current as the site's default models
+change.
 
 **Bookmark: https://honvl.github.io/artificial-analysis-xhigh/** redirects to the latest swapped
 link. Add `#info` to the end to see which models were swapped instead of redirecting. See
