@@ -74,6 +74,7 @@ STYLE = """
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
 .aa-chart .legend{fill:var(--ink2);font-size:12px}
+.aa-chart .tval{fill:var(--ink2);font-size:9px}
 """.strip()
 
 _HEX = re.compile(r"#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})")
@@ -268,7 +269,11 @@ def cost_axis(boards: dict[str, list[Entry]], runs: dict[str, float]) -> tuple[i
     values = [c.sub for rows in boards.values() for e in rows if (c := subscription_cost(e, runs))]
     if not values:
         return None
-    top = max(values)
+    return _nice(max(values))
+
+
+def _nice(top: float) -> tuple[int, int]:
+    """A 1/2/5 step giving at most four steps up to ``top``, and the rounded-up maximum."""
     step = next(m * 10**p for p in range(10) for m in (1, 2, 5) if math.ceil(top / (m * 10**p)) <= 4)
     return step, math.ceil(top / step) * step
 
@@ -447,29 +452,53 @@ def pair_label(e: Entry) -> str:
 
 PAIRS_TITLE = "Best model one level down vs the next model"
 NEXT_KEY = "Lighter shade: the lab's next model"
+TIME_BAR = 6
+TIME_COLOR = "#6f7f96"  # a cool slate, apart from the warm grays of the cost bar and the next-model key
+TIME_LABEL = "End-to-end response time in seconds, lower is better (first answer token + 500 tokens)"
 
 
-def render_pairs_svg(pairs: list[Pair], runs: dict[str, float] | None = None, axis: tuple[int, int] | None = None) -> str:
+def speed_text(s: dict[str, float | None]) -> str:
+    parts = []
+    if s.get("ttfat_s") is not None:
+        parts.append(f"first answer token {s['ttfat_s']:.1f} s")
+    if s.get("tps") is not None:
+        parts.append(f"{s['tps']:.0f} tokens/s")
+    parts.append(f"end-to-end {s['e2e_s']:.1f} s")
+    return ", ".join(parts)
+
+
+def render_pairs_svg(
+    pairs: list[Pair],
+    runs: dict[str, float] | None = None,
+    axis: tuple[int, int] | None = None,
+    speeds: dict[str, dict[str, float | None]] | None = None,
+) -> str:
     """Each lab's best model one effort level below its next model, as pairs of columns.
 
     The best model wears the lab's color, the next model a lighter shade of it, and pairs are
-    separated by a gap. Thin cost bars and the dollar axis work as on the level charts.
+    separated by a gap. Thin cost bars and the dollar axis work as on the level charts. With
+    ``speeds`` (slug -> ttfat_s, tps, e2e_s) a third, slate bar shows the end-to-end response
+    time, labelled in seconds on its own scale, since staying in the flow depends on it.
     """
     if not pairs:
         raise ValueError("no pairs to draw")
     entries = [e for p in pairs for e in (p.best, p.nxt)]
     costs = [subscription_cost(e, runs or {}) for e in entries]
     thin = axis is not None and any(costs)
+    times = [(speeds or {}).get(e.slug) for e in entries]
+    timed = any(times)
+    tmax = _nice(max(t["e2e_s"] for t in times if t))[1] if timed else 0
     right = RIGHT_AXIS if thin else RIGHT
-    legend, rows = legend_items(entries, THIN_LABEL if thin else None, ((NEXT_KEY, tint(THIN_COLOR), 10),))
+    keys = [(NEXT_KEY, tint(THIN_COLOR), 10)] + ([(TIME_LABEL, TIME_COLOR, TIME_BAR)] if timed else [])
+    legend, rows = legend_items(entries, THIN_LABEL if thin else None, tuple(keys))
     plot_top = TOP + LEGEND_ROW * (rows - 1)
     base = plot_top + PLOT_H
     height = base + LABEL_BAND
     step, ymax = _scale(max(e.score for e in entries))
-    group_gap = 0.6  # in slots
+    group_gap = 0.5  # in slots
     slot = (W - LEFT - right) / (len(entries) + group_gap * (len(pairs) - 1))
-    bar_w = min(float(MAX_BAR), slot * 0.45)
-    group_w = bar_w + (BAR_GAP + THIN_BAR if thin else 0)
+    bar_w = min(float(MAX_BAR), slot * 0.4)
+    group_w = bar_w + (BAR_GAP + THIN_BAR if thin else 0) + (BAR_GAP + TIME_BAR if timed else 0)
     subtitle = "Intelligence Index. Each pair: a lab's best model one effort level below its next model"
     desc = "; ".join(
         f"{p.lab}: {p.best.name} {p.best.score:.1f} vs {p.nxt.name} {p.nxt.score:.1f}" for p in pairs
@@ -502,7 +531,7 @@ def render_pairs_svg(pairs: list[Pair], runs: dict[str, float] | None = None, ax
             out.append(f'<line class="axis" x1="{W - right}" x2="{W - right + 4}" y1="{y:.1f}" y2="{y:.1f}"/>')
             out.append(f'<text class="tick" x="{W - right + 8}" y="{y + 4:.1f}">${t:,}</text>')
 
-    for i, (e, c) in enumerate(zip(entries, costs)):
+    for i, (e, c, t) in enumerate(zip(entries, costs, times)):
         slot_x = LEFT + (i + group_gap * (i // 2)) * slot
         left_edge = slot_x + slot / 2 - group_w / 2
         cx = left_edge + bar_w / 2
@@ -510,10 +539,18 @@ def render_pairs_svg(pairs: list[Pair], runs: dict[str, float] | None = None, ax
         fill = e.color if i % 2 == 0 else tint(e.color)
         tip = f"{e.name}, {e.lab}: {e.score:.1f}"
         shapes = f'<path fill="{fill}" d="{_column(left_edge, bar_w, top, base)}"/>'
-        if thin and c:
-            tip += f" · one full index run costs {usd(c.sub)} on {c.plan} ({usd(c.api)} at API prices)"
-            cost_top = base - c.sub / axis[1] * PLOT_H
-            shapes += f'<path fill="{THIN_COLOR}" d="{_column(left_edge + bar_w + BAR_GAP, THIN_BAR, cost_top, base)}"/>'
+        x = left_edge + bar_w + BAR_GAP
+        if thin:
+            if c:
+                tip += f" · one full index run costs {usd(c.sub)} on {c.plan} ({usd(c.api)} at API prices)"
+                cost_top = base - c.sub / axis[1] * PLOT_H
+                shapes += f'<path fill="{THIN_COLOR}" d="{_column(x, THIN_BAR, cost_top, base)}"/>'
+            x += THIN_BAR + BAR_GAP
+        if timed and t:
+            tip += f" · {speed_text(t)}"
+            t_top = base - t["e2e_s"] / tmax * PLOT_H
+            shapes += f'<path fill="{TIME_COLOR}" d="{_column(x, TIME_BAR, t_top, base)}"/>'
+            shapes += f'<text class="tval" x="{x + TIME_BAR / 2:.1f}" y="{t_top - 4:.1f}" text-anchor="middle">{t["e2e_s"]:.0f}s</text>'
         out.append(
             f"<g><title>{_esc(tip)}</title>"
             f'<rect x="{slot_x:.1f}" y="{plot_top}" width="{slot:.1f}" height="{PLOT_H}" fill="transparent"/>'
@@ -529,11 +566,14 @@ def render_pairs_svg(pairs: list[Pair], runs: dict[str, float] | None = None, ax
 # --- the summary page --------------------------------------------------------
 
 
-def _pairs_section(pairs: list[Pair], runs: dict[str, float], axis: tuple[int, int] | None) -> str:
+def _pairs_section(
+    pairs: list[Pair], runs: dict[str, float], axis: tuple[int, int] | None, speeds: dict[str, dict]
+) -> str:
     def cell(e: Entry) -> str:
         c = subscription_cost(e, runs)
         run = f" · {usd(c.api)} → {usd(c.sub)} on {_esc(c.plan)}" if c else ""
-        return f"{_esc(pair_label(e))}: {e.score:.1f}{run}"
+        speed = f"<br><span class=\"muted\">{_esc(speed_text(speeds[e.slug]))}</span>" if e.slug in speeds else ""
+        return f"{_esc(pair_label(e))}: {e.score:.1f}{run}{speed}"
 
     rows = "".join(
         f"<tr><td>{_esc(p.lab)}</td><td>{p.low} vs {p.high}</td><td>{cell(p.best)}</td><td>{cell(p.nxt)}</td>"
@@ -543,8 +583,11 @@ def _pairs_section(pairs: list[Pair], runs: dict[str, float], axis: tuple[int, i
     return (
         '<section id="step-down">\n<h2>Best model one level down vs the next model</h2>\n'
         "<p>For each lab, its best model one effort level below its next model, for example Opus 5.5 at high "
-        "against Sonnet 5.5 at xhigh. A lab appears when it has two models with matching effort levels.</p>\n"
-        f"{render_pairs_svg(pairs, runs, axis)}\n"
+        "against Sonnet 5.5 at xhigh. A lab appears when it has two models with matching effort levels. "
+        "The slate bar is Artificial Analysis's end-to-end response time, labelled in seconds: the time to the "
+        "first answer token (thinking included) plus a 500-token answer at the model's speed, so lower keeps you "
+        "in the flow. The table view also gives the first-token time and speed separately.</p>\n"
+        f"{render_pairs_svg(pairs, runs, axis, speeds)}\n"
         "<details><summary>Table view</summary>\n"
         "<table><thead><tr><th>Lab</th><th>Levels</th><th>Best model</th><th>Next model</th><th>Index difference</th></tr></thead>"
         f"<tbody>{rows}</tbody></table></details>\n</section>"
@@ -557,6 +600,7 @@ def render_summary(
     runs: dict[str, float] | None = None,
     axis: tuple[int, int] | None = None,
     pairs: list[Pair] | None = None,
+    speeds: dict[str, dict] | None = None,
 ) -> str:
     runs = runs or {}
     views = " · ".join(f'<a href="{level_href(lv, "", "#info")}">{lv}</a>' for lv in LEVELS)
@@ -616,7 +660,7 @@ the bars as rough. The table views give the exact figures.</p>
 <p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}{' · <a href="#step-down">best model one level down</a>' if pairs else ""}.
 Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 {chr(10).join(sections)}
-{_pairs_section(pairs, runs, axis) if pairs else ""}
+{_pairs_section(pairs, runs, axis, speeds or {}) if pairs else ""}
 </body>
 </html>
 """
@@ -628,6 +672,7 @@ def write_charts(
     now: datetime | None = None,
     runs: dict[str, float] | None = None,
     pairs: list[Pair] | None = None,
+    speeds: dict[str, dict] | None = None,
 ) -> bool:
     """Write summary.html, charts/<grade>.svg, charts/step-down.svg and charts.json under ``out``.
     False if nothing changed.
@@ -637,6 +682,7 @@ def write_charts(
     """
     runs = runs or {}
     pairs = pairs or []
+    speeds = speeds or {}
     axis = cost_axis({**boards, "pairs": [e for p in pairs for e in (p.best, p.nxt)]}, runs)
     data = {}
     for g, rows in boards.items():
@@ -656,7 +702,8 @@ def write_charts(
             )
     pair_data = [
         {"lab": p.lab, "levels": [p.low, p.high], "best": p.best.name, "best_score": p.best.score,
-         "next": p.nxt.name, "next_score": p.nxt.score}
+         "next": p.nxt.name, "next_score": p.nxt.score,
+         "best_speed": speeds.get(p.best.slug), "next_speed": speeds.get(p.nxt.slug)}
         for p in pairs
     ]
     state = {"grades": data, "cost_axis": list(axis) if axis else None, "step_down": pair_data}
@@ -667,10 +714,10 @@ def write_charts(
         changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
     files = {
         "charts.json": json.dumps({"changed_at": changed_at, **state}, indent=2) + "\n",
-        "summary.html": render_summary(boards, changed_at, runs, axis, pairs),
+        "summary.html": render_summary(boards, changed_at, runs, axis, pairs, speeds),
     }
     for grade, rows in boards.items():
         files[f"charts/{grade}.svg"] = svg_file(grade, rows, runs, axis)
     if pairs:
-        files["charts/step-down.svg"] = '<?xml version="1.0" encoding="UTF-8"?>\n' + render_pairs_svg(pairs, runs, axis) + "\n"
+        files["charts/step-down.svg"] = '<?xml version="1.0" encoding="UTF-8"?>\n' + render_pairs_svg(pairs, runs, axis, speeds) + "\n"
     return any([write_text(out / rel, text) for rel, text in files.items()])

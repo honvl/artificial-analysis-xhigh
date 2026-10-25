@@ -107,7 +107,10 @@ For each lab, its best model one effort level below its next model (Opus 5.5 at 
 Sonnet 5.5 at xhigh, and so on), to show whether the bigger model at a lower setting beats the
 smaller one at a higher setting. The next model is drawn in a lighter shade of the lab's color. A
 lab appears when it has two models with matching effort levels, which today means Anthropic and
-OpenAI.
+OpenAI. Besides the subscription-cost bar, each column has a slate bar for staying in the flow:
+Artificial Analysis's end-to-end response time (time to the first answer token, thinking included,
+plus a 500-token answer at the model's speed), labelled in seconds. The table view on the summary
+page gives the first-token time and output speed separately.
 
 ![Best model one level down vs the next model](docs/charts/step-down.svg)
 

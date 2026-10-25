@@ -12,7 +12,8 @@
 .aa-chart .sub{font-size:12px;fill:var(--ink2)}
 .aa-chart .lbl{fill:var(--ink2);font-size:11px}
 .aa-chart .val{fill:var(--ink);font-size:12px;font-weight:600}
-.aa-chart .legend{fill:var(--ink2);font-size:12px}</style>
+.aa-chart .legend{fill:var(--ink2);font-size:12px}
+.aa-chart .tval{fill:var(--ink2);font-size:9px}</style>
 <rect class="surface" x="0.5" y="0.5" width="759" height="497" rx="12"/>
 <text class="title" x="24" y="34">Top models at xhigh effort</text>
 <text class="credit" x="736" y="34" text-anchor="end">Data: artificialanalysis.ai</text>

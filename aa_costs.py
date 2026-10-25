@@ -57,28 +57,60 @@ def _model_object(payload: str, slug: str) -> dict | None:
     return None
 
 
-def full_run_costs(page: str, slugs: list[str]) -> dict[str, float]:
-    """The cost in USD of one full index run for each of ``slugs`` that the page carries."""
+# What the cache keeps per variant, each a positive number or None when the site has none:
+# usd      one full index run at API prices
+# ttfat_s  median time to the first answer token, seconds (includes thinking)
+# tps      median output speed, tokens per second
+# e2e_s    end-to-end response time: first answer token plus a 500-token answer, seconds
+FIELDS = ("usd", "ttfat_s", "tps", "e2e_s")
+
+
+def _num(value: object) -> float | None:
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value) and value > 0:
+        return float(value)
+    return None
+
+
+def _total(obj: dict, key: str) -> float | None:
+    v = obj.get(key)
+    return _num(v.get("total")) if isinstance(v, dict) else None
+
+
+def variant_facts(page: str, slugs: list[str]) -> dict[str, dict[str, float | None]]:
+    """Cost and speed facts for each of ``slugs`` that the page carries any of."""
     payload = flight_payload(page)
-    found: dict[str, float] = {}
+    found: dict[str, dict[str, float | None]] = {}
     for slug in slugs:
         obj = _model_object(payload, slug)
-        cost = (obj or {}).get("intelligenceIndexCost")
-        total = cost.get("total") if isinstance(cost, dict) else None
-        if isinstance(total, (int, float)) and not isinstance(total, bool) and math.isfinite(total) and total > 0:
-            found[slug] = float(total)
+        if obj is None:
+            continue
+        facts = {
+            "usd": _total(obj, "intelligenceIndexCost"),
+            "ttfat_s": _total(obj, "timeToFirstAnswerToken"),
+            "tps": _num((obj.get("timescaleData") or {}).get("medianOutputSpeed")),
+            "e2e_s": _total(obj, "endToEndResponseTime"),
+        }
+        if any(v is not None for v in facts.values()):
+            found[slug] = facts
     return found
 
 
+def full_run_costs(page: str, slugs: list[str]) -> dict[str, float]:
+    """The cost in USD of one full index run for each of ``slugs`` that the page carries."""
+    return {s: f["usd"] for s, f in variant_facts(page, slugs).items() if f["usd"] is not None}
+
+
 def load(path: Path) -> dict[str, dict]:
-    """The cache: ``{slug: {"usd": float, "fetched": "YYYY-MM-DD"}}``."""
+    """The cache: ``{slug: {"usd": ..., "ttfat_s": ..., "tps": ..., "e2e_s": ..., "fetched": "YYYY-MM-DD"}}``."""
     data = read_json(path) or {}
     runs = data.get("runs")
     return {k: v for k, v in runs.items() if _valid_entry(v)} if isinstance(runs, dict) else {}
 
 
 def _valid_entry(v: object) -> bool:
-    if not (isinstance(v, dict) and isinstance(v.get("usd"), (int, float)) and isinstance(v.get("fetched"), str)):
+    if not (isinstance(v, dict) and isinstance(v.get("fetched"), str)):
+        return False
+    if any(k in v and v[k] is not None and _num(v[k]) is None for k in FIELDS):
         return False
     try:
         date.fromisoformat(v["fetched"])
@@ -93,11 +125,23 @@ def save(cache: dict[str, dict], path: Path) -> bool:
 
 
 def usd_by_slug(cache: dict[str, dict]) -> dict[str, float]:
-    return {slug: v["usd"] for slug, v in cache.items()}
+    return {slug: v["usd"] for slug, v in cache.items() if v.get("usd") is not None}
+
+
+def speed_by_slug(cache: dict[str, dict]) -> dict[str, dict[str, float | None]]:
+    """``{slug: {"ttfat_s", "tps", "e2e_s"}}`` for variants with an end-to-end time."""
+    return {
+        slug: {k: v.get(k) for k in ("ttfat_s", "tps", "e2e_s")}
+        for slug, v in cache.items()
+        if v.get("e2e_s") is not None
+    }
 
 
 def _is_stale(entry: dict | None, today: date) -> bool:
-    return entry is None or (today - date.fromisoformat(entry["fetched"])).days >= MAX_AGE_DAYS
+    """Missing, a week old, or written before a field existed (so it is fetched again once)."""
+    if entry is None or any(k not in entry for k in FIELDS):
+        return True
+    return (today - date.fromisoformat(entry["fetched"])).days >= MAX_AGE_DAYS
 
 
 def _pairs(slugs: list[str], anchors: list[str]) -> list[tuple[str, str]]:
@@ -125,7 +169,7 @@ def refresh(
     problems: list[str] = []
     for a, b in _pairs(stale, anchors):
         try:
-            found = full_run_costs(fetcher(COMPARE_URL.format(a=a, b=b)), [a, b])
+            found = variant_facts(fetcher(COMPARE_URL.format(a=a, b=b)), [a, b])
         except (ParseError, OSError) as exc:
             problems.append(f"{a} vs {b}: {exc}")
             continue
@@ -133,7 +177,8 @@ def refresh(
             if slug not in stale:
                 continue  # only here as a partner
             if slug in found:
-                new[slug] = {"usd": round(found[slug], 2), "fetched": today.isoformat()}
+                facts = {k: (round(v, 2) if v is not None else None) for k, v in found[slug].items()}
+                new[slug] = {**facts, "fetched": today.isoformat()}
             else:
-                problems.append(f"{slug}: no full-run cost on its comparison page")
+                problems.append(f"{slug}: no cost or speed data on its comparison page")
     return new, problems

@@ -638,6 +638,38 @@ class StepDown(unittest.TestCase):
         self.assertEqual(len(thin), 4)  # the four priced variants
         self.assertIn("one full index run costs $48 on Claude Max 20x", svg)
 
+    SPEEDS = {
+        "opus-high": {"ttfat_s": 21.5, "tps": 80.6, "e2e_s": 27.7},
+        "sonnet-xhigh": {"ttfat_s": 26.1, "tps": 111.1, "e2e_s": 30.6},
+        "astra-high": {"ttfat_s": 10.0, "tps": 50.0, "e2e_s": 20.0},
+    }
+
+    def test_a_third_bar_shows_end_to_end_time_labelled_in_seconds(self):
+        axis = ch.cost_axis({"pairs": [e for p in self.pairs for e in (p.best, p.nxt)]}, PAIR_RUNS)
+        svg = ch.render_pairs_svg(self.pairs, PAIR_RUNS, axis, self.SPEEDS)
+        root = ET.fromstring(svg)
+        timed = [p for p in root.findall(".//s:path", SVG_NS) if p.get("fill") == ch.TIME_COLOR]
+        self.assertEqual(len(timed), 3)
+        labels = [t.text for t in root.findall(".//s:text", SVG_NS) if t.get("class") == "tval"]
+        self.assertEqual(labels, ["28s", "31s", "20s"])
+        self.assertIn(ch.TIME_LABEL, [t.text for t in root.findall(".//s:text", SVG_NS) if t.get("class") == "legend"])
+        self.assertIn("first answer token 21.5 s, 81 tokens/s, end-to-end 27.7 s", svg)
+        # heights share one scale: 27.7 s and 30.6 s on a 40 s axis
+        h = {round(bar_geometry(p.get("d"))[2], 1) for p in timed}
+        self.assertIn(round(ch.PLOT_H * 27.7 / 40, 1), h)
+
+    def test_three_bars_sit_side_by_side_without_overlap(self):
+        axis = ch.cost_axis({"pairs": [e for p in self.pairs for e in (p.best, p.nxt)]}, PAIR_RUNS)
+        root = ET.fromstring(ch.render_pairs_svg(self.pairs, PAIR_RUNS, axis, self.SPEEDS))
+        spans = sorted(bar_geometry(p.get("d"))[:2] for p in root.findall(".//s:path", SVG_NS))
+        for (a0, a1), (b0, b1) in zip(spans, spans[1:]):
+            self.assertGreaterEqual(b0 - a1, ch.BAR_GAP - 0.2)
+
+    def test_no_speed_data_means_no_third_bar(self):
+        svg = ch.render_pairs_svg(self.pairs, PAIR_RUNS, None, {})
+        self.assertNotIn(ch.TIME_COLOR, svg)
+        self.assertNotIn("tval", svg.split("</style>")[1])
+
     def test_no_pairs_is_an_error(self):
         with self.assertRaises(ValueError):
             ch.render_pairs_svg([])

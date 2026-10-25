@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-25 00:43 UTC",
+  "changed_at": "2026-10-25 00:51 UTC",
   "grades": {
     "max": [
       {
@@ -384,7 +384,17 @@
       "best": "Claude Opus 5.5 (Medium, Default Fallback)",
       "best_score": 51.2,
       "next": "Claude Sonnet 5.5 (High, Default Fallback)",
-      "next_score": 46.8
+      "next_score": 46.8,
+      "best_speed": {
+        "ttfat_s": 10.44,
+        "tps": 83.67,
+        "e2e_s": 16.41
+      },
+      "next_speed": {
+        "ttfat_s": 10.34,
+        "tps": 107.85,
+        "e2e_s": 14.98
+      }
     },
     {
       "lab": "Anthropic",
@@ -395,7 +405,17 @@
       "best": "Claude Opus 5.5 (High, Default Fallback)",
       "best_score": 53.6,
       "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
-      "next_score": 51.9
+      "next_score": 51.9,
+      "best_speed": {
+        "ttfat_s": 21.55,
+        "tps": 80.65,
+        "e2e_s": 27.75
+      },
+      "next_speed": {
+        "ttfat_s": 26.07,
+        "tps": 111.1,
+        "e2e_s": 30.57
+      }
     },
     {
       "lab": "Anthropic",
@@ -406,7 +426,17 @@
       "best": "Claude Opus 5.5 (Xhigh, Default Fallback)",
       "best_score": 56.0,
       "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
-      "next_score": 56.0
+      "next_score": 56.0,
+      "best_speed": {
+        "ttfat_s": 97.91,
+        "tps": 84.85,
+        "e2e_s": 103.8
+      },
+      "next_speed": {
+        "ttfat_s": 343.12,
+        "tps": 132.71,
+        "e2e_s": 346.89
+      }
     },
     {
       "lab": "OpenAI",
@@ -417,7 +447,17 @@
       "best": "GPT-6 Astra (Medium)",
       "best_score": 49.6,
       "next": "GPT-6.1 Sol (High)",
-      "next_score": 50.2
+      "next_score": 50.2,
+      "best_speed": {
+        "ttfat_s": 4.04,
+        "tps": 55.21,
+        "e2e_s": 13.1
+      },
+      "next_speed": {
+        "ttfat_s": 31.33,
+        "tps": 50.74,
+        "e2e_s": 41.18
+      }
     },
     {
       "lab": "OpenAI",
@@ -428,7 +468,17 @@
       "best": "GPT-6 Astra (High)",
       "best_score": 50.9,
       "next": "GPT-6.1 Sol (Xhigh)",
-      "next_score": 51.0
+      "next_score": 51.0,
+      "best_speed": {
+        "ttfat_s": 32.11,
+        "tps": 56.61,
+        "e2e_s": 40.94
+      },
+      "next_speed": {
+        "ttfat_s": 60.09,
+        "tps": 51.34,
+        "e2e_s": 69.83
+      }
     },
     {
       "lab": "OpenAI",
@@ -439,7 +489,17 @@
       "best": "GPT-6 Astra (Xhigh)",
       "best_score": 52.4,
       "next": "GPT-6.1 Sol (Max)",
-      "next_score": 51.8
+      "next_score": 51.8,
+      "best_speed": {
+        "ttfat_s": 132.31,
+        "tps": 54.27,
+        "e2e_s": 141.52
+      },
+      "next_speed": {
+        "ttfat_s": 162.1,
+        "tps": 57.34,
+        "e2e_s": 170.82
+      }
     }
   ]
 }

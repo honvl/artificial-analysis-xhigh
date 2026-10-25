@@ -2,111 +2,192 @@
   "runs": {
     "claude-fable-5-1": {
       "usd": 13128.86,
-      "fetched": "2026-10-24"
+      "ttfat_s": 163.2,
+      "tps": 68.46,
+      "e2e_s": 170.5,
+      "fetched": "2026-10-25"
     },
     "claude-fable-5-1-high": {
       "usd": 5241.59,
-      "fetched": "2026-10-24"
+      "ttfat_s": 25.55,
+      "tps": 59.57,
+      "e2e_s": 33.94,
+      "fetched": "2026-10-25"
     },
     "claude-fable-5-1-medium": {
       "usd": 3983.28,
-      "fetched": "2026-10-24"
+      "ttfat_s": 3.76,
+      "tps": 58.63,
+      "e2e_s": 12.28,
+      "fetched": "2026-10-25"
     },
     "claude-fable-5-1-xhigh": {
       "usd": 9063.11,
-      "fetched": "2026-10-24"
+      "ttfat_s": 60.95,
+      "tps": 64.74,
+      "e2e_s": 68.67,
+      "fetched": "2026-10-25"
     },
     "claude-haiku-5-5-high": {
       "usd": 94.07,
-      "fetched": "2026-10-24"
+      "ttfat_s": 17.81,
+      "tps": 189.26,
+      "e2e_s": 20.45,
+      "fetched": "2026-10-25"
     },
     "claude-haiku-5-5-medium": {
       "usd": 56.36,
-      "fetched": "2026-10-24"
+      "ttfat_s": 7.71,
+      "tps": 180.2,
+      "e2e_s": 10.49,
+      "fetched": "2026-10-25"
     },
     "claude-haiku-5-5-xhigh": {
       "usd": 157.58,
-      "fetched": "2026-10-24"
+      "ttfat_s": 55.53,
+      "tps": 190.2,
+      "e2e_s": 58.16,
+      "fetched": "2026-10-25"
     },
     "claude-opus-5-5": {
       "usd": 8708.2,
-      "fetched": "2026-10-24"
+      "ttfat_s": 562.48,
+      "tps": 96.29,
+      "e2e_s": 567.67,
+      "fetched": "2026-10-25"
     },
     "claude-opus-5-5-high": {
       "usd": 2172.43,
-      "fetched": "2026-10-24"
+      "ttfat_s": 21.55,
+      "tps": 80.65,
+      "e2e_s": 27.75,
+      "fetched": "2026-10-25"
     },
     "claude-opus-5-5-medium": {
       "usd": 1626.81,
-      "fetched": "2026-10-24"
+      "ttfat_s": 10.44,
+      "tps": 83.67,
+      "e2e_s": 16.41,
+      "fetched": "2026-10-25"
     },
     "claude-opus-5-5-xhigh": {
       "usd": 4056.65,
-      "fetched": "2026-10-24"
+      "ttfat_s": 97.91,
+      "tps": 84.85,
+      "e2e_s": 103.8,
+      "fetched": "2026-10-25"
     },
     "claude-sonnet-5-5": {
       "usd": 7259.5,
-      "fetched": "2026-10-24"
+      "ttfat_s": 343.12,
+      "tps": 132.71,
+      "e2e_s": 346.89,
+      "fetched": "2026-10-25"
     },
     "claude-sonnet-5-5-high": {
       "usd": 1027.4,
-      "fetched": "2026-10-24"
+      "ttfat_s": 10.34,
+      "tps": 107.85,
+      "e2e_s": 14.98,
+      "fetched": "2026-10-25"
     },
     "claude-sonnet-5-5-medium": {
       "usd": 622.28,
-      "fetched": "2026-10-24"
+      "ttfat_s": 1.39,
+      "tps": 103.95,
+      "e2e_s": 6.2,
+      "fetched": "2026-10-25"
     },
     "claude-sonnet-5-5-xhigh": {
       "usd": 2176.82,
-      "fetched": "2026-10-24"
+      "ttfat_s": 26.07,
+      "tps": 111.1,
+      "e2e_s": 30.57,
+      "fetched": "2026-10-25"
     },
     "gpt-5-6-terra-medium": {
       "usd": 446.53,
-      "fetched": "2026-10-24"
+      "ttfat_s": 1.6,
+      "tps": 109.13,
+      "e2e_s": 6.18,
+      "fetched": "2026-10-25"
     },
     "gpt-6-1-sol": {
       "usd": 1081.55,
-      "fetched": "2026-10-24"
+      "ttfat_s": 162.1,
+      "tps": 57.34,
+      "e2e_s": 170.82,
+      "fetched": "2026-10-25"
     },
     "gpt-6-1-sol-high": {
       "usd": 521.32,
-      "fetched": "2026-10-24"
+      "ttfat_s": 31.33,
+      "tps": 50.74,
+      "e2e_s": 41.18,
+      "fetched": "2026-10-25"
     },
     "gpt-6-1-sol-medium": {
       "usd": 361.37,
-      "fetched": "2026-10-24"
+      "ttfat_s": 3.96,
+      "tps": 48.62,
+      "e2e_s": 14.25,
+      "fetched": "2026-10-25"
     },
     "gpt-6-1-sol-xhigh": {
       "usd": 662.28,
-      "fetched": "2026-10-24"
+      "ttfat_s": 60.09,
+      "tps": 51.34,
+      "e2e_s": 69.83,
+      "fetched": "2026-10-25"
     },
     "gpt-6-astra": {
       "usd": 5324.1,
-      "fetched": "2026-10-24"
+      "ttfat_s": 246.99,
+      "tps": 58.12,
+      "e2e_s": 255.59,
+      "fetched": "2026-10-25"
     },
     "gpt-6-astra-high": {
       "usd": 2925.01,
-      "fetched": "2026-10-24"
+      "ttfat_s": 32.11,
+      "tps": 56.61,
+      "e2e_s": 40.94,
+      "fetched": "2026-10-25"
     },
     "gpt-6-astra-medium": {
       "usd": 2434.12,
-      "fetched": "2026-10-24"
+      "ttfat_s": 4.04,
+      "tps": 55.21,
+      "e2e_s": 13.1,
+      "fetched": "2026-10-25"
     },
     "gpt-6-astra-xhigh": {
       "usd": 3802.98,
-      "fetched": "2026-10-24"
+      "ttfat_s": 132.31,
+      "tps": 54.27,
+      "e2e_s": 141.52,
+      "fetched": "2026-10-25"
     },
     "grok-4-7": {
       "usd": 4967.35,
-      "fetched": "2026-10-24"
+      "ttfat_s": 34.82,
+      "tps": 96.65,
+      "e2e_s": 39.99,
+      "fetched": "2026-10-25"
     },
     "grok-4-7-high": {
       "usd": 3880.88,
-      "fetched": "2026-10-24"
+      "ttfat_s": 18.67,
+      "tps": 90.91,
+      "e2e_s": 24.17,
+      "fetched": "2026-10-25"
     },
     "grok-4-7-low": {
       "usd": 1630.69,
-      "fetched": "2026-10-24"
+      "ttfat_s": 4.77,
+      "tps": 78.04,
+      "e2e_s": 11.17,
+      "fetched": "2026-10-25"
     }
   }
 }

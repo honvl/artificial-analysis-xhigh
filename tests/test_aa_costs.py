@@ -14,14 +14,25 @@ import aa_costs as costs  # noqa: E402
 TODAY = date(2026, 10, 24)
 
 
-def compare_page(models, chunk_size=97):
-    """A comparison page: a small summary list that mentions each slug, then the full records."""
+def fresh(usd, fetched, **speed):
+    """A cache entry with every field present (absent fields make an entry stale)."""
+    return {"usd": usd, "ttfat_s": None, "tps": None, "e2e_s": None, **speed, "fetched": fetched}
+
+
+def compare_page(models, chunk_size=97, speeds=None):
+    """A comparison page: a small summary list that mentions each slug, then the full records.
+    ``speeds`` maps a slug to (time to first answer token, output speed, end-to-end time)."""
     summary = [{"slug": s, "name": s, "intelligenceIndex": 50} for s in models]
     records = []
     for slug, total in models.items():
         rec = {"slug": slug, "name": slug, **{f"field{i}": i for i in range(25)}}
         if total != "missing":
             rec["intelligenceIndexCost"] = {"total": total, "input": 1.0}
+        if speeds and slug in speeds:
+            ttfat, tps, e2e = speeds[slug]
+            rec["timeToFirstAnswerToken"] = {"input": ttfat, "reasoning": 0, "total": ttfat}
+            rec["timescaleData"] = {"medianOutputSpeed": tps, "medianTimeToFirstChunk": ttfat}
+            rec["endToEndResponseTime"] = {"input": ttfat, "reasoning": 0, "answer": e2e - ttfat, "total": e2e}
         records.append(rec)
     compact = {"separators": (",", ":")}  # the site's payload is compact JSON
     flight = '40:["$","x",null,{"pickerModels":' + json.dumps(summary, **compact) + ',"models":' + json.dumps(records, **compact) + "}]\n"
@@ -53,6 +64,18 @@ class Parse(unittest.TestCase):
         page = compare_page({"ok": 10.0, "none": "missing", "neg": -3.0, "zero": 0, "flag": True, "text": "9"})
         self.assertEqual(costs.full_run_costs(page, ["ok", "none", "neg", "zero", "flag", "text", "absent"]), {"ok": 10.0})
 
+    def test_speed_facts_are_read_and_a_variant_without_cost_is_still_kept(self):
+        page = compare_page({"a": 4057.0, "b": "missing"}, speeds={"a": (21.5, 80.6, 27.7), "b": (26.1, 111.1, 30.6)})
+        facts = costs.variant_facts(page, ["a", "b"])
+        self.assertEqual(facts["a"], {"usd": 4057.0, "ttfat_s": 21.5, "tps": 80.6, "e2e_s": 27.7})
+        self.assertEqual(facts["b"], {"usd": None, "ttfat_s": 26.1, "tps": 111.1, "e2e_s": 30.6})
+        self.assertEqual(costs.full_run_costs(page, ["a", "b"]), {"a": 4057.0})
+
+    def test_speed_by_slug_needs_an_end_to_end_time(self):
+        cache = {"a": fresh(1.0, "2026-10-24", ttfat_s=21.5, tps=80.6, e2e_s=27.7), "b": fresh(2.0, "2026-10-24")}
+        self.assertEqual(costs.speed_by_slug(cache), {"a": {"ttfat_s": 21.5, "tps": 80.6, "e2e_s": 27.7}})
+        self.assertEqual(costs.usd_by_slug({"x": fresh(None, "2026-10-24")}), {})
+
     def test_a_page_without_data_is_a_parse_error(self):
         with self.assertRaises(common.ParseError):
             costs.full_run_costs("<html></html>", ["a"])
@@ -61,26 +84,34 @@ class Parse(unittest.TestCase):
 class Refresh(unittest.TestCase):
     def test_only_stale_or_missing_slugs_are_fetched_two_per_request(self):
         site = FakeSite({"a": 100.0, "b": 200.0, "c": 300.0, "d": 400.0})
-        cache = {"d": {"usd": 111.0, "fetched": "2026-10-23"}}  # fresh
+        cache = {"d": fresh(111.0, "2026-10-23")}
         new, problems = costs.refresh(cache, ["a", "b", "c", "d"], TODAY, site)
         self.assertEqual(problems, [])
         self.assertEqual(len(site.urls), 2)  # a+b, then c on its own with a partner
         self.assertEqual({s: v["usd"] for s, v in new.items()}, {"a": 100.0, "b": 200.0, "c": 300.0, "d": 111.0})
         self.assertEqual(new["a"]["fetched"], "2026-10-24")
-        self.assertEqual(new["d"], {"usd": 111.0, "fetched": "2026-10-23"})  # untouched, and its date is not bumped
+        self.assertEqual(new["d"], fresh(111.0, "2026-10-23"))  # untouched, and its date is not bumped
         requested = {s for u in site.urls for s in u.rsplit("/", 1)[1].split("-vs-")}
         self.assertNotIn("d", requested)  # the fresh entry is never requested, not even as a partner
 
     def test_nothing_to_do_makes_no_requests(self):
         site = FakeSite({})
-        cache = {"a": {"usd": 1.0, "fetched": "2026-10-24"}}
+        cache = {"a": fresh(1.0, "2026-10-24")}
         new, problems = costs.refresh(cache, ["a"], TODAY, site)
         self.assertEqual((new, problems, site.urls), (cache, [], []))
 
+    def test_an_entry_from_before_the_speed_fields_is_fetched_again_once(self):
+        site = FakeSite({"a": 5.0, "b": 6.0})
+        new, _ = costs.refresh({"a": {"usd": 1.0, "fetched": "2026-10-24"}}, ["a"], TODAY, site)
+        self.assertEqual(len(site.urls), 1)
+        self.assertEqual(set(new["a"]), set(costs.FIELDS) | {"fetched"})
+        costs.refresh(new, ["a"], TODAY, site)
+        self.assertEqual(len(site.urls), 1)  # now complete, so not again
+
     def test_an_entry_is_stale_after_a_week(self):
         site = FakeSite({"a": 5.0, "b": 6.0})
-        young = {"a": {"usd": 1.0, "fetched": "2026-10-18"}}  # 6 days
-        old = {"b": {"usd": 1.0, "fetched": "2026-10-17"}}  # 7 days
+        young = {"a": fresh(1.0, "2026-10-18")}  # 6 days
+        old = {"b": fresh(1.0, "2026-10-17")}  # 7 days
         costs.refresh(young, ["a"], TODAY, site)
         self.assertEqual(site.urls, [])
         new, _ = costs.refresh(old, ["b"], TODAY, site)
