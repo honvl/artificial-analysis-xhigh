@@ -26,8 +26,11 @@ COMPARE_URL = "https://artificialanalysis.ai/models/comparisons/{a}-vs-{b}"
 MAX_AGE_DAYS = 7
 
 # Lab (as Artificial Analysis names it) -> (plan, how many times more usage than API list prices it
-# gives). Only labs with a multiplier that was measured by burning the plan are listed: Meta's
-# figure was derived from its stated allowances rather than measured, so it is left out.
+# gives). Only labs with a multiplier measured by burning the plan are listed. Left out on purpose:
+# Meta, whose only measurements are for Muse Spark 1.3, taken before Muse Wonder launched, disagree
+# with each other (about 11x to 51x for the $50 plan) and do not carry over to Muse Wonder Full,
+# which burns quota far faster and has no API price; and Google, for which nothing has been
+# published. Adding a lab is one line here once someone measures it.
 PLANS: dict[str, tuple[str, float]] = {
     "Anthropic": ("Claude Max 20x", 45.3),
     "OpenAI": ("ChatGPT", 10.25),

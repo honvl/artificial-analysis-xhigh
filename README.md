@@ -79,6 +79,12 @@ xhigh, $48 at high and $36 at medium (2026-10-24). Only labs with a measured mul
 (Anthropic, OpenAI and xAI), so Google, Meta, Kimi and the rest have none. The exact figures are in
 the table views on the summary page.
 
+Meta and Google are waiting on a measurement. The only Muse multipliers were taken on Muse Spark 1.3
+before Muse Wonder launched, they range from about 11x to 51x for the $50 plan depending on the
+source, and they do not carry over to Muse Wonder Full, which users report burns a plan's quota far
+faster and which has no API price to divide. Nobody has published a Gemini plan multiplier yet.
+Adding either is one line in `PLANS` in `aa_costs.py` once there is a number.
+
 ### max (the Artificial Analysis default)
 
 ![Top models at max effort](docs/charts/max.svg)
