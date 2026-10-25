@@ -154,16 +154,14 @@ def _pick(candidates: list[Entry], grade: str) -> Entry | None:
     return max(reasoning, key=lambda c: (c.score, c.name)) if reasoning else None
 
 
-def leaderboards(
-    models: list[dict], variants: list[dict], grades: tuple[str, ...] = GRADES, n: int = TOP_N
-) -> dict[str, list[Entry]]:
-    """Top ``n`` models by Intelligence Index on each effort level's chart.
+def families(models: list[dict], variants: list[dict]) -> dict[str, list[Entry]]:
+    """Every scored variant, grouped by the release (model) it belongs to.
 
-    ``variants`` is the site's ``{slug, name, releaseSlug}`` list, used to group the
-    variants of one model together.
+    ``variants`` is the site's ``{slug, name, releaseSlug}`` list; a slug missing from it
+    stands alone.
     """
     release_of = {v["slug"]: v["releaseSlug"] for v in variants}
-    families: dict[str, list[Entry]] = {}
+    grouped: dict[str, list[Entry]] = {}
     for m in models:
         score = m["intelligenceIndex"]
         if isinstance(score, bool) or not isinstance(score, (int, float)):
@@ -177,16 +175,66 @@ def leaderboards(
             score=round(float(score), 1),
             effort=parse_label(m["name"]).effort,
         )
-        families.setdefault(release_of.get(m["slug"]) or m["slug"], []).append(entry)
+        grouped.setdefault(release_of.get(m["slug"]) or m["slug"], []).append(entry)
+    return grouped
 
+
+def leaderboards(
+    models: list[dict], variants: list[dict], grades: tuple[str, ...] = GRADES, n: int = TOP_N
+) -> dict[str, list[Entry]]:
+    """Top ``n`` models by Intelligence Index on each effort level's chart."""
+    grouped = families(models, variants)
     boards: dict[str, list[Entry]] = {}
     for grade in grades:
-        picked = [e for e in (_pick(c, grade) for c in families.values()) if e]
+        picked = [e for e in (_pick(c, grade) for c in grouped.values()) if e]
         picked.sort(key=lambda e: (-e.score, e.name))
         if not picked:
             raise ParseError(f"no models on the {grade} chart")
         boards[grade] = picked[:n]
     return boards
+
+
+# --- best model one level down vs the next model -----------------------------
+
+# (level of the lab's best model, level of its next model): the best one always one step lower.
+STEPS = (("medium", "high"), ("high", "xhigh"), ("xhigh", "max"))
+
+
+@dataclass(frozen=True)
+class Pair:
+    lab: str
+    low: str  # the best model's level
+    high: str  # the next model's level
+    best: Entry
+    nxt: Entry
+
+
+def _at(family: list[Entry], level: str) -> Entry | None:
+    hits = [e for e in family if e.effort == level]
+    return max(hits, key=lambda e: (e.score, e.name)) if hits else None
+
+
+def step_down_pairs(models: list[dict], variants: list[dict], steps: tuple[tuple[str, str], ...] = STEPS) -> list[Pair]:
+    """For each lab, its best model one effort level below its next model, at every step where
+    both settings exist. "Best" and "next" rank the lab's models by their highest score at any
+    labelled level; models with no labelled level cannot be paired."""
+    by_lab: dict[str, list[list[Entry]]] = {}
+    for family in families(models, variants).values():
+        labelled = [e for e in family if e.effort]
+        if labelled:
+            by_lab.setdefault(labelled[0].lab, []).append(labelled)
+    ranked = []
+    for lab, fams in by_lab.items():
+        fams.sort(key=lambda f: (-max(e.score for e in f), min(e.name for e in f)))
+        if len(fams) >= 2:
+            ranked.append((max(e.score for e in fams[0]), lab, fams[0], fams[1]))
+    pairs = []
+    for _, lab, best, nxt in sorted(ranked, key=lambda r: (-r[0], r[1])):
+        for low, high in steps:
+            a, b = _at(best, low), _at(nxt, high)
+            if a and b:
+                pairs.append(Pair(lab, low, high, a, b))
+    return pairs
 
 
 # --- subscription cost -------------------------------------------------------
@@ -258,13 +306,15 @@ def footnote(grade: str, entries: list[Entry]) -> str:
     return " · ".join(parts)
 
 
-def legend_items(entries: list[Entry], thin_label: str | None = None) -> tuple[list[tuple[float, int, str, str, int]], int]:
-    """One swatch per lab in the chart, in rank order, then the cost bar's key, wrapped to the
-    chart width. Returns ``([(x, row, fill, name, swatch_width), ...], row_count)``."""
+def legend_items(
+    entries: list[Entry], thin_label: str | None = None, extra: tuple[tuple[str, str, int], ...] = ()
+) -> tuple[list[tuple[float, int, str, str, int]], int]:
+    """One swatch per lab in the chart, in rank order, then any ``extra`` keys and the cost bar's
+    key, wrapped to the chart width. Returns ``([(x, row, fill, name, swatch_width), ...], row_count)``."""
     labs: dict[str, str] = {}
     for e in entries:
         labs.setdefault(e.lab or "Unknown", e.color)
-    keys = [(name, color, 10) for name, color in labs.items()]
+    keys = [(name, color, 10) for name, color in labs.items()] + list(extra)
     if thin_label:
         keys.append((thin_label, THIN_COLOR, THIN_BAR // 2))
     items, x, row = [], 24.0, 0
@@ -384,7 +434,121 @@ def svg_file(
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + render_svg(grade, entries, runs, axis) + "\n"
 
 
+def tint(color: str, amount: float = 0.5) -> str:
+    """``color`` mixed with white: the lighter shade marks a lab's next model."""
+    rgb = [int(color[i : i + 2], 16) for i in (1, 3, 5)]
+    return "#" + "".join(f"{round(c + (255 - c) * amount):02x}" for c in rgb)
+
+
+def pair_label(e: Entry) -> str:
+    """'Claude Opus 5.5 · high': the model without its qualifier, then the level."""
+    return _clip(re.sub(r"\s*\([^()]*\)\s*$", "", e.label), LABEL_CHARS - len(f" · {e.effort}")) + f" · {e.effort}"
+
+
+PAIRS_TITLE = "Best model one level down vs the next model"
+NEXT_KEY = "Lighter shade: the lab's next model"
+
+
+def render_pairs_svg(pairs: list[Pair], runs: dict[str, float] | None = None, axis: tuple[int, int] | None = None) -> str:
+    """Each lab's best model one effort level below its next model, as pairs of columns.
+
+    The best model wears the lab's color, the next model a lighter shade of it, and pairs are
+    separated by a gap. Thin cost bars and the dollar axis work as on the level charts.
+    """
+    if not pairs:
+        raise ValueError("no pairs to draw")
+    entries = [e for p in pairs for e in (p.best, p.nxt)]
+    costs = [subscription_cost(e, runs or {}) for e in entries]
+    thin = axis is not None and any(costs)
+    right = RIGHT_AXIS if thin else RIGHT
+    legend, rows = legend_items(entries, THIN_LABEL if thin else None, ((NEXT_KEY, tint(THIN_COLOR), 10),))
+    plot_top = TOP + LEGEND_ROW * (rows - 1)
+    base = plot_top + PLOT_H
+    height = base + LABEL_BAND
+    step, ymax = _scale(max(e.score for e in entries))
+    group_gap = 0.6  # in slots
+    slot = (W - LEFT - right) / (len(entries) + group_gap * (len(pairs) - 1))
+    bar_w = min(float(MAX_BAR), slot * 0.45)
+    group_w = bar_w + (BAR_GAP + THIN_BAR if thin else 0)
+    subtitle = "Intelligence Index. Each pair: a lab's best model one effort level below its next model"
+    desc = "; ".join(
+        f"{p.lab}: {p.best.name} {p.best.score:.1f} vs {p.nxt.name} {p.nxt.score:.1f}" for p in pairs
+    )
+
+    out = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 {W} {height}" width="{W}" height="{height}"'
+        ' role="img" aria-labelledby="t-pairs d-pairs">',
+        f'<title id="t-pairs">{_esc(PAIRS_TITLE)}</title>',
+        f'<desc id="d-pairs">{_esc(desc)}</desc>',
+        f"<style>{STYLE}</style>",
+        f'<rect class="surface" x="0.5" y="0.5" width="{W - 1}" height="{height - 1}" rx="12"/>',
+        f'<text class="title" x="24" y="34">{_esc(PAIRS_TITLE)}</text>',
+        f'<text class="credit" x="{W - 24}" y="34" text-anchor="end">Data: artificialanalysis.ai</text>',
+        f'<text class="sub" x="24" y="54">{_esc(subtitle)}</text>',
+    ]
+    for x, row, fill, name, swatch in legend:
+        y = LEGEND_ROW * row
+        out.append(f'<rect x="{x:.1f}" y="{64 + y}" width="{swatch}" height="10" rx="2" fill="{fill}"/>')
+        out.append(f'<text class="legend" x="{x + 16:.1f}" y="{73 + y}">{_esc(name)}</text>')
+    for t in range(0, ymax + 1, step):
+        y = base - t / ymax * PLOT_H
+        out.append(f'<line class="{"axis" if t == 0 else "grid"}" x1="{LEFT}" x2="{W - right}" y1="{y:.1f}" y2="{y:.1f}"/>')
+        out.append(f'<text class="tick" x="{LEFT - 8}" y="{y + 4:.1f}" text-anchor="end">{t}</text>')
+    if thin:
+        cstep, cmax = axis
+        out.append(f'<line class="axis" x1="{W - right}" x2="{W - right}" y1="{plot_top}" y2="{base}"/>')
+        for t in range(0, cmax + 1, cstep):
+            y = base - t / cmax * PLOT_H
+            out.append(f'<line class="axis" x1="{W - right}" x2="{W - right + 4}" y1="{y:.1f}" y2="{y:.1f}"/>')
+            out.append(f'<text class="tick" x="{W - right + 8}" y="{y + 4:.1f}">${t:,}</text>')
+
+    for i, (e, c) in enumerate(zip(entries, costs)):
+        slot_x = LEFT + (i + group_gap * (i // 2)) * slot
+        left_edge = slot_x + slot / 2 - group_w / 2
+        cx = left_edge + bar_w / 2
+        top = base - e.score / ymax * PLOT_H
+        fill = e.color if i % 2 == 0 else tint(e.color)
+        tip = f"{e.name}, {e.lab}: {e.score:.1f}"
+        shapes = f'<path fill="{fill}" d="{_column(left_edge, bar_w, top, base)}"/>'
+        if thin and c:
+            tip += f" · one full index run costs {usd(c.sub)} on {c.plan} ({usd(c.api)} at API prices)"
+            cost_top = base - c.sub / axis[1] * PLOT_H
+            shapes += f'<path fill="{THIN_COLOR}" d="{_column(left_edge + bar_w + BAR_GAP, THIN_BAR, cost_top, base)}"/>'
+        out.append(
+            f"<g><title>{_esc(tip)}</title>"
+            f'<rect x="{slot_x:.1f}" y="{plot_top}" width="{slot:.1f}" height="{PLOT_H}" fill="transparent"/>'
+            f"{shapes}"
+            f'<text class="val" x="{cx:.1f}" y="{top - 6:.1f}" text-anchor="middle">{e.score:.1f}</text>'
+            f'<text class="lbl" transform="translate({cx:.1f} {base + 12:.1f}) rotate(-45)" text-anchor="end">'
+            f"{_esc(pair_label(e))}</text></g>"
+        )
+    out.append("</svg>")
+    return "\n".join(out)
+
+
 # --- the summary page --------------------------------------------------------
+
+
+def _pairs_section(pairs: list[Pair], runs: dict[str, float], axis: tuple[int, int] | None) -> str:
+    def cell(e: Entry) -> str:
+        c = subscription_cost(e, runs)
+        run = f" · {usd(c.api)} → {usd(c.sub)} on {_esc(c.plan)}" if c else ""
+        return f"{_esc(pair_label(e))}: {e.score:.1f}{run}"
+
+    rows = "".join(
+        f"<tr><td>{_esc(p.lab)}</td><td>{p.low} vs {p.high}</td><td>{cell(p.best)}</td><td>{cell(p.nxt)}</td>"
+        f'<td class="num">{p.best.score - p.nxt.score:+.1f}</td></tr>'
+        for p in pairs
+    )
+    return (
+        '<section id="step-down">\n<h2>Best model one level down vs the next model</h2>\n'
+        "<p>For each lab, its best model one effort level below its next model, for example Opus 5.5 at high "
+        "against Sonnet 5.5 at xhigh. A lab appears when it has two models with matching effort levels.</p>\n"
+        f"{render_pairs_svg(pairs, runs, axis)}\n"
+        "<details><summary>Table view</summary>\n"
+        "<table><thead><tr><th>Lab</th><th>Levels</th><th>Best model</th><th>Next model</th><th>Index difference</th></tr></thead>"
+        f"<tbody>{rows}</tbody></table></details>\n</section>"
+    )
 
 
 def render_summary(
@@ -392,6 +556,7 @@ def render_summary(
     changed_at: str,
     runs: dict[str, float] | None = None,
     axis: tuple[int, int] | None = None,
+    pairs: list[Pair] | None = None,
 ) -> str:
     runs = runs or {}
     views = " · ".join(f'<a href="{level_href(lv, "", "#info")}">{lv}</a>' for lv in LEVELS)
@@ -448,24 +613,31 @@ gives than API list prices ({_esc(plans)}), as measured by
 <a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. Only labs with a
 measured multiplier get a bar. These are one person's estimates on one model per vendor, so treat
 the bars as rough. The table views give the exact figures.</p>
-<p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}.
+<p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}{' · <a href="#step-down">best model one level down</a>' if pairs else ""}.
 Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 {chr(10).join(sections)}
+{_pairs_section(pairs, runs, axis) if pairs else ""}
 </body>
 </html>
 """
 
 
 def write_charts(
-    boards: dict[str, list[Entry]], out: Path, now: datetime | None = None, runs: dict[str, float] | None = None
+    boards: dict[str, list[Entry]],
+    out: Path,
+    now: datetime | None = None,
+    runs: dict[str, float] | None = None,
+    pairs: list[Pair] | None = None,
 ) -> bool:
-    """Write summary.html, charts/<grade>.svg and charts.json under ``out``. False if nothing changed.
+    """Write summary.html, charts/<grade>.svg, charts/step-down.svg and charts.json under ``out``.
+    False if nothing changed.
 
     ``runs`` maps a variant slug to the cost in USD of a full index run at API prices; it feeds the
-    thin subscription-cost bars.
+    thin subscription-cost bars. ``pairs`` feeds the best-model-one-level-down chart.
     """
     runs = runs or {}
-    axis = cost_axis(boards, runs)
+    pairs = pairs or []
+    axis = cost_axis({**boards, "pairs": [e for p in pairs for e in (p.best, p.nxt)]}, runs)
     data = {}
     for g, rows in boards.items():
         data[g] = []
@@ -482,7 +654,12 @@ def write_charts(
                     "full_run_subscription": c and round(c.sub, 2),
                 }
             )
-    state = {"grades": data, "cost_axis": list(axis) if axis else None}
+    pair_data = [
+        {"lab": p.lab, "levels": [p.low, p.high], "best": p.best.name, "best_score": p.best.score,
+         "next": p.nxt.name, "next_score": p.nxt.score}
+        for p in pairs
+    ]
+    state = {"grades": data, "cost_axis": list(axis) if axis else None, "step_down": pair_data}
     old = read_json(out / "charts.json")
     if old and {k: old.get(k) for k in state} == state and old.get("changed_at"):
         changed_at = old["changed_at"]
@@ -490,8 +667,10 @@ def write_charts(
         changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
     files = {
         "charts.json": json.dumps({"changed_at": changed_at, **state}, indent=2) + "\n",
-        "summary.html": render_summary(boards, changed_at, runs, axis),
+        "summary.html": render_summary(boards, changed_at, runs, axis, pairs),
     }
     for grade, rows in boards.items():
         files[f"charts/{grade}.svg"] = svg_file(grade, rows, runs, axis)
+    if pairs:
+        files["charts/step-down.svg"] = '<?xml version="1.0" encoding="UTF-8"?>\n' + render_pairs_svg(pairs, runs, axis) + "\n"
     return any([write_text(out / rel, text) for rel, text in files.items()])

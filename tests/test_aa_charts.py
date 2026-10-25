@@ -565,6 +565,103 @@ class Output(unittest.TestCase):
             self.assertIn("#abcdef", (out / "charts/max.svg").read_text())
 
 
+PAIR_MODELS = [
+    model("opus-medium", "Claude Opus 5.5 (Medium, Default Fallback)", 51.2, release="opus"),
+    model("opus-high", "Claude Opus 5.5 (High, Default Fallback)", 53.6, release="opus"),
+    model("opus-xhigh", "Claude Opus 5.5 (Xhigh, Default Fallback)", 56.0, release="opus"),
+    model("opus-max", "Claude Opus 5.5 (Max, Default Fallback)", 57.6, release="opus"),
+    model("sonnet-high", "Claude Sonnet 5.5 (High, Default Fallback)", 46.8, release="sonnet"),
+    model("sonnet-xhigh", "Claude Sonnet 5.5 (Xhigh, Default Fallback)", 51.9, release="sonnet"),
+    model("sonnet-max", "Claude Sonnet 5.5 (Max, Default Fallback)", 56.0, release="sonnet"),
+    model("haiku-max", "Claude Haiku 5.5 (Max)", 43.4, release="haiku"),  # third: never paired
+    model("astra-high", "GPT-6 Astra (High)", 50.9, "OpenAI", release="astra"),
+    model("astra-xhigh", "GPT-6 Astra (Xhigh)", 52.4, "OpenAI", release="astra"),
+    model("sol-xhigh", "GPT-6.1 Sol (Xhigh)", 51.0, "OpenAI", release="sol"),  # no Max: no xhigh-vs-max pair
+    model("gem-high", "Gemini 4 Argon (High)", 52.6, "Google", release="gem"),  # one model: no pair
+    model("kimi", "Kimi K3.1 Pro", 55.0, "Kimi", release="kimi"),
+    model("kimi-2", "Kimi K3 (Max)", 50.0, "Kimi", release="kimi2"),  # unlabelled best can't pair
+]
+PAIR_VARIANTS = [{"slug": m["slug"], "name": m["name"], "releaseSlug": m["_release"]} for m in PAIR_MODELS]
+PAIR_RUNS = {"opus-high": 2172.0, "sonnet-xhigh": 2177.0, "astra-high": 2925.0, "sol-xhigh": 662.0}
+
+
+class StepDown(unittest.TestCase):
+    def setUp(self):
+        self.pairs = ch.step_down_pairs(PAIR_MODELS, PAIR_VARIANTS)
+
+    def test_best_model_one_level_below_the_next_model(self):
+        got = [(p.lab, p.low, p.high, p.best.slug, p.nxt.slug) for p in self.pairs]
+        self.assertEqual(
+            got,
+            [
+                ("Anthropic", "medium", "high", "opus-medium", "sonnet-high"),
+                ("Anthropic", "high", "xhigh", "opus-high", "sonnet-xhigh"),
+                ("Anthropic", "xhigh", "max", "opus-xhigh", "sonnet-max"),
+                ("OpenAI", "high", "xhigh", "astra-high", "sol-xhigh"),
+            ],
+        )
+
+    def test_labs_without_two_labelled_models_are_left_out(self):
+        labs = {p.lab for p in self.pairs}
+        self.assertNotIn("Google", labs)  # one model
+        self.assertNotIn("Kimi", labs)  # its best model has no effort label
+        self.assertNotIn("haiku-max", {p.nxt.slug for p in self.pairs})  # only the top two models pair
+
+    def test_tint(self):
+        self.assertEqual(ch.tint("#000000"), "#808080")
+        self.assertEqual(ch.tint("#ffffff"), "#ffffff")
+        self.assertEqual(ch.tint("#cc785c", 0), "#cc785c")
+
+    def test_chart_draws_each_pair_with_the_next_model_lighter(self):
+        root = ET.fromstring(ch.render_pairs_svg(self.pairs))
+        paths = root.findall(".//s:path", SVG_NS)
+        self.assertEqual(len(paths), 2 * len(self.pairs))
+        for i, p in enumerate(self.pairs):
+            self.assertEqual(paths[2 * i].get("fill"), p.best.color)
+            self.assertEqual(paths[2 * i + 1].get("fill"), ch.tint(p.nxt.color))
+        labels = [t.text for t in root.findall(".//s:text", SVG_NS) if t.get("class") == "lbl"]
+        self.assertEqual(labels[:2], ["Claude Opus 5.5 · medium", "Claude Sonnet 5.5 · high"])
+        legend = [t.text for t in root.findall(".//s:text", SVG_NS) if t.get("class") == "legend"]
+        self.assertIn(ch.NEXT_KEY, legend)
+
+    def test_pairs_are_separated_by_a_wider_gap(self):
+        root = ET.fromstring(ch.render_pairs_svg(self.pairs))
+        lefts = [bar_geometry(p.get("d"))[0] for p in root.findall(".//s:path", SVG_NS)]
+        within, between = lefts[1] - lefts[0], lefts[2] - lefts[1]
+        self.assertGreater(between, within * 1.4)
+
+    def test_cost_bars_and_shared_axis(self):
+        axis = ch.cost_axis({"pairs": [e for p in self.pairs for e in (p.best, p.nxt)]}, PAIR_RUNS)
+        svg = ch.render_pairs_svg(self.pairs, PAIR_RUNS, axis)
+        root = ET.fromstring(svg)
+        thin = [p for p in root.findall(".//s:path", SVG_NS) if p.get("fill") == ch.THIN_COLOR]
+        self.assertEqual(len(thin), 4)  # the four priced variants
+        self.assertIn("one full index run costs $48 on Claude Max 20x", svg)
+
+    def test_no_pairs_is_an_error(self):
+        with self.assertRaises(ValueError):
+            ch.render_pairs_svg([])
+
+    def test_written_to_the_page_the_svg_and_the_state(self):
+        boards = ch.leaderboards(PAIR_MODELS, PAIR_VARIANTS)
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            ch.write_charts(boards, out, runs=PAIR_RUNS, pairs=self.pairs)
+            ET.fromstring((out / "charts/step-down.svg").read_bytes())
+            page = (out / "summary.html").read_text()
+            self.assertIn('<section id="step-down">', page)
+            self.assertIn('href="#step-down"', page)
+            self.assertIn("<td>high vs xhigh</td>", page)
+            self.assertIn('<td class="num">+1.7</td>', page)  # Opus high 53.6 vs Sonnet xhigh 51.9
+            state = json.loads((out / "charts.json").read_text())
+            self.assertEqual(state["step_down"][1]["levels"], ["high", "xhigh"])
+            # without pairs there is no section and no file
+            other = Path(tmp) / "other"
+            ch.write_charts(boards, other)
+            self.assertFalse((other / "charts/step-down.svg").exists())
+            self.assertNotIn("step-down", (other / "summary.html").read_text())
+
+
 @unittest.skipUnless(os.environ.get("AA_LIVE"), "set AA_LIVE=1 to hit the real site")
 class Live(unittest.TestCase):
     def test_real_leaderboard(self):

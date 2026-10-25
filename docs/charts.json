@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-24 23:26 UTC",
+  "changed_at": "2026-10-25 00:43 UTC",
   "grades": {
     "max": [
       {
@@ -373,5 +373,73 @@
   "cost_axis": [
     200,
     600
+  ],
+  "step_down": [
+    {
+      "lab": "Anthropic",
+      "levels": [
+        "medium",
+        "high"
+      ],
+      "best": "Claude Opus 5.5 (Medium, Default Fallback)",
+      "best_score": 51.2,
+      "next": "Claude Sonnet 5.5 (High, Default Fallback)",
+      "next_score": 46.8
+    },
+    {
+      "lab": "Anthropic",
+      "levels": [
+        "high",
+        "xhigh"
+      ],
+      "best": "Claude Opus 5.5 (High, Default Fallback)",
+      "best_score": 53.6,
+      "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
+      "next_score": 51.9
+    },
+    {
+      "lab": "Anthropic",
+      "levels": [
+        "xhigh",
+        "max"
+      ],
+      "best": "Claude Opus 5.5 (Xhigh, Default Fallback)",
+      "best_score": 56.0,
+      "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
+      "next_score": 56.0
+    },
+    {
+      "lab": "OpenAI",
+      "levels": [
+        "medium",
+        "high"
+      ],
+      "best": "GPT-6 Astra (Medium)",
+      "best_score": 49.6,
+      "next": "GPT-6.1 Sol (High)",
+      "next_score": 50.2
+    },
+    {
+      "lab": "OpenAI",
+      "levels": [
+        "high",
+        "xhigh"
+      ],
+      "best": "GPT-6 Astra (High)",
+      "best_score": 50.9,
+      "next": "GPT-6.1 Sol (Xhigh)",
+      "next_score": 51.0
+    },
+    {
+      "lab": "OpenAI",
+      "levels": [
+        "xhigh",
+        "max"
+      ],
+      "best": "GPT-6 Astra (Xhigh)",
+      "best_score": 52.4,
+      "next": "GPT-6.1 Sol (Max)",
+      "next_score": 51.8
+    }
   ]
 }

@@ -302,15 +302,17 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{'updated' if changed else 'unchanged'}: {lv}", file=sys.stderr)
         # The charts come from a separate page, so a failure there must not hold back the links.
         try:
-            boards = aa_charts.leaderboards(aa_charts.leaderboard_models(fetch(aa_charts.LEADERBOARD_URL)), variants)
-            wanted = aa_charts.wanted_slugs(boards)
+            models = aa_charts.leaderboard_models(fetch(aa_charts.LEADERBOARD_URL))
+            boards = aa_charts.leaderboards(models, variants)
+            pairs = aa_charts.step_down_pairs(models, variants)
+            wanted = aa_charts.wanted_slugs({**boards, "pairs": [e for p in pairs for e in (p.best, p.nxt)]})
             costs_path = args.write / "costs.json"
             cache, problems = aa_costs.refresh(aa_costs.load(costs_path), wanted, datetime.now(timezone.utc).date())
             aa_costs.save(cache, costs_path)
             for problem in problems:
                 print(f"warning: full-run cost: {problem}", file=sys.stderr)
             runs = aa_costs.usd_by_slug(cache)
-            changed = aa_charts.write_charts(boards, args.write, runs=runs)
+            changed = aa_charts.write_charts(boards, args.write, runs=runs, pairs=pairs)
             print(f"{'updated' if changed else 'unchanged'}: summary charts", file=sys.stderr)
             if any(slug not in runs for slug in wanted):  # a cost line is missing, and nothing cached to fall back on
                 print("error: summary charts: no full-run cost for some models, so a cost line is missing", file=sys.stderr)

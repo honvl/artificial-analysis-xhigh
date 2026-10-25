@@ -101,6 +101,16 @@ Adding either is one line in `PLANS` in `aa_costs.py` once there is a number.
 
 ![Top models at medium effort](docs/charts/medium.svg)
 
+### Best model one level down vs the next model
+
+For each lab, its best model one effort level below its next model (Opus 5.5 at high against
+Sonnet 5.5 at xhigh, and so on), to show whether the bigger model at a lower setting beats the
+smaller one at a higher setting. The next model is drawn in a lighter shade of the lab's color. A
+lab appears when it has two models with matching effort levels, which today means Anthropic and
+OpenAI.
+
+![Best model one level down vs the next model](docs/charts/step-down.svg)
+
 ## How it works
 
 The site picks its default 27 models server-side and accepts an override as
