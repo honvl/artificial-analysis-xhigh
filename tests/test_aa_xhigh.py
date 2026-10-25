@@ -189,7 +189,8 @@ class Output(unittest.TestCase):
         self.assertIn('href="../#info"', high)  # a level folder links back up to xhigh
         self.assertIn('href="../medium/#info"', high)
         self.assertIn('href="../summary.html"', high)
-        self.assertIn("Claude Opus 5.5 (High, Default Fallback)", high)
+        self.assertIn("Claude Opus 5.5 (High)", high)
+        self.assertNotIn("Fallback", high)
 
 
 class Cli(unittest.TestCase):

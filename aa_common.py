@@ -75,6 +75,17 @@ def parse_label(name: str) -> Label:
     return Label(effort, tuple(t for t in tokens if t != effort))
 
 
+def display_name(name: str) -> str:
+    """The site's name without its fallback note, for showing to people:
+    "Claude Opus 5.5 (Max, Default Fallback)" -> "Claude Opus 5.5 (Max)"."""
+    m = re.search(r"\(([^()]*)\)\s*$", name)
+    if not m:
+        return name
+    tokens = [t.strip() for t in m.group(1).split(",") if not t.strip().lower().endswith("fallback")]
+    base = name[: m.start()].rstrip()
+    return f"{base} ({', '.join(tokens)})" if tokens else base
+
+
 def level_href(level: str, prefix: str = "", suffix: str = "") -> str:
     """Relative link to a level's page: the first level lives at the root, the rest in folders."""
     sub = "" if level == LEVELS[0] else f"{level}/"

@@ -144,7 +144,8 @@ class Colors(unittest.TestCase):
 class ShortName(unittest.TestCase):
     def test_names(self):
         self.assertEqual(ch.short_name("GPT-6 Astra (Xhigh)"), "GPT-6 Astra")
-        self.assertEqual(ch.short_name("Claude Opus 5.5 (Max, Default Fallback)"), "Claude Opus 5.5 (fallback)")
+        self.assertEqual(ch.short_name("Claude Opus 5.5 (Max, Default Fallback)"), "Claude Opus 5.5")
+        self.assertEqual(ch.short_name("Claude Fable 5 (Max, Opus 4.8 Fallback)"), "Claude Fable 5")
         self.assertEqual(ch.short_name("GPT-6 Sol (Daybreak Blue, max)"), "GPT-6 Sol (Daybreak Blue)")
         self.assertEqual(ch.short_name("Qwen3.8 Max (0902)"), "Qwen3.8 Max (0902)")
         self.assertEqual(ch.short_name("Kimi K3.1 Pro"), "Kimi K3.1 Pro")
@@ -225,7 +226,7 @@ class Labels(unittest.TestCase):
     def test_below_the_level_names_its_setting(self):
         self.assertEqual(ch.axis_label(self.entry("Gemini 4 Argon (High)", "high"), "max"), "Gemini 4 Argon (high)")
         e = self.entry("Claude Opus 5.5 (High, Default Fallback)", "high")
-        self.assertEqual(ch.axis_label(e, "max"), "Claude Opus 5.5 (fallback, high)")
+        self.assertEqual(ch.axis_label(e, "max"), "Claude Opus 5.5 (high)")
 
     def test_unlabelled_gets_a_dagger(self):
         self.assertEqual(ch.axis_label(self.entry("Kimi K3.1 Pro", None), "max"), "Kimi K3.1 Pro †")
@@ -252,6 +253,14 @@ class SubscriptionCost(unittest.TestCase):
     def setUp(self):
         self.boards = ch.leaderboards(MODELS, VARIANTS, n=10)
         self.by_slug = {e.slug: e for rows in self.boards.values() for e in rows}
+
+    def test_no_fallback_text_anywhere_people_look(self):
+        boards = ch.leaderboards(MODELS, VARIANTS)
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            ch.write_charts(boards, out, runs=RUNS)
+            for rel in ("summary.html", "charts/max.svg", "charts/xhigh.svg"):
+                self.assertNotIn("allback", (out / rel).read_text(), rel)
 
     def test_usd(self):
         self.assertEqual(ch.usd(8708), "$8,708")

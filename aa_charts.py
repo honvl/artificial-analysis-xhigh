@@ -35,6 +35,7 @@ from aa_common import (
     LEVELS,
     ORDER,
     ParseError,
+    display_name,
     flight_payload,
     level_href,
     parse_label,
@@ -127,14 +128,14 @@ def leaderboard_models(page: str) -> list[dict]:
 
 
 def short_name(name: str) -> str:
-    """Drop the effort tag from a name: "GPT-6 Astra (Xhigh)" -> "GPT-6 Astra"."""
+    """Drop the effort tag and any fallback note from a name: "GPT-6 Astra (Xhigh)" -> "GPT-6 Astra"."""
+    name = display_name(name)
     label = parse_label(name)
     if label.effort is None:
         return name
     start = name.rindex("(")
     tokens = [t.strip() for t in name[start + 1 : name.rindex(")")].split(",")]
     rest = [t for t in tokens if t.lower() != label.effort]
-    rest = [("fallback" if t.lower() == "default fallback" else t) for t in rest]
     base = name[:start].rstrip()
     return f"{base} ({', '.join(rest)})" if rest else base
 
@@ -370,7 +371,7 @@ def render_svg(
     title = f"Top models at {grade} effort"
     subtitle = "Artificial Analysis Intelligence Index, higher is better"
     desc = "; ".join(
-        f"{i}. {e.name}, {e.lab}: {e.score:.1f}"
+        f"{i}. {display_name(e.name)}, {e.lab}: {e.score:.1f}"
         + ("" if e.effort else " (effort not labelled)")
         + (f", full index run on {c.plan} {usd(c.sub)}" if c and thin else "")
         for i, (e, c) in enumerate(zip(entries, costs), 1)
@@ -411,7 +412,7 @@ def render_svg(
         left_edge = slot_x + slot / 2 - group_w / 2
         cx = left_edge + bar_w / 2
         top = base - e.score / ymax * PLOT_H
-        tip = f"{e.name}, {e.lab}: {e.score:.1f}"
+        tip = f"{display_name(e.name)}, {e.lab}: {e.score:.1f}"
         shapes = f'<path fill="{e.color}" d="{_column(left_edge, bar_w, top, base)}"/>'
         if thin and c:
             tip += f" · one full index run costs {usd(c.sub)} on {c.plan} ({usd(c.api)} at API prices)"
@@ -501,7 +502,7 @@ def render_pairs_svg(
     group_w = bar_w + (BAR_GAP + THIN_BAR if thin else 0) + (BAR_GAP + TIME_BAR if timed else 0)
     subtitle = "Intelligence Index. Each pair: a lab's best model one effort level below its next model"
     desc = "; ".join(
-        f"{p.lab}: {p.best.name} {p.best.score:.1f} vs {p.nxt.name} {p.nxt.score:.1f}" for p in pairs
+        f"{p.lab}: {display_name(p.best.name)} {p.best.score:.1f} vs {display_name(p.nxt.name)} {p.nxt.score:.1f}" for p in pairs
     )
 
     out = [
@@ -537,7 +538,7 @@ def render_pairs_svg(
         cx = left_edge + bar_w / 2
         top = base - e.score / ymax * PLOT_H
         fill = e.color if i % 2 == 0 else tint(e.color)
-        tip = f"{e.name}, {e.lab}: {e.score:.1f}"
+        tip = f"{display_name(e.name)}, {e.lab}: {e.score:.1f}"
         shapes = f'<path fill="{fill}" d="{_column(left_edge, bar_w, top, base)}"/>'
         x = left_edge + bar_w + BAR_GAP
         if thin:
@@ -612,7 +613,7 @@ def render_summary(
             c = subscription_cost(e, runs)
             full = f"{usd(c.api)} → {usd(c.sub)} on {_esc(c.plan)}" if c else "–"
             cells.append(
-                f'<tr><td class="num">{i}</td><td>{_esc(e.name)}</td><td>{_esc(e.lab)}</td>'
+                f'<tr><td class="num">{i}</td><td>{_esc(display_name(e.name))}</td><td>{_esc(e.lab)}</td>'
                 f'<td>{_esc(e.effort or "not labelled")}</td><td class="num">{e.score:.1f}</td><td>{full}</td></tr>'
             )
         sections.append(

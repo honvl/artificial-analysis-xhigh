@@ -33,6 +33,7 @@ from aa_common import (
     SOURCE,
     Label,
     ParseError,
+    display_name,
     fetch,
     flight_payload,
     level_href,
@@ -171,9 +172,9 @@ def build(page: str, level: str = "xhigh", unmatched: str = "keep") -> Result:
 def explain(result: Result) -> str:
     lines = [f"{result.level}: {len(result.slugs)} models, {len(result.swapped)} swapped"]
     for s in result.swapped:
-        lines.append(f"  swapped  {s.name}  ->  {s.to_name}")
+        lines.append(f"  swapped  {display_name(s.name)}  ->  {display_name(s.to_name)}")
     for k in result.unmatched:
-        lines.append(f"  no {result.level}  {k.name}  (left as is)")
+        lines.append(f"  no {result.level}  {display_name(k.name)}  (left as is)")
     return "\n".join(lines)
 
 
@@ -181,10 +182,10 @@ def render_page(result: Result, changed_at: str, prefix: str = "") -> str:
     url = result.url
     level = result.level
     rows = "".join(
-        f"<tr><td>{html.escape(s.name)}</td><td>{html.escape(s.to_name)}</td></tr>" for s in result.swapped
+        f"<tr><td>{html.escape(display_name(s.name))}</td><td>{html.escape(display_name(s.to_name))}</td></tr>" for s in result.swapped
     )
     rows += "".join(
-        f"<tr><td>{html.escape(k.name)}</td><td class=\"muted\">no {level} variant, unchanged</td></tr>"
+        f"<tr><td>{html.escape(display_name(k.name))}</td><td class=\"muted\">no {level} variant, unchanged</td></tr>"
         for k in result.unmatched
     )
     views = " · ".join(
