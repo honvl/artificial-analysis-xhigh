@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-25 00:51 UTC",
+  "changed_at": "2026-10-26 17:21 UTC",
   "grades": {
     "max": [
       {
@@ -501,5 +501,108 @@
         "e2e_s": 170.82
       }
     }
-  ]
+  ],
+  "coding_agents": [
+    {
+      "label": "Claude Code - Opus 5.5 (max)",
+      "agent": "Claude Code",
+      "model": "Opus 5.5 (max)",
+      "lab": "Anthropic",
+      "color": "#cc785c",
+      "score": 61.7,
+      "cost_usd": 11.42,
+      "wall_sec": 3661.2
+    },
+    {
+      "label": "Claude Code - Sonnet 5.5 (max)",
+      "agent": "Claude Code",
+      "model": "Sonnet 5.5 (max)",
+      "lab": "Anthropic",
+      "color": "#cc785c",
+      "score": 59.3,
+      "cost_usd": 13.3,
+      "wall_sec": 4784.6
+    },
+    {
+      "label": "Muse Code - Muse Wonder Full (max)",
+      "agent": "Muse Code",
+      "model": "Muse Wonder Full (max)",
+      "lab": "Meta",
+      "color": "#0089f4",
+      "score": 58.9,
+      "cost_usd": null,
+      "wall_sec": 2096.3
+    },
+    {
+      "label": "Codex - GPT-6 Astra (max)",
+      "agent": "Codex",
+      "model": "GPT-6 Astra (max)",
+      "lab": "OpenAI",
+      "color": "#1f1f1f",
+      "score": 54.7,
+      "cost_usd": 7.04,
+      "wall_sec": 1486.7
+    },
+    {
+      "label": "Codex - GPT-6.1 Sol (max)",
+      "agent": "Codex",
+      "model": "GPT-6.1 Sol (max)",
+      "lab": "OpenAI",
+      "color": "#1f1f1f",
+      "score": 54.1,
+      "cost_usd": 1.5,
+      "wall_sec": 1421.4
+    },
+    {
+      "label": "Antigravity CLI - Gemini 4 Argon (high)",
+      "agent": "Antigravity CLI",
+      "model": "Gemini 4 Argon",
+      "lab": "Google",
+      "color": "#34a853",
+      "score": 53.2,
+      "cost_usd": 5.86,
+      "wall_sec": 2081.4
+    },
+    {
+      "label": "Muse Code - Muse Wonder (max)",
+      "agent": "Muse Code",
+      "model": "Muse Wonder (max)",
+      "lab": "Meta",
+      "color": "#0089f4",
+      "score": 52.0,
+      "cost_usd": 8.05,
+      "wall_sec": 1472.5
+    },
+    {
+      "label": "Grok Build - Grok 4.7 (xhigh)",
+      "agent": "Grok Build",
+      "model": "Grok 4.7 (xhigh)",
+      "lab": "SpaceXAI",
+      "color": "#736cd3",
+      "score": 46.6,
+      "cost_usd": 9.48,
+      "wall_sec": 2146.1
+    },
+    {
+      "label": "Muse Code - Muse Spark 1.3 (max)",
+      "agent": "Muse Code",
+      "model": "Muse Spark 1.3 (max)",
+      "lab": "Meta",
+      "color": "#0089f4",
+      "score": 45.7,
+      "cost_usd": 3.91,
+      "wall_sec": 1398.5
+    },
+    {
+      "label": "Muse Code - Muse Spark Open (xhigh)",
+      "agent": "Muse Code",
+      "model": "Muse Spark Open (xhigh)",
+      "lab": "Meta",
+      "color": "#0089f4",
+      "score": 26.3,
+      "cost_usd": 3.54,
+      "wall_sec": 1558.9
+    }
+  ],
+  "coding_changed_at": "2026-10-26 17:21 UTC"
 }

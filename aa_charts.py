@@ -602,6 +602,8 @@ def render_summary(
     axis: tuple[int, int] | None = None,
     pairs: list[Pair] | None = None,
     speeds: dict[str, dict] | None = None,
+    coding_section: str | None = None,
+    coding_changed_at: str | None = None,
 ) -> str:
     runs = runs or {}
     views = " · ".join(f'<a href="{level_href(lv, "", "#info")}">{lv}</a>' for lv in LEVELS)
@@ -658,10 +660,11 @@ gives than API list prices ({_esc(plans)}), as measured by
 <a href="https://x.com/PawelHuryn/status/2107780775558979757">Paweł Huryn</a>. Only labs with a
 measured multiplier get a bar. These are one person's estimates on one model per vendor, so treat
 the bars as rough. The table views give the exact figures.</p>
-<p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}{' · <a href="#step-down">best model one level down</a>' if pairs else ""}.
+<p class="muted">Charts for: {" · ".join(f'<a href="#{g}">{g}</a>' for g in boards)}{' · <a href="#step-down">best model one level down</a>' if pairs else ""}{' · <a href="#coding-agents">coding agents</a>' if coding_section else ""}.
 Links at: {views} · <a href="bookmark.html">bookmark</a></p>
 {chr(10).join(sections)}
 {_pairs_section(pairs, runs, axis, speeds or {}) if pairs else ""}
+{coding_section or ""}
 </body>
 </html>
 """
@@ -674,12 +677,17 @@ def write_charts(
     runs: dict[str, float] | None = None,
     pairs: list[Pair] | None = None,
     speeds: dict[str, dict] | None = None,
+    coding_agents: list[dict] | None = None,
+    coding_changed_at: str | None = None,
+    coding_section: str | None = None,
 ) -> bool:
     """Write summary.html, charts/<grade>.svg, charts/step-down.svg and charts.json under ``out``.
     False if nothing changed.
 
     ``runs`` maps a variant slug to the cost in USD of a full index run at API prices; it feeds the
     thin subscription-cost bars. ``pairs`` feeds the best-model-one-level-down chart.
+    ``coding_agents`` / ``coding_changed_at`` / ``coding_section`` feed the Coding Agent Index
+    comparison; pass None to leave the summary page without it.
     """
     runs = runs or {}
     pairs = pairs or []
@@ -708,14 +716,25 @@ def write_charts(
         for p in pairs
     ]
     state = {"grades": data, "cost_axis": list(axis) if axis else None, "step_down": pair_data}
+    if coding_agents is not None:
+        state["coding_agents"] = coding_agents
+        if coding_changed_at is not None:
+            state["coding_changed_at"] = coding_changed_at
     old = read_json(out / "charts.json")
     if old and {k: old.get(k) for k in state} == state and old.get("changed_at"):
         changed_at = old["changed_at"]
+        if coding_agents is not None and "coding_changed_at" not in state:
+            coding_changed_at = old.get("coding_changed_at")
     else:
         changed_at = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d %H:%M UTC")
+        if coding_agents is not None and coding_changed_at is None:
+            coding_changed_at = changed_at
+            state["coding_changed_at"] = coding_changed_at
     files = {
         "charts.json": json.dumps({"changed_at": changed_at, **state}, indent=2) + "\n",
-        "summary.html": render_summary(boards, changed_at, runs, axis, pairs, speeds),
+        "summary.html": render_summary(
+            boards, changed_at, runs, axis, pairs, speeds, coding_section, coding_changed_at
+        ),
     }
     for grade, rows in boards.items():
         files[f"charts/{grade}.svg"] = svg_file(grade, rows, runs, axis)

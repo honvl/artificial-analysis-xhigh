@@ -114,6 +114,10 @@ page gives the first-token time and output speed separately.
 
 ![Best model one level down vs the next model](docs/charts/step-down.svg)
 
+### Coding Agent Index
+
+A separate table on the [summary page](https://honvl.github.io/artificial-analysis-xhigh/summary.html#coding-agents) for real coding work, not just intelligence: Artificial Analysis's [Coding Agent Index v2.0](https://artificialanalysis.ai/agents/coding-agents), a composite of FrontierCode v1.1, Terminal-Bench 4.0 and SWE-Atlas-QnA-AA. It shows the highlighted defaults plus Muse Spark variants, so the cheap-vs-best read is possible even when Spark is not highlighted: Muse Spark 1.3 (max) is the cheap Meta API fallback ($3.91/task), Muse Wonder Full / Wonder are the best Meta scores. Regenerated with the same 3-hour run from a third page; a failure there warns but never holds back the Intelligence charts.
+
 ## How it works
 
 The site picks its default 27 models server-side and accepts an override as
@@ -140,6 +144,12 @@ The cost bars need the cost of a full index run for each model variant, which on
 pages carry, two models per page. `aa_costs.py` fetches the variants it needs (every column of a
 lab with a plan multiplier), caches them in `docs/costs.json` and refreshes an entry once it is a
 week old, so most runs make no extra requests and a failed refresh keeps the old value.
+
+The coding table needs a third page: the site's `/agents/coding-agents`, which carries the Coding
+Agent Index, mean API cost per task and mean wall time per task for each harness. `aa_coding.py`
+reads the data the site embeds in it, `select_for_summary()` keeps the highlighted defaults plus
+Muse Spark variants, and the summary page shows Index, cost/task and time/task with its own
+`coding_changed_at` in `docs/charts.json`.
 
 I looked at placing unlabelled models on the lower charts by speed and decided against it: time per
 task does not line up with effort across labs. In the 2026-10-24 data, Claude Haiku 5.5 at max

@@ -26,6 +26,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 import aa_charts
+import aa_coding
 import aa_costs
 from aa_common import (
     LEVELS,
@@ -317,7 +318,33 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"warning: full-run cost: {problem}", file=sys.stderr)
             runs = aa_costs.usd_by_slug(cache)
             speeds = aa_costs.speed_by_slug(cache)
-            changed = aa_charts.write_charts(boards, args.write, runs=runs, pairs=pairs, speeds=speeds)
+            # Coding agents come from a third page; a failure here must not hold back
+            # the Intelligence charts above, and a missing coding section must not fail links.
+            coding_state = None
+            coding_changed_at = None
+            coding_section = None
+            try:
+                all_coding = aa_coding.coding_agents(fetch(aa_coding.CODING_URL))
+                picked = aa_coding.select_for_summary(all_coding)
+                coding_state = aa_coding.coding_state(picked)
+                old_charts = read_json(args.write / "charts.json") or {}
+                if old_charts.get("coding_agents") == coding_state and old_charts.get("coding_changed_at"):
+                    coding_changed_at = old_charts["coding_changed_at"]
+                else:
+                    coding_changed_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+                coding_section = aa_coding.render_coding_section(picked, coding_changed_at)
+            except (ParseError, OSError) as exc:
+                print(f"warning: coding agents: {exc}", file=sys.stderr)
+            changed = aa_charts.write_charts(
+                boards,
+                args.write,
+                runs=runs,
+                pairs=pairs,
+                speeds=speeds,
+                coding_agents=coding_state,
+                coding_changed_at=coding_changed_at,
+                coding_section=coding_section,
+            )
             print(f"{'updated' if changed else 'unchanged'}: summary charts", file=sys.stderr)
             if any(slug not in runs for slug in wanted):  # a cost line is missing, and nothing cached to fall back on
                 print("error: summary charts: no full-run cost for some models, so a cost line is missing", file=sys.stderr)
