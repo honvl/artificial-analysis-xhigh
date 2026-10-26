@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" class="aa-chart" viewBox="0 0 760 498" width="760" height="498" role="img" aria-labelledby="t-max d-max">
 <title id="t-max">Top models at max effort</title>
-<desc id="d-max">1. Claude Opus 5.5 (Max), Anthropic: 57.6, full index run on Claude Max 20x $192; 2. Claude Sonnet 5.5 (Max), Anthropic: 56.0, full index run on Claude Max 20x $160; 3. Muse Wonder Full (Max), Meta: 55.8; 4. Kimi K3.1 Pro, Kimi: 55.1 (effort not labelled); 5. Claude Fable 5.1 (Max), Anthropic: 53.4, full index run on Claude Max 20x $290; 6. GPT-6 Astra (Max), OpenAI: 52.7, full index run on ChatGPT $519; 7. Gemini 4 Argon (High), Google: 52.6; 8. Muse Wonder (Max), Meta: 52.4; 9. GPT-6.1 Sol (Max), OpenAI: 51.8, full index run on ChatGPT $106; 10. Grok 4.7 (Xhigh), SpaceXAI: 46.4, full index run on SuperGrok + X Premium+ $62</desc>
+<desc id="d-max">1. Claude Opus 5.5 (Max), Anthropic: 57.6, full index run on Claude Max 20x $192; 2. Claude Sonnet 5.5 (Max), Anthropic: 56.0, full index run on Claude Max 20x $160; 3. Muse Wonder Full (Max), Meta: 55.8; 4. Kimi K3.1 Pro, Kimi: 55.1 (effort not labelled); 5. Claude Fable 5.1 (Max), Anthropic: 53.4, full index run on Claude Max 20x $290; 6. GPT-6 Astra (Max), OpenAI: 52.7, full index run on ChatGPT $519; 7. Gemini 4 Argon (High), Google: 52.6; 8. Muse Wonder (Max), Meta: 52.4; 9. GPT-6.1 Sol (Max), OpenAI: 51.8, full index run on ChatGPT $106; 10. GPT-6.1 Terra (Max), OpenAI: 48.1, full index run on ChatGPT $89</desc>
 <style>.aa-chart{--surface:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:#e1e0d9}
 .aa-chart text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .aa-chart .surface{fill:var(--surface);stroke:var(--border)}
@@ -28,8 +28,6 @@
 <text class="legend" x="260.2" y="73">OpenAI</text>
 <rect x="319.8" y="64" width="10" height="10" rx="2" fill="#34a853"/>
 <text class="legend" x="335.8" y="73">Google</text>
-<rect x="395.4" y="64" width="10" height="10" rx="2" fill="#736cd3"/>
-<text class="legend" x="411.4" y="73">SpaceXAI</text>
 <rect x="24.0" y="80" width="4" height="10" rx="2" fill="#52514e"/>
 <text class="legend" x="40.0" y="89">Cost of one full index run on a subscription (right axis)</text>
 <line class="axis" x1="128" x2="700" y1="348.0" y2="348.0"/>
@@ -58,6 +56,6 @@
 <g><title>Gemini 4 Argon (High), Google: 52.6</title><rect x="471.2" y="108" width="57.2" height="240" fill="transparent"/><path fill="#34a853" d="M482.8,348.0 V141.6 Q482.8,137.6 486.8,137.6 H502.8 Q506.8,137.6 506.8,141.6 V348.0 Z"/><text class="val" x="494.8" y="131.6" text-anchor="middle">52.6</text><text class="lbl" transform="translate(494.8 360.0) rotate(-45)" text-anchor="end">Gemini 4 Argon (high)</text></g>
 <g><title>Muse Wonder (Max), Meta: 52.4</title><rect x="528.4" y="108" width="57.2" height="240" fill="transparent"/><path fill="#0089f4" d="M540.0,348.0 V142.4 Q540.0,138.4 544.0,138.4 H560.0 Q564.0,138.4 564.0,142.4 V348.0 Z"/><text class="val" x="552.0" y="132.4" text-anchor="middle">52.4</text><text class="lbl" transform="translate(552.0 360.0) rotate(-45)" text-anchor="end">Muse Wonder</text></g>
 <g><title>GPT-6.1 Sol (Max), OpenAI: 51.8 · one full index run costs $106 on ChatGPT ($1,082 at API prices)</title><rect x="585.6" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M597.2,348.0 V144.8 Q597.2,140.8 601.2,140.8 H617.2 Q621.2,140.8 621.2,144.8 V348.0 Z"/><path fill="#52514e" d="M623.2,348.0 V309.8 Q623.2,305.8 627.2,305.8 H627.2 Q631.2,305.8 631.2,309.8 V348.0 Z"/><text class="val" x="609.2" y="134.8" text-anchor="middle">51.8</text><text class="lbl" transform="translate(609.2 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Sol</text></g>
-<g><title>Grok 4.7 (Xhigh), SpaceXAI: 46.4 · one full index run costs $62 on SuperGrok + X Premium+ ($4,967 at API prices)</title><rect x="642.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#736cd3" d="M654.4,348.0 V166.4 Q654.4,162.4 658.4,162.4 H674.4 Q678.4,162.4 678.4,166.4 V348.0 Z"/><path fill="#52514e" d="M680.4,348.0 V327.2 Q680.4,323.2 684.4,323.2 H684.4 Q688.4,323.2 688.4,327.2 V348.0 Z"/><text class="val" x="666.4" y="156.4" text-anchor="middle">46.4</text><text class="lbl" transform="translate(666.4 360.0) rotate(-45)" text-anchor="end">Grok 4.7 (xhigh)</text></g>
+<g><title>GPT-6.1 Terra (Max), OpenAI: 48.1 · one full index run costs $89 on ChatGPT ($909 at API prices)</title><rect x="642.8" y="108" width="57.2" height="240" fill="transparent"/><path fill="#1f1f1f" d="M654.4,348.0 V159.6 Q654.4,155.6 658.4,155.6 H674.4 Q678.4,155.6 678.4,159.6 V348.0 Z"/><path fill="#52514e" d="M680.4,348.0 V316.5 Q680.4,312.5 684.4,312.5 H684.4 Q688.4,312.5 688.4,316.5 V348.0 Z"/><text class="val" x="666.4" y="149.6" text-anchor="middle">48.1</text><text class="lbl" transform="translate(666.4 360.0) rotate(-45)" text-anchor="end">GPT-6.1 Terra</text></g>
 <text class="note" x="24" y="484">Level in brackets: the model&#x27;s highest setting below max · † effort not labelled by Artificial Analysis</text>
 </svg>

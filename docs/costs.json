@@ -140,6 +140,34 @@
       "e2e_s": 69.83,
       "fetched": "2026-10-25"
     },
+    "gpt-6-1-terra": {
+      "usd": 909.01,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-10-26"
+    },
+    "gpt-6-1-terra-high": {
+      "usd": 238.53,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-10-26"
+    },
+    "gpt-6-1-terra-medium": {
+      "usd": 175.2,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-10-26"
+    },
+    "gpt-6-1-terra-xhigh": {
+      "usd": 364.95,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-10-26"
+    },
     "gpt-6-astra": {
       "usd": 5324.1,
       "ttfat_s": 246.99,

@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-26 17:21 UTC",
+  "changed_at": "2026-10-26 20:33 UTC",
   "grades": {
     "max": [
       {
@@ -84,13 +84,13 @@
         "full_run_subscription": 105.52
       },
       {
-        "name": "Grok 4.7 (Xhigh)",
-        "lab": "SpaceXAI",
-        "color": "#736cd3",
-        "effort": "xhigh",
-        "score": 46.4,
-        "full_run_api": 4967.35,
-        "full_run_subscription": 62.09
+        "name": "GPT-6.1 Terra (Max)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "max",
+        "score": 48.1,
+        "full_run_api": 909.01,
+        "full_run_subscription": 88.68
       }
     ],
     "xhigh": [
@@ -158,6 +158,15 @@
         "full_run_subscription": 62.09
       },
       {
+        "name": "GPT-6.1 Terra (Xhigh)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "xhigh",
+        "score": 45.4,
+        "full_run_api": 364.95,
+        "full_run_subscription": 35.6
+      },
+      {
         "name": "Claude Haiku 5.5 (Xhigh)",
         "lab": "Anthropic",
         "color": "#cc785c",
@@ -172,15 +181,6 @@
         "color": "#34a853",
         "effort": "high",
         "score": 40.9,
-        "full_run_api": null,
-        "full_run_subscription": null
-      },
-      {
-        "name": "Muse Spark Open (Xhigh)",
-        "lab": "Meta",
-        "color": "#0089f4",
-        "effort": "xhigh",
-        "score": 38.9,
         "full_run_api": null,
         "full_run_subscription": null
       }
@@ -250,6 +250,15 @@
         "full_run_subscription": 48.51
       },
       {
+        "name": "GPT-6.1 Terra (High)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "high",
+        "score": 43.9,
+        "full_run_api": 238.53,
+        "full_run_subscription": 23.27
+      },
+      {
         "name": "Gemini 3.8 Flash (High)",
         "lab": "Google",
         "color": "#34a853",
@@ -266,15 +275,6 @@
         "score": 37.8,
         "full_run_api": 94.07,
         "full_run_subscription": 2.08
-      },
-      {
-        "name": "GLM-5.3 (Low)",
-        "lab": "Z AI",
-        "color": "#1c7ff8",
-        "effort": "low",
-        "score": 34.3,
-        "full_run_api": null,
-        "full_run_subscription": null
       }
     ],
     "medium": [
@@ -324,6 +324,15 @@
         "full_run_subscription": 20.38
       },
       {
+        "name": "GPT-6.1 Terra (Medium)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "medium",
+        "score": 41.3,
+        "full_run_api": 175.2,
+        "full_run_subscription": 17.09
+      },
+      {
         "name": "Claude Sonnet 5.5 (Medium, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
@@ -358,15 +367,6 @@
         "score": 34.3,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "GPT-5.6 Terra (Medium)",
-        "lab": "OpenAI",
-        "color": "#1f1f1f",
-        "effort": "medium",
-        "score": 30.1,
-        "full_run_api": 446.53,
-        "full_run_subscription": 43.56
       }
     ]
   },

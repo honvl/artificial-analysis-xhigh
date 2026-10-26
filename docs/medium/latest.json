@@ -1,7 +1,7 @@
 {
   "level": "medium",
-  "url": "https://artificialanalysis.ai/models?models=step-5%2Cinkling%2Cglm-5-3-flash%2Cmimo-v2-6-pro%2Cgpt-6-astra-medium%2Cclaude-opus-5-5-medium%2Cmistral-large-4%2Cmuse-spark-open%2Cclaude-fable-5-1-medium%2Cgrok-4-7%2Ckimi-k3-1-pro%2Creflection-beam%2Cgpt-6-luna-medium%2Cclaude-haiku-5-5-medium%2Cgemini-3-8-flash-medium%2Cqwen3-8-27b-medium%2Cqwen3-8-max%2Cclaude-sonnet-5-5-medium%2Cgpt-6-1-sol-medium%2Ck2-horizon-375b-a23b%2Cglm-5-3%2Cgemini-4-argon%2Cminimax-m3-1-flash%2Cnemotron-3-5-super-vl%2Cmuse-wonder-full%2Cdeepseek-v4-1-flash-1017%2Cmuse-wonder",
-  "changed_at": "2026-10-24 21:55 UTC",
+  "url": "https://artificialanalysis.ai/models?models=step-5%2Cinkling%2Cmimo-v2-6-pro%2Cgpt-6-astra-medium%2Cclaude-opus-5-5-medium%2Cmistral-large-4%2Cmuse-spark-open%2Cclaude-fable-5-1-medium%2Cgrok-4-7%2Ckimi-k3-1-pro%2Creflection-beam%2Cgpt-6-luna-medium%2Cclaude-haiku-5-5-medium%2Cgemini-3-8-flash-medium%2Cqwen3-8-27b-medium%2Cgpt-6-1-terra-medium%2Cqwen3-8-max%2Cclaude-sonnet-5-5-medium%2Cgpt-6-1-sol-medium%2Ck2-horizon-375b-a23b%2Cglm-5-3%2Cgemini-4-argon%2Cminimax-m3-1-flash%2Cnemotron-3-5-super-vl%2Cmuse-wonder-full%2Cdeepseek-v4-1-flash-1017%2Cmuse-wonder",
+  "changed_at": "2026-10-26 20:33 UTC",
   "source": "https://artificialanalysis.ai/models",
   "swapped": [
     {
@@ -31,6 +31,10 @@
     {
       "from": "Qwen3.8 27B (Xhigh)",
       "to": "Qwen3.8 27B (Medium)"
+    },
+    {
+      "from": "GPT-6.1 Terra (Max)",
+      "to": "GPT-6.1 Terra (Medium)"
     },
     {
       "from": "Claude Sonnet 5.5 (Max, Default Fallback)",
