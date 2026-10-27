@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-27 00:30 UTC",
+  "changed_at": "2026-10-27 09:05 UTC",
   "grades": {
     "max": [
       {
@@ -527,8 +527,8 @@
       "label": "Muse Code - Muse Wonder Full (max)",
       "agent": "Muse Code",
       "model": "Muse Wonder Full (max)",
-      "lab": "",
-      "color": "#898781",
+      "lab": "Meta",
+      "color": "#0089f4",
       "score": 58.9,
       "cost_usd": null,
       "wall_sec": 2096.3
@@ -537,8 +537,8 @@
       "label": "Codex - GPT-6 Astra (max)",
       "agent": "Codex",
       "model": "GPT-6 Astra (max)",
-      "lab": "",
-      "color": "#898781",
+      "lab": "OpenAI",
+      "color": "#1f1f1f",
       "score": 54.7,
       "cost_usd": 7.04,
       "wall_sec": 1486.7
@@ -604,5 +604,5 @@
       "wall_sec": 1558.9
     }
   ],
-  "coding_changed_at": "2026-10-27 00:30 UTC"
+  "coding_changed_at": "2026-10-27 09:05 UTC"
 }
