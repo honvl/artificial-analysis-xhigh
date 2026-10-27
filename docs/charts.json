@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-27 09:05 UTC",
+  "changed_at": "2026-10-27 22:20 UTC",
   "grades": {
     "max": [
       {
@@ -504,9 +504,9 @@
   ],
   "coding_agents": [
     {
-      "label": "Claude Code - Opus 5.5 (max)",
+      "label": "Claude Code - Claude Opus 5.5 (Max, Default Fallback)",
       "agent": "Claude Code",
-      "model": "Opus 5.5 (max)",
+      "model": "Claude Opus 5.5 (Max, Default Fallback)",
       "lab": "Anthropic",
       "color": "#cc785c",
       "score": 61.7,
@@ -514,9 +514,9 @@
       "wall_sec": 3661.2
     },
     {
-      "label": "Claude Code - Sonnet 5.5 (max)",
+      "label": "Claude Code - Claude Sonnet 5.5 (Max, Default Fallback)",
       "agent": "Claude Code",
-      "model": "Sonnet 5.5 (max)",
+      "model": "Claude Sonnet 5.5 (Max, Default Fallback)",
       "lab": "Anthropic",
       "color": "#cc785c",
       "score": 59.3,
@@ -524,9 +524,9 @@
       "wall_sec": 4784.6
     },
     {
-      "label": "Muse Code - Muse Wonder Full (max)",
+      "label": "Muse Code - Muse Wonder Full (Max)",
       "agent": "Muse Code",
-      "model": "Muse Wonder Full (max)",
+      "model": "Muse Wonder Full (Max)",
       "lab": "Meta",
       "color": "#0089f4",
       "score": 58.9,
@@ -534,9 +534,9 @@
       "wall_sec": 2096.3
     },
     {
-      "label": "Codex - GPT-6 Astra (max)",
+      "label": "Codex - GPT-6 Astra (Max)",
       "agent": "Codex",
-      "model": "GPT-6 Astra (max)",
+      "model": "GPT-6 Astra (Max)",
       "lab": "OpenAI",
       "color": "#1f1f1f",
       "score": 54.7,
@@ -544,9 +544,9 @@
       "wall_sec": 1486.7
     },
     {
-      "label": "Codex - GPT-6.1 Sol (max)",
+      "label": "Codex - GPT-6.1 Sol (Max)",
       "agent": "Codex",
-      "model": "GPT-6.1 Sol (max)",
+      "model": "GPT-6.1 Sol (Max)",
       "lab": "OpenAI",
       "color": "#1f1f1f",
       "score": 54.1,
@@ -554,9 +554,9 @@
       "wall_sec": 1421.4
     },
     {
-      "label": "Antigravity CLI - Gemini 4 Argon (high)",
+      "label": "Antigravity CLI - Gemini 4 Argon (High)",
       "agent": "Antigravity CLI",
-      "model": "Gemini 4 Argon",
+      "model": "Gemini 4 Argon (High)",
       "lab": "Google",
       "color": "#34a853",
       "score": 53.2,
@@ -564,9 +564,9 @@
       "wall_sec": 2081.4
     },
     {
-      "label": "Muse Code - Muse Wonder (max)",
+      "label": "Muse Code - Muse Wonder (Max)",
       "agent": "Muse Code",
-      "model": "Muse Wonder (max)",
+      "model": "Muse Wonder (Max)",
       "lab": "Meta",
       "color": "#0089f4",
       "score": 52.0,
@@ -574,9 +574,9 @@
       "wall_sec": 1472.5
     },
     {
-      "label": "Grok Build - Grok 4.7 (xhigh)",
+      "label": "Grok Build - Grok 4.7 (Xhigh)",
       "agent": "Grok Build",
-      "model": "Grok 4.7 (xhigh)",
+      "model": "Grok 4.7 (Xhigh)",
       "lab": "SpaceXAI",
       "color": "#736cd3",
       "score": 46.6,
@@ -584,9 +584,9 @@
       "wall_sec": 2146.1
     },
     {
-      "label": "Muse Code - Muse Spark 1.3 (max)",
+      "label": "Muse Code - Muse Spark 1.3 (Max)",
       "agent": "Muse Code",
-      "model": "Muse Spark 1.3 (max)",
+      "model": "Muse Spark 1.3 (Max)",
       "lab": "Meta",
       "color": "#0089f4",
       "score": 45.7,
@@ -594,9 +594,9 @@
       "wall_sec": 1398.5
     },
     {
-      "label": "Muse Code - Muse Spark Open (xhigh)",
+      "label": "Muse Code - Muse Spark Open (Xhigh)",
       "agent": "Muse Code",
-      "model": "Muse Spark Open (xhigh)",
+      "model": "Muse Spark Open (Xhigh)",
       "lab": "Meta",
       "color": "#0089f4",
       "score": 26.3,
@@ -604,5 +604,5 @@
       "wall_sec": 1558.9
     }
   ],
-  "coding_changed_at": "2026-10-27 09:05 UTC"
+  "coding_changed_at": "2026-10-27 22:20 UTC"
 }
