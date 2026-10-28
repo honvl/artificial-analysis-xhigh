@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-27 22:20 UTC",
+  "changed_at": "2026-10-28 05:49 UTC",
   "grades": {
     "max": [
       {
@@ -7,34 +7,61 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "max",
-        "score": 57.6,
+        "score": 58.4,
         "full_run_api": 8708.2,
         "full_run_subscription": 192.23
+      },
+      {
+        "name": "GPT-6 Astra (Max)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "max",
+        "score": 56.9,
+        "full_run_api": 5324.1,
+        "full_run_subscription": 519.42
+      },
+      {
+        "name": "GPT-6.1 Sol (Max)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "max",
+        "score": 54.5,
+        "full_run_api": 1081.55,
+        "full_run_subscription": 105.52
       },
       {
         "name": "Claude Sonnet 5.5 (Max, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "max",
-        "score": 56.0,
+        "score": 54.2,
         "full_run_api": 7259.5,
         "full_run_subscription": 160.25
+      },
+      {
+        "name": "GPT-6.1 Terra (Max)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "max",
+        "score": 51.0,
+        "full_run_api": 909.01,
+        "full_run_subscription": 88.68
+      },
+      {
+        "name": "Gemini 4 Argon (High)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "high",
+        "score": 50.4,
+        "full_run_api": null,
+        "full_run_subscription": null
       },
       {
         "name": "Muse Wonder Full (Max)",
         "lab": "Meta",
         "color": "#0089f4",
         "effort": "max",
-        "score": 55.8,
-        "full_run_api": null,
-        "full_run_subscription": null
-      },
-      {
-        "name": "Kimi K3.1 Pro",
-        "lab": "Kimi",
-        "color": "#047afe",
-        "effort": null,
-        "score": 55.1,
+        "score": 49.7,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -43,25 +70,16 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "max",
-        "score": 53.4,
+        "score": 49.0,
         "full_run_api": 13128.86,
         "full_run_subscription": 289.82
       },
       {
-        "name": "GPT-6 Astra (Max)",
-        "lab": "OpenAI",
-        "color": "#1f1f1f",
-        "effort": "max",
-        "score": 52.7,
-        "full_run_api": 5324.1,
-        "full_run_subscription": 519.42
-      },
-      {
-        "name": "Gemini 4 Argon (High)",
-        "lab": "Google",
-        "color": "#34a853",
-        "effort": "high",
-        "score": 52.6,
+        "name": "Kimi K3.1 Pro",
+        "lab": "Kimi",
+        "color": "#047afe",
+        "effort": null,
+        "score": 46.0,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -70,27 +88,9 @@
         "lab": "Meta",
         "color": "#0089f4",
         "effort": "max",
-        "score": 52.4,
+        "score": 43.3,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "GPT-6.1 Sol (Max)",
-        "lab": "OpenAI",
-        "color": "#1f1f1f",
-        "effort": "max",
-        "score": 51.8,
-        "full_run_api": 1081.55,
-        "full_run_subscription": 105.52
-      },
-      {
-        "name": "GPT-6.1 Terra (Max)",
-        "lab": "OpenAI",
-        "color": "#1f1f1f",
-        "effort": "max",
-        "score": 48.1,
-        "full_run_api": 909.01,
-        "full_run_subscription": 88.68
       }
     ],
     "xhigh": [
@@ -99,70 +99,61 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "xhigh",
-        "score": 56.0,
+        "score": 57.0,
         "full_run_api": 4056.65,
         "full_run_subscription": 89.55
-      },
-      {
-        "name": "Claude Fable 5.1 (Xhigh, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "xhigh",
-        "score": 53.2,
-        "full_run_api": 9063.11,
-        "full_run_subscription": 200.07
-      },
-      {
-        "name": "Gemini 4 Argon (High)",
-        "lab": "Google",
-        "color": "#34a853",
-        "effort": "high",
-        "score": 52.6,
-        "full_run_api": null,
-        "full_run_subscription": null
       },
       {
         "name": "GPT-6 Astra (Xhigh)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "xhigh",
-        "score": 52.4,
+        "score": 55.3,
         "full_run_api": 3802.98,
         "full_run_subscription": 371.02
-      },
-      {
-        "name": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "xhigh",
-        "score": 51.9,
-        "full_run_api": 2176.82,
-        "full_run_subscription": 48.05
       },
       {
         "name": "GPT-6.1 Sol (Xhigh)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "xhigh",
-        "score": 51.0,
+        "score": 52.3,
         "full_run_api": 662.28,
         "full_run_subscription": 64.61
       },
       {
-        "name": "Grok 4.7 (Xhigh)",
-        "lab": "SpaceXAI",
-        "color": "#736cd3",
+        "name": "Gemini 4 Argon (High)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "high",
+        "score": 50.4,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
+        "name": "Claude Fable 5.1 (Xhigh, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
         "effort": "xhigh",
-        "score": 46.4,
-        "full_run_api": 4967.35,
-        "full_run_subscription": 62.09
+        "score": 49.7,
+        "full_run_api": 9063.11,
+        "full_run_subscription": 200.07
+      },
+      {
+        "name": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "xhigh",
+        "score": 49.6,
+        "full_run_api": 2176.82,
+        "full_run_subscription": 48.05
       },
       {
         "name": "GPT-6.1 Terra (Xhigh)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "xhigh",
-        "score": 45.4,
+        "score": 45.0,
         "full_run_api": 364.95,
         "full_run_subscription": 35.6
       },
@@ -171,27 +162,45 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "xhigh",
-        "score": 41.2,
+        "score": 34.3,
         "full_run_api": 157.58,
         "full_run_subscription": 3.48
+      },
+      {
+        "name": "Grok 4.7 (Xhigh)",
+        "lab": "SpaceXAI",
+        "color": "#736cd3",
+        "effort": "xhigh",
+        "score": 34.3,
+        "full_run_api": 4967.35,
+        "full_run_subscription": 62.09
       },
       {
         "name": "Gemini 3.8 Flash (High)",
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 40.9,
+        "score": 30.5,
         "full_run_api": null,
         "full_run_subscription": null
       }
     ],
     "high": [
       {
+        "name": "GPT-6 Astra (High)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "high",
+        "score": 54.8,
+        "full_run_api": 2925.01,
+        "full_run_subscription": 285.37
+      },
+      {
         "name": "Claude Opus 5.5 (High, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "high",
-        "score": 53.6,
+        "score": 51.7,
         "full_run_api": 2172.43,
         "full_run_subscription": 47.96
       },
@@ -200,27 +209,9 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 52.6,
+        "score": 50.4,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "Claude Fable 5.1 (High, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "high",
-        "score": 51.2,
-        "full_run_api": 5241.59,
-        "full_run_subscription": 115.71
-      },
-      {
-        "name": "GPT-6 Astra (High)",
-        "lab": "OpenAI",
-        "color": "#1f1f1f",
-        "effort": "high",
-        "score": 50.9,
-        "full_run_api": 2925.01,
-        "full_run_subscription": 285.37
       },
       {
         "name": "GPT-6.1 Sol (High)",
@@ -232,11 +223,29 @@
         "full_run_subscription": 50.86
       },
       {
+        "name": "Claude Fable 5.1 (High, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "high",
+        "score": 47.0,
+        "full_run_api": 5241.59,
+        "full_run_subscription": 115.71
+      },
+      {
+        "name": "GPT-6.1 Terra (High)",
+        "lab": "OpenAI",
+        "color": "#1f1f1f",
+        "effort": "high",
+        "score": 42.3,
+        "full_run_api": 238.53,
+        "full_run_subscription": 23.27
+      },
+      {
         "name": "Claude Sonnet 5.5 (High, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "high",
-        "score": 46.8,
+        "score": 41.1,
         "full_run_api": 1027.4,
         "full_run_subscription": 22.68
       },
@@ -245,25 +254,16 @@
         "lab": "SpaceXAI",
         "color": "#736cd3",
         "effort": "high",
-        "score": 46.3,
+        "score": 35.0,
         "full_run_api": 3880.88,
         "full_run_subscription": 48.51
-      },
-      {
-        "name": "GPT-6.1 Terra (High)",
-        "lab": "OpenAI",
-        "color": "#1f1f1f",
-        "effort": "high",
-        "score": 43.9,
-        "full_run_api": 238.53,
-        "full_run_subscription": 23.27
       },
       {
         "name": "Gemini 3.8 Flash (High)",
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 40.9,
+        "score": 30.5,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -272,72 +272,72 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "high",
-        "score": 37.8,
+        "score": 29.6,
         "full_run_api": 94.07,
         "full_run_subscription": 2.08
       }
     ],
     "medium": [
       {
-        "name": "Claude Opus 5.5 (Medium, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "medium",
-        "score": 51.2,
-        "full_run_api": 1626.81,
-        "full_run_subscription": 35.91
-      },
-      {
         "name": "GPT-6 Astra (Medium)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "medium",
-        "score": 49.6,
+        "score": 51.5,
         "full_run_api": 2434.12,
         "full_run_subscription": 237.48
       },
       {
-        "name": "Claude Fable 5.1 (Medium, Default Fallback)",
+        "name": "Claude Opus 5.5 (Medium, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "medium",
-        "score": 48.9,
-        "full_run_api": 3983.28,
-        "full_run_subscription": 87.93
+        "score": 48.1,
+        "full_run_api": 1626.81,
+        "full_run_subscription": 35.91
       },
       {
         "name": "GPT-6.1 Sol (Medium)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "medium",
-        "score": 47.8,
+        "score": 46.1,
         "full_run_api": 361.37,
         "full_run_subscription": 35.26
       },
       {
-        "name": "Grok 4.7 (Low)",
-        "lab": "SpaceXAI",
-        "color": "#736cd3",
-        "effort": "low",
-        "score": 42.2,
-        "full_run_api": 1630.69,
-        "full_run_subscription": 20.38
+        "name": "Claude Fable 5.1 (Medium, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "medium",
+        "score": 43.0,
+        "full_run_api": 3983.28,
+        "full_run_subscription": 87.93
       },
       {
         "name": "GPT-6.1 Terra (Medium)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "medium",
-        "score": 41.3,
+        "score": 38.1,
         "full_run_api": 175.2,
         "full_run_subscription": 17.09
+      },
+      {
+        "name": "Grok 4.7 (Low)",
+        "lab": "SpaceXAI",
+        "color": "#736cd3",
+        "effort": "low",
+        "score": 30.9,
+        "full_run_api": 1630.69,
+        "full_run_subscription": 20.38
       },
       {
         "name": "Claude Sonnet 5.5 (Medium, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "medium",
-        "score": 40.8,
+        "score": 30.3,
         "full_run_api": 622.28,
         "full_run_subscription": 13.74
       },
@@ -346,7 +346,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "medium",
-        "score": 39.8,
+        "score": 30.0,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -355,7 +355,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "medium",
-        "score": 34.5,
+        "score": 24.6,
         "full_run_api": 56.36,
         "full_run_subscription": 1.24
       },
@@ -364,7 +364,7 @@
         "lab": "Z AI",
         "color": "#1c7ff8",
         "effort": "low",
-        "score": 34.3,
+        "score": 23.1,
         "full_run_api": null,
         "full_run_subscription": null
       }
@@ -382,9 +382,9 @@
         "high"
       ],
       "best": "Claude Opus 5.5 (Medium, Default Fallback)",
-      "best_score": 51.2,
+      "best_score": 48.1,
       "next": "Claude Sonnet 5.5 (High, Default Fallback)",
-      "next_score": 46.8,
+      "next_score": 41.1,
       "best_speed": {
         "ttfat_s": 10.44,
         "tps": 83.67,
@@ -403,9 +403,9 @@
         "xhigh"
       ],
       "best": "Claude Opus 5.5 (High, Default Fallback)",
-      "best_score": 53.6,
+      "best_score": 51.7,
       "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
-      "next_score": 51.9,
+      "next_score": 49.6,
       "best_speed": {
         "ttfat_s": 21.55,
         "tps": 80.65,
@@ -424,9 +424,9 @@
         "max"
       ],
       "best": "Claude Opus 5.5 (Xhigh, Default Fallback)",
-      "best_score": 56.0,
+      "best_score": 57.0,
       "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
-      "next_score": 56.0,
+      "next_score": 54.2,
       "best_speed": {
         "ttfat_s": 97.91,
         "tps": 84.85,
@@ -445,7 +445,7 @@
         "high"
       ],
       "best": "GPT-6 Astra (Medium)",
-      "best_score": 49.6,
+      "best_score": 51.5,
       "next": "GPT-6.1 Sol (High)",
       "next_score": 50.2,
       "best_speed": {
@@ -466,9 +466,9 @@
         "xhigh"
       ],
       "best": "GPT-6 Astra (High)",
-      "best_score": 50.9,
+      "best_score": 54.8,
       "next": "GPT-6.1 Sol (Xhigh)",
-      "next_score": 51.0,
+      "next_score": 52.3,
       "best_speed": {
         "ttfat_s": 32.11,
         "tps": 56.61,
@@ -487,9 +487,9 @@
         "max"
       ],
       "best": "GPT-6 Astra (Xhigh)",
-      "best_score": 52.4,
+      "best_score": 55.3,
       "next": "GPT-6.1 Sol (Max)",
-      "next_score": 51.8,
+      "next_score": 54.5,
       "best_speed": {
         "ttfat_s": 132.31,
         "tps": 54.27,
