@@ -1,7 +1,16 @@
 {
-  "changed_at": "2026-10-28 05:49 UTC",
+  "changed_at": "2026-10-28 20:20 UTC",
   "grades": {
     "max": [
+      {
+        "name": "Gemini 4 Carbon (High)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "high",
+        "score": 59.4,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
       {
         "name": "Claude Opus 5.5 (Max, Default Fallback)",
         "lab": "Anthropic",
@@ -82,18 +91,18 @@
         "score": 46.0,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "Muse Wonder (Max)",
-        "lab": "Meta",
-        "color": "#0089f4",
-        "effort": "max",
-        "score": 43.3,
-        "full_run_api": null,
-        "full_run_subscription": null
       }
     ],
     "xhigh": [
+      {
+        "name": "Gemini 4 Carbon (High)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "high",
+        "score": 59.4,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
       {
         "name": "Claude Opus 5.5 (Xhigh, Default Fallback)",
         "lab": "Anthropic",
@@ -174,18 +183,18 @@
         "score": 34.3,
         "full_run_api": 4967.35,
         "full_run_subscription": 62.09
-      },
-      {
-        "name": "Gemini 3.8 Flash (High)",
-        "lab": "Google",
-        "color": "#34a853",
-        "effort": "high",
-        "score": 30.5,
-        "full_run_api": null,
-        "full_run_subscription": null
       }
     ],
     "high": [
+      {
+        "name": "Gemini 4 Carbon (High)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "high",
+        "score": 59.4,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
       {
         "name": "GPT-6 Astra (High)",
         "lab": "OpenAI",
@@ -266,15 +275,6 @@
         "score": 30.5,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "Claude Haiku 5.5 (High)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "high",
-        "score": 29.6,
-        "full_run_api": 94.07,
-        "full_run_subscription": 2.08
       }
     ],
     "medium": [
@@ -514,6 +514,16 @@
       "wall_sec": 3661.2
     },
     {
+      "label": "Antigravity CLI - Gemini 4 Carbon (High)",
+      "agent": "Antigravity CLI",
+      "model": "Gemini 4 Carbon (High)",
+      "lab": "Google",
+      "color": "#34a853",
+      "score": 59.4,
+      "cost_usd": 7.74,
+      "wall_sec": 1789.9
+    },
+    {
       "label": "Claude Code - Claude Sonnet 5.5 (Max, Default Fallback)",
       "agent": "Claude Code",
       "model": "Claude Sonnet 5.5 (Max, Default Fallback)",
@@ -552,16 +562,6 @@
       "score": 54.1,
       "cost_usd": 1.5,
       "wall_sec": 1421.4
-    },
-    {
-      "label": "Antigravity CLI - Gemini 4 Argon (High)",
-      "agent": "Antigravity CLI",
-      "model": "Gemini 4 Argon (High)",
-      "lab": "Google",
-      "color": "#34a853",
-      "score": 53.2,
-      "cost_usd": 5.86,
-      "wall_sec": 2081.4
     },
     {
       "label": "Muse Code - Muse Wonder (Max)",
@@ -604,5 +604,5 @@
       "wall_sec": 1558.9
     }
   ],
-  "coding_changed_at": "2026-10-27 22:20 UTC"
+  "coding_changed_at": "2026-10-28 20:20 UTC"
 }
