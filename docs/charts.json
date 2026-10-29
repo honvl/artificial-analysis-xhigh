@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-28 20:20 UTC",
+  "changed_at": "2026-10-29 18:31 UTC",
   "grades": {
     "max": [
       {
@@ -534,16 +534,6 @@
       "wall_sec": 4784.6
     },
     {
-      "label": "Muse Code - Muse Wonder Full (Max)",
-      "agent": "Muse Code",
-      "model": "Muse Wonder Full (Max)",
-      "lab": "Meta",
-      "color": "#0089f4",
-      "score": 58.9,
-      "cost_usd": null,
-      "wall_sec": 2096.3
-    },
-    {
       "label": "Codex - GPT-6 Astra (Max)",
       "agent": "Codex",
       "model": "GPT-6 Astra (Max)",
@@ -572,6 +562,16 @@
       "score": 52.0,
       "cost_usd": 8.05,
       "wall_sec": 1472.5
+    },
+    {
+      "label": "Mistral Vibe - Mistral Large 4 (High)",
+      "agent": "Mistral Vibe",
+      "model": "Mistral Large 4 (High)",
+      "lab": "Mistral",
+      "color": "#f32e02",
+      "score": 48.3,
+      "cost_usd": 1.26,
+      "wall_sec": 2903.9
     },
     {
       "label": "Grok Build - Grok 4.7 (Xhigh)",
@@ -604,5 +604,5 @@
       "wall_sec": 1558.9
     }
   ],
-  "coding_changed_at": "2026-10-28 20:20 UTC"
+  "coding_changed_at": "2026-10-29 18:31 UTC"
 }
