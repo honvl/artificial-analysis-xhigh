@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-10-29 18:31 UTC",
+  "changed_at": "2026-11-01 00:11 UTC",
   "grades": {
     "max": [
       {
@@ -17,8 +17,8 @@
         "color": "#cc785c",
         "effort": "max",
         "score": 58.4,
-        "full_run_api": 8708.2,
-        "full_run_subscription": 192.23
+        "full_run_api": 8909.67,
+        "full_run_subscription": 196.68
       },
       {
         "name": "GPT-6 Astra (Max)",
@@ -26,8 +26,8 @@
         "color": "#1f1f1f",
         "effort": "max",
         "score": 56.9,
-        "full_run_api": 5324.1,
-        "full_run_subscription": 519.42
+        "full_run_api": 5661.18,
+        "full_run_subscription": 552.31
       },
       {
         "name": "GPT-6.1 Sol (Max)",
@@ -35,8 +35,8 @@
         "color": "#1f1f1f",
         "effort": "max",
         "score": 54.5,
-        "full_run_api": 1081.55,
-        "full_run_subscription": 105.52
+        "full_run_api": 1123.97,
+        "full_run_subscription": 109.66
       },
       {
         "name": "Claude Sonnet 5.5 (Max, Default Fallback)",
@@ -44,8 +44,8 @@
         "color": "#cc785c",
         "effort": "max",
         "score": 54.2,
-        "full_run_api": 7259.5,
-        "full_run_subscription": 160.25
+        "full_run_api": 7980.63,
+        "full_run_subscription": 176.17
       },
       {
         "name": "GPT-6.1 Terra (Max)",
@@ -80,8 +80,8 @@
         "color": "#cc785c",
         "effort": "max",
         "score": 49.0,
-        "full_run_api": 13128.86,
-        "full_run_subscription": 289.82
+        "full_run_api": 13326.78,
+        "full_run_subscription": 294.19
       },
       {
         "name": "Kimi K3.1 Pro",
@@ -109,8 +109,8 @@
         "color": "#cc785c",
         "effort": "xhigh",
         "score": 57.0,
-        "full_run_api": 4056.65,
-        "full_run_subscription": 89.55
+        "full_run_api": 4765.91,
+        "full_run_subscription": 105.21
       },
       {
         "name": "GPT-6 Astra (Xhigh)",
@@ -118,8 +118,8 @@
         "color": "#1f1f1f",
         "effort": "xhigh",
         "score": 55.3,
-        "full_run_api": 3802.98,
-        "full_run_subscription": 371.02
+        "full_run_api": 3746.22,
+        "full_run_subscription": 365.48
       },
       {
         "name": "GPT-6.1 Sol (Xhigh)",
@@ -127,8 +127,8 @@
         "color": "#1f1f1f",
         "effort": "xhigh",
         "score": 52.3,
-        "full_run_api": 662.28,
-        "full_run_subscription": 64.61
+        "full_run_api": 717.71,
+        "full_run_subscription": 70.02
       },
       {
         "name": "Gemini 4 Argon (High)",
@@ -145,8 +145,8 @@
         "color": "#cc785c",
         "effort": "xhigh",
         "score": 49.7,
-        "full_run_api": 9063.11,
-        "full_run_subscription": 200.07
+        "full_run_api": 10096.62,
+        "full_run_subscription": 222.88
       },
       {
         "name": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
@@ -154,8 +154,8 @@
         "color": "#cc785c",
         "effort": "xhigh",
         "score": 49.6,
-        "full_run_api": 2176.82,
-        "full_run_subscription": 48.05
+        "full_run_api": 2902.5,
+        "full_run_subscription": 64.07
       },
       {
         "name": "GPT-6.1 Terra (Xhigh)",
@@ -172,8 +172,8 @@
         "color": "#cc785c",
         "effort": "xhigh",
         "score": 34.3,
-        "full_run_api": 157.58,
-        "full_run_subscription": 3.48
+        "full_run_api": 192.7,
+        "full_run_subscription": 4.25
       },
       {
         "name": "Grok 4.7 (Xhigh)",
@@ -181,8 +181,8 @@
         "color": "#736cd3",
         "effort": "xhigh",
         "score": 34.3,
-        "full_run_api": 4967.35,
-        "full_run_subscription": 62.09
+        "full_run_api": 5784.27,
+        "full_run_subscription": 72.3
       }
     ],
     "high": [
@@ -201,8 +201,8 @@
         "color": "#1f1f1f",
         "effort": "high",
         "score": 54.8,
-        "full_run_api": 2925.01,
-        "full_run_subscription": 285.37
+        "full_run_api": 3204.0,
+        "full_run_subscription": 312.59
       },
       {
         "name": "Claude Opus 5.5 (High, Default Fallback)",
@@ -210,8 +210,8 @@
         "color": "#cc785c",
         "effort": "high",
         "score": 51.7,
-        "full_run_api": 2172.43,
-        "full_run_subscription": 47.96
+        "full_run_api": 2715.98,
+        "full_run_subscription": 59.96
       },
       {
         "name": "Gemini 4 Argon (High)",
@@ -228,8 +228,8 @@
         "color": "#1f1f1f",
         "effort": "high",
         "score": 50.2,
-        "full_run_api": 521.32,
-        "full_run_subscription": 50.86
+        "full_run_api": 573.17,
+        "full_run_subscription": 55.92
       },
       {
         "name": "Claude Fable 5.1 (High, Default Fallback)",
@@ -237,8 +237,8 @@
         "color": "#cc785c",
         "effort": "high",
         "score": 47.0,
-        "full_run_api": 5241.59,
-        "full_run_subscription": 115.71
+        "full_run_api": 6617.89,
+        "full_run_subscription": 146.09
       },
       {
         "name": "GPT-6.1 Terra (High)",
@@ -255,8 +255,8 @@
         "color": "#cc785c",
         "effort": "high",
         "score": 41.1,
-        "full_run_api": 1027.4,
-        "full_run_subscription": 22.68
+        "full_run_api": 1268.3,
+        "full_run_subscription": 28.0
       },
       {
         "name": "Grok 4.7 (High)",
@@ -264,8 +264,8 @@
         "color": "#736cd3",
         "effort": "high",
         "score": 35.0,
-        "full_run_api": 3880.88,
-        "full_run_subscription": 48.51
+        "full_run_api": 4721.61,
+        "full_run_subscription": 59.02
       },
       {
         "name": "Gemini 3.8 Flash (High)",
@@ -284,8 +284,8 @@
         "color": "#1f1f1f",
         "effort": "medium",
         "score": 51.5,
-        "full_run_api": 2434.12,
-        "full_run_subscription": 237.48
+        "full_run_api": 2638.29,
+        "full_run_subscription": 257.39
       },
       {
         "name": "Claude Opus 5.5 (Medium, Default Fallback)",
@@ -293,8 +293,8 @@
         "color": "#cc785c",
         "effort": "medium",
         "score": 48.1,
-        "full_run_api": 1626.81,
-        "full_run_subscription": 35.91
+        "full_run_api": 2031.27,
+        "full_run_subscription": 44.84
       },
       {
         "name": "GPT-6.1 Sol (Medium)",
@@ -302,8 +302,8 @@
         "color": "#1f1f1f",
         "effort": "medium",
         "score": 46.1,
-        "full_run_api": 361.37,
-        "full_run_subscription": 35.26
+        "full_run_api": 388.57,
+        "full_run_subscription": 37.91
       },
       {
         "name": "Claude Fable 5.1 (Medium, Default Fallback)",
@@ -311,8 +311,8 @@
         "color": "#cc785c",
         "effort": "medium",
         "score": 43.0,
-        "full_run_api": 3983.28,
-        "full_run_subscription": 87.93
+        "full_run_api": 4896.58,
+        "full_run_subscription": 108.09
       },
       {
         "name": "GPT-6.1 Terra (Medium)",
@@ -329,8 +329,8 @@
         "color": "#736cd3",
         "effort": "low",
         "score": 30.9,
-        "full_run_api": 1630.69,
-        "full_run_subscription": 20.38
+        "full_run_api": 2168.65,
+        "full_run_subscription": 27.11
       },
       {
         "name": "Claude Sonnet 5.5 (Medium, Default Fallback)",
@@ -338,8 +338,8 @@
         "color": "#cc785c",
         "effort": "medium",
         "score": 30.3,
-        "full_run_api": 622.28,
-        "full_run_subscription": 13.74
+        "full_run_api": 679.16,
+        "full_run_subscription": 14.99
       },
       {
         "name": "Gemini 3.8 Flash (Medium)",
@@ -356,8 +356,8 @@
         "color": "#cc785c",
         "effort": "medium",
         "score": 24.6,
-        "full_run_api": 56.36,
-        "full_run_subscription": 1.24
+        "full_run_api": 72.7,
+        "full_run_subscription": 1.6
       },
       {
         "name": "GLM-5.3 (Low)",
@@ -386,14 +386,14 @@
       "next": "Claude Sonnet 5.5 (High, Default Fallback)",
       "next_score": 41.1,
       "best_speed": {
-        "ttfat_s": 10.44,
-        "tps": 83.67,
-        "e2e_s": 16.41
+        "ttfat_s": 16.41,
+        "tps": 79.64,
+        "e2e_s": 22.69
       },
       "next_speed": {
-        "ttfat_s": 10.34,
-        "tps": 107.85,
-        "e2e_s": 14.98
+        "ttfat_s": 10.95,
+        "tps": 103.06,
+        "e2e_s": 15.8
       }
     },
     {
@@ -407,14 +407,14 @@
       "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
       "next_score": 49.6,
       "best_speed": {
-        "ttfat_s": 21.55,
-        "tps": 80.65,
-        "e2e_s": 27.75
+        "ttfat_s": 34.52,
+        "tps": 79.56,
+        "e2e_s": 40.8
       },
       "next_speed": {
-        "ttfat_s": 26.07,
-        "tps": 111.1,
-        "e2e_s": 30.57
+        "ttfat_s": 29.68,
+        "tps": 107.35,
+        "e2e_s": 34.34
       }
     },
     {
@@ -428,14 +428,14 @@
       "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
       "next_score": 54.2,
       "best_speed": {
-        "ttfat_s": 97.91,
-        "tps": 84.85,
-        "e2e_s": 103.8
+        "ttfat_s": 127.23,
+        "tps": 85.42,
+        "e2e_s": 133.08
       },
       "next_speed": {
-        "ttfat_s": 343.12,
-        "tps": 132.71,
-        "e2e_s": 346.89
+        "ttfat_s": 463.03,
+        "tps": 139.3,
+        "e2e_s": 466.62
       }
     },
     {
@@ -449,14 +449,14 @@
       "next": "GPT-6.1 Sol (High)",
       "next_score": 50.2,
       "best_speed": {
-        "ttfat_s": 4.04,
-        "tps": 55.21,
-        "e2e_s": 13.1
+        "ttfat_s": 5.07,
+        "tps": 56.92,
+        "e2e_s": 13.86
       },
       "next_speed": {
-        "ttfat_s": 31.33,
-        "tps": 50.74,
-        "e2e_s": 41.18
+        "ttfat_s": 44.36,
+        "tps": 59.92,
+        "e2e_s": 52.7
       }
     },
     {
@@ -470,14 +470,14 @@
       "next": "GPT-6.1 Sol (Xhigh)",
       "next_score": 52.3,
       "best_speed": {
-        "ttfat_s": 32.11,
-        "tps": 56.61,
-        "e2e_s": 40.94
+        "ttfat_s": 48.12,
+        "tps": 62.86,
+        "e2e_s": 56.08
       },
       "next_speed": {
-        "ttfat_s": 60.09,
-        "tps": 51.34,
-        "e2e_s": 69.83
+        "ttfat_s": 126.08,
+        "tps": 71.04,
+        "e2e_s": 133.12
       }
     },
     {
@@ -491,14 +491,14 @@
       "next": "GPT-6.1 Sol (Max)",
       "next_score": 54.5,
       "best_speed": {
-        "ttfat_s": 132.31,
-        "tps": 54.27,
-        "e2e_s": 141.52
+        "ttfat_s": 149.41,
+        "tps": 65.99,
+        "e2e_s": 156.99
       },
       "next_speed": {
-        "ttfat_s": 162.1,
-        "tps": 57.34,
-        "e2e_s": 170.82
+        "ttfat_s": 315.06,
+        "tps": 79.3,
+        "e2e_s": 321.37
       }
     }
   ],
