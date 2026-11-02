@@ -105,6 +105,20 @@
       "e2e_s": 34.34,
       "fetched": "2026-11-01"
     },
+    "gemini-4-argon": {
+      "usd": 6102.84,
+      "ttfat_s": 40.47,
+      "tps": 83.29,
+      "e2e_s": 46.47,
+      "fetched": "2026-11-02"
+    },
+    "gemini-4-carbon-medium": {
+      "usd": 5903.03,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-02"
+    },
     "gpt-5-6-terra-medium": {
       "usd": 446.53,
       "ttfat_s": 1.6,

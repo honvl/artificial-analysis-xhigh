@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-02 00:48 UTC",
+  "changed_at": "2026-11-02 11:19 UTC",
   "grades": {
     "max": [
       {
@@ -279,6 +279,15 @@
     ],
     "medium": [
       {
+        "name": "Gemini 4 Carbon (Medium)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "medium",
+        "score": 57.7,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
         "name": "GPT-6 Astra (Medium)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
@@ -358,15 +367,6 @@
         "score": 24.6,
         "full_run_api": 72.7,
         "full_run_subscription": 1.6
-      },
-      {
-        "name": "GLM-5.3 (Low)",
-        "lab": "Z AI",
-        "color": "#1c7ff8",
-        "effort": "low",
-        "score": 23.1,
-        "full_run_api": null,
-        "full_run_subscription": null
       }
     ]
   },
@@ -375,6 +375,23 @@
     600
   ],
   "step_down": [
+    {
+      "lab": "Google",
+      "levels": [
+        "medium",
+        "high"
+      ],
+      "best": "Gemini 4 Carbon (Medium)",
+      "best_score": 57.7,
+      "next": "Gemini 4 Argon (High)",
+      "next_score": 50.4,
+      "best_speed": null,
+      "next_speed": {
+        "ttfat_s": 40.47,
+        "tps": 83.29,
+        "e2e_s": 46.47
+      }
+    },
     {
       "lab": "Anthropic",
       "levels": [
