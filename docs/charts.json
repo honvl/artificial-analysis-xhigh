@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-01 00:11 UTC",
+  "changed_at": "2026-11-02 00:48 UTC",
   "grades": {
     "max": [
       {
@@ -53,8 +53,8 @@
         "color": "#1f1f1f",
         "effort": "max",
         "score": 51.0,
-        "full_run_api": 909.01,
-        "full_run_subscription": 88.68
+        "full_run_api": 972.34,
+        "full_run_subscription": 94.86
       },
       {
         "name": "Gemini 4 Argon (High)",
@@ -163,8 +163,8 @@
         "color": "#1f1f1f",
         "effort": "xhigh",
         "score": 45.0,
-        "full_run_api": 364.95,
-        "full_run_subscription": 35.6
+        "full_run_api": 400.18,
+        "full_run_subscription": 39.04
       },
       {
         "name": "Claude Haiku 5.5 (Xhigh)",
@@ -246,8 +246,8 @@
         "color": "#1f1f1f",
         "effort": "high",
         "score": 42.3,
-        "full_run_api": 238.53,
-        "full_run_subscription": 23.27
+        "full_run_api": 266.79,
+        "full_run_subscription": 26.03
       },
       {
         "name": "Claude Sonnet 5.5 (High, Default Fallback)",
@@ -320,8 +320,8 @@
         "color": "#1f1f1f",
         "effort": "medium",
         "score": 38.1,
-        "full_run_api": 175.2,
-        "full_run_subscription": 17.09
+        "full_run_api": 190.36,
+        "full_run_subscription": 18.57
       },
       {
         "name": "Grok 4.7 (Low)",
