@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-03 06:54 UTC",
+  "changed_at": "2026-11-03 23:28 UTC",
   "grades": {
     "max": [
       {
@@ -7,7 +7,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 59.4,
+        "score": 60.0,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -16,7 +16,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "max",
-        "score": 58.4,
+        "score": 59.1,
         "full_run_api": 8909.67,
         "full_run_subscription": 196.68
       },
@@ -34,7 +34,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "max",
-        "score": 54.5,
+        "score": 54.6,
         "full_run_api": 1123.97,
         "full_run_subscription": 109.66
       },
@@ -43,7 +43,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "max",
-        "score": 54.2,
+        "score": 54.5,
         "full_run_api": 7980.63,
         "full_run_subscription": 176.17
       },
@@ -52,7 +52,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "max",
-        "score": 51.0,
+        "score": 51.3,
         "full_run_api": 972.34,
         "full_run_subscription": 94.86
       },
@@ -70,7 +70,7 @@
         "lab": "Meta",
         "color": "#0089f4",
         "effort": "max",
-        "score": 49.7,
+        "score": 50.1,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -79,7 +79,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "max",
-        "score": 49.0,
+        "score": 49.2,
         "full_run_api": 13326.78,
         "full_run_subscription": 294.19
       },
@@ -88,7 +88,7 @@
         "lab": "Kimi",
         "color": "#047afe",
         "effort": null,
-        "score": 46.0,
+        "score": 46.5,
         "full_run_api": null,
         "full_run_subscription": null
       }
@@ -99,7 +99,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 59.4,
+        "score": 60.0,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -108,7 +108,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "xhigh",
-        "score": 57.0,
+        "score": 57.4,
         "full_run_api": 4765.91,
         "full_run_subscription": 105.21
       },
@@ -126,7 +126,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "xhigh",
-        "score": 52.3,
+        "score": 52.5,
         "full_run_api": 717.71,
         "full_run_subscription": 70.02
       },
@@ -144,7 +144,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "xhigh",
-        "score": 49.7,
+        "score": 50.0,
         "full_run_api": 10096.62,
         "full_run_subscription": 222.88
       },
@@ -153,7 +153,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "xhigh",
-        "score": 49.6,
+        "score": 49.9,
         "full_run_api": 2902.5,
         "full_run_subscription": 64.07
       },
@@ -162,7 +162,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "xhigh",
-        "score": 45.0,
+        "score": 45.3,
         "full_run_api": 400.18,
         "full_run_subscription": 39.04
       },
@@ -171,7 +171,7 @@
         "lab": "SpaceXAI",
         "color": "#736cd3",
         "effort": "xhigh",
-        "score": 35.3,
+        "score": 35.5,
         "full_run_api": 5784.27,
         "full_run_subscription": 72.3
       },
@@ -180,7 +180,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "xhigh",
-        "score": 34.3,
+        "score": 34.6,
         "full_run_api": 192.7,
         "full_run_subscription": 4.25
       }
@@ -191,7 +191,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 59.4,
+        "score": 60.0,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -209,7 +209,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "high",
-        "score": 51.7,
+        "score": 51.8,
         "full_run_api": 2715.98,
         "full_run_subscription": 59.96
       },
@@ -227,7 +227,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "high",
-        "score": 50.2,
+        "score": 50.3,
         "full_run_api": 573.17,
         "full_run_subscription": 55.92
       },
@@ -236,7 +236,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "high",
-        "score": 47.0,
+        "score": 47.2,
         "full_run_api": 6617.89,
         "full_run_subscription": 146.09
       },
@@ -245,7 +245,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "high",
-        "score": 42.3,
+        "score": 42.4,
         "full_run_api": 266.79,
         "full_run_subscription": 26.03
       },
@@ -254,7 +254,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "high",
-        "score": 41.1,
+        "score": 41.5,
         "full_run_api": 1268.3,
         "full_run_subscription": 28.0
       },
@@ -263,7 +263,7 @@
         "lab": "SpaceXAI",
         "color": "#736cd3",
         "effort": "high",
-        "score": 35.0,
+        "score": 35.2,
         "full_run_api": 4721.61,
         "full_run_subscription": 59.02
       },
@@ -272,7 +272,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "high",
-        "score": 30.5,
+        "score": 30.8,
         "full_run_api": null,
         "full_run_subscription": null
       }
@@ -283,7 +283,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "medium",
-        "score": 57.7,
+        "score": 58.3,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -292,7 +292,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "medium",
-        "score": 51.5,
+        "score": 51.6,
         "full_run_api": 2638.29,
         "full_run_subscription": 257.39
       },
@@ -301,7 +301,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "medium",
-        "score": 48.1,
+        "score": 48.2,
         "full_run_api": 2031.27,
         "full_run_subscription": 44.84
       },
@@ -310,7 +310,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "medium",
-        "score": 46.1,
+        "score": 46.3,
         "full_run_api": 388.57,
         "full_run_subscription": 37.91
       },
@@ -319,7 +319,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "medium",
-        "score": 43.0,
+        "score": 43.2,
         "full_run_api": 4896.58,
         "full_run_subscription": 108.09
       },
@@ -328,7 +328,7 @@
         "lab": "OpenAI",
         "color": "#1f1f1f",
         "effort": "medium",
-        "score": 38.1,
+        "score": 38.2,
         "full_run_api": 190.36,
         "full_run_subscription": 18.57
       },
@@ -337,7 +337,7 @@
         "lab": "SpaceXAI",
         "color": "#736cd3",
         "effort": "low",
-        "score": 30.9,
+        "score": 31.1,
         "full_run_api": 2168.65,
         "full_run_subscription": 27.11
       },
@@ -346,7 +346,7 @@
         "lab": "Anthropic",
         "color": "#cc785c",
         "effort": "medium",
-        "score": 30.3,
+        "score": 30.8,
         "full_run_api": 679.16,
         "full_run_subscription": 14.99
       },
@@ -355,7 +355,7 @@
         "lab": "Google",
         "color": "#34a853",
         "effort": "medium",
-        "score": 30.0,
+        "score": 30.1,
         "full_run_api": null,
         "full_run_subscription": null
       },
@@ -382,7 +382,7 @@
         "high"
       ],
       "best": "Gemini 4 Carbon (Medium)",
-      "best_score": 57.7,
+      "best_score": 58.3,
       "next": "Gemini 4 Argon (High)",
       "next_score": 50.4,
       "best_speed": null,
@@ -399,9 +399,9 @@
         "high"
       ],
       "best": "Claude Opus 5.5 (Medium, Default Fallback)",
-      "best_score": 48.1,
+      "best_score": 48.2,
       "next": "Claude Sonnet 5.5 (High, Default Fallback)",
-      "next_score": 41.1,
+      "next_score": 41.5,
       "best_speed": {
         "ttfat_s": 16.41,
         "tps": 79.64,
@@ -420,9 +420,9 @@
         "xhigh"
       ],
       "best": "Claude Opus 5.5 (High, Default Fallback)",
-      "best_score": 51.7,
+      "best_score": 51.8,
       "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
-      "next_score": 49.6,
+      "next_score": 49.9,
       "best_speed": {
         "ttfat_s": 34.52,
         "tps": 79.56,
@@ -441,9 +441,9 @@
         "max"
       ],
       "best": "Claude Opus 5.5 (Xhigh, Default Fallback)",
-      "best_score": 57.0,
+      "best_score": 57.4,
       "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
-      "next_score": 54.2,
+      "next_score": 54.5,
       "best_speed": {
         "ttfat_s": 127.23,
         "tps": 85.42,
@@ -462,9 +462,9 @@
         "high"
       ],
       "best": "GPT-6 Astra (Medium)",
-      "best_score": 51.5,
+      "best_score": 51.6,
       "next": "GPT-6.1 Sol (High)",
-      "next_score": 50.2,
+      "next_score": 50.3,
       "best_speed": {
         "ttfat_s": 5.07,
         "tps": 56.92,
@@ -485,7 +485,7 @@
       "best": "GPT-6 Astra (High)",
       "best_score": 54.8,
       "next": "GPT-6.1 Sol (Xhigh)",
-      "next_score": 52.3,
+      "next_score": 52.5,
       "best_speed": {
         "ttfat_s": 48.12,
         "tps": 62.86,
@@ -506,7 +506,7 @@
       "best": "GPT-6 Astra (Xhigh)",
       "best_score": 55.3,
       "next": "GPT-6.1 Sol (Max)",
-      "next_score": 54.5,
+      "next_score": 54.6,
       "best_speed": {
         "ttfat_s": 149.41,
         "tps": 65.99,
