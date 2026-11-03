@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-02 11:19 UTC",
+  "changed_at": "2026-11-03 06:54 UTC",
   "grades": {
     "max": [
       {
@@ -167,6 +167,15 @@
         "full_run_subscription": 39.04
       },
       {
+        "name": "Grok 4.7 (Xhigh)",
+        "lab": "SpaceXAI",
+        "color": "#736cd3",
+        "effort": "xhigh",
+        "score": 35.3,
+        "full_run_api": 5784.27,
+        "full_run_subscription": 72.3
+      },
+      {
         "name": "Claude Haiku 5.5 (Xhigh)",
         "lab": "Anthropic",
         "color": "#cc785c",
@@ -174,15 +183,6 @@
         "score": 34.3,
         "full_run_api": 192.7,
         "full_run_subscription": 4.25
-      },
-      {
-        "name": "Grok 4.7 (Xhigh)",
-        "lab": "SpaceXAI",
-        "color": "#736cd3",
-        "effort": "xhigh",
-        "score": 34.3,
-        "full_run_api": 5784.27,
-        "full_run_subscription": 72.3
       }
     ],
     "high": [
