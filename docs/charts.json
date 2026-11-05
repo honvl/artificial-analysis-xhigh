@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-03 23:28 UTC",
+  "changed_at": "2026-11-05 06:55 UTC",
   "grades": {
     "max": [
       {
@@ -167,6 +167,15 @@
         "full_run_subscription": 39.04
       },
       {
+        "name": "Muse Wonder (High)",
+        "lab": "Meta",
+        "color": "#0089f4",
+        "effort": "high",
+        "score": 40.5,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
         "name": "Grok 4.7 (Xhigh)",
         "lab": "SpaceXAI",
         "color": "#736cd3",
@@ -174,15 +183,6 @@
         "score": 35.5,
         "full_run_api": 5784.27,
         "full_run_subscription": 72.3
-      },
-      {
-        "name": "Claude Haiku 5.5 (Xhigh)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "xhigh",
-        "score": 34.6,
-        "full_run_api": 192.7,
-        "full_run_subscription": 4.25
       }
     ],
     "high": [
@@ -259,6 +259,15 @@
         "full_run_subscription": 28.0
       },
       {
+        "name": "Muse Wonder (High)",
+        "lab": "Meta",
+        "color": "#0089f4",
+        "effort": "high",
+        "score": 40.5,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
         "name": "Grok 4.7 (High)",
         "lab": "SpaceXAI",
         "color": "#736cd3",
@@ -266,15 +275,6 @@
         "score": 35.2,
         "full_run_api": 4721.61,
         "full_run_subscription": 59.02
-      },
-      {
-        "name": "Gemini 3.8 Flash (High)",
-        "lab": "Google",
-        "color": "#34a853",
-        "effort": "high",
-        "score": 30.8,
-        "full_run_api": null,
-        "full_run_subscription": null
       }
     ],
     "medium": [
