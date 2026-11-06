@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-05 06:55 UTC",
+  "changed_at": "2026-11-06 16:49 UTC",
   "grades": {
     "max": [
       {
@@ -581,16 +581,6 @@
       "wall_sec": 1472.5
     },
     {
-      "label": "Mistral Vibe - Mistral Large 4 (High)",
-      "agent": "Mistral Vibe",
-      "model": "Mistral Large 4 (High)",
-      "lab": "Mistral",
-      "color": "#f32e02",
-      "score": 48.3,
-      "cost_usd": 1.26,
-      "wall_sec": 2903.9
-    },
-    {
       "label": "Grok Build - Grok 4.7 (Xhigh)",
       "agent": "Grok Build",
       "model": "Grok 4.7 (Xhigh)",
@@ -611,6 +601,16 @@
       "wall_sec": 1398.5
     },
     {
+      "label": "Mistral Vibe - Mistral Large 4 (High)",
+      "agent": "Mistral Vibe",
+      "model": "Mistral Large 4 (High)",
+      "lab": "Mistral",
+      "color": "#f32e02",
+      "score": 35.4,
+      "cost_usd": 0.78,
+      "wall_sec": 2330.1
+    },
+    {
       "label": "Muse Code - Muse Spark Open (Xhigh)",
       "agent": "Muse Code",
       "model": "Muse Spark Open (Xhigh)",
@@ -621,5 +621,5 @@
       "wall_sec": 1558.9
     }
   ],
-  "coding_changed_at": "2026-10-29 18:31 UTC"
+  "coding_changed_at": "2026-11-06 16:49 UTC"
 }
