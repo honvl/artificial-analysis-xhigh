@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-06 16:49 UTC",
+  "changed_at": "2026-11-08 00:43 UTC",
   "grades": {
     "max": [
       {
@@ -181,8 +181,8 @@
         "color": "#736cd3",
         "effort": "xhigh",
         "score": 35.5,
-        "full_run_api": 5784.27,
-        "full_run_subscription": 72.3
+        "full_run_api": 5905.5,
+        "full_run_subscription": 73.82
       }
     ],
     "high": [
@@ -402,16 +402,8 @@
       "best_score": 48.2,
       "next": "Claude Sonnet 5.5 (High, Default Fallback)",
       "next_score": 41.5,
-      "best_speed": {
-        "ttfat_s": 16.41,
-        "tps": 79.64,
-        "e2e_s": 22.69
-      },
-      "next_speed": {
-        "ttfat_s": 10.95,
-        "tps": 103.06,
-        "e2e_s": 15.8
-      }
+      "best_speed": null,
+      "next_speed": null
     },
     {
       "lab": "Anthropic",
@@ -423,16 +415,8 @@
       "best_score": 51.8,
       "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
       "next_score": 49.9,
-      "best_speed": {
-        "ttfat_s": 34.52,
-        "tps": 79.56,
-        "e2e_s": 40.8
-      },
-      "next_speed": {
-        "ttfat_s": 29.68,
-        "tps": 107.35,
-        "e2e_s": 34.34
-      }
+      "best_speed": null,
+      "next_speed": null
     },
     {
       "lab": "Anthropic",
@@ -444,16 +428,8 @@
       "best_score": 57.4,
       "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
       "next_score": 54.5,
-      "best_speed": {
-        "ttfat_s": 127.23,
-        "tps": 85.42,
-        "e2e_s": 133.08
-      },
-      "next_speed": {
-        "ttfat_s": 463.03,
-        "tps": 139.3,
-        "e2e_s": 466.62
-      }
+      "best_speed": null,
+      "next_speed": null
     },
     {
       "lab": "OpenAI",
@@ -465,16 +441,8 @@
       "best_score": 51.6,
       "next": "GPT-6.1 Sol (High)",
       "next_score": 50.3,
-      "best_speed": {
-        "ttfat_s": 5.07,
-        "tps": 56.92,
-        "e2e_s": 13.86
-      },
-      "next_speed": {
-        "ttfat_s": 44.36,
-        "tps": 59.92,
-        "e2e_s": 52.7
-      }
+      "best_speed": null,
+      "next_speed": null
     },
     {
       "lab": "OpenAI",
@@ -486,16 +454,8 @@
       "best_score": 54.8,
       "next": "GPT-6.1 Sol (Xhigh)",
       "next_score": 52.5,
-      "best_speed": {
-        "ttfat_s": 48.12,
-        "tps": 62.86,
-        "e2e_s": 56.08
-      },
-      "next_speed": {
-        "ttfat_s": 126.08,
-        "tps": 71.04,
-        "e2e_s": 133.12
-      }
+      "best_speed": null,
+      "next_speed": null
     },
     {
       "lab": "OpenAI",
@@ -507,16 +467,8 @@
       "best_score": 55.3,
       "next": "GPT-6.1 Sol (Max)",
       "next_score": 54.6,
-      "best_speed": {
-        "ttfat_s": 149.41,
-        "tps": 65.99,
-        "e2e_s": 156.99
-      },
-      "next_speed": {
-        "ttfat_s": 315.06,
-        "tps": 79.3,
-        "e2e_s": 321.37
-      }
+      "best_speed": null,
+      "next_speed": null
     }
   ],
   "coding_agents": [

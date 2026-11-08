@@ -2,31 +2,31 @@
   "runs": {
     "claude-fable-5-1": {
       "usd": 13326.78,
-      "ttfat_s": 238.66,
-      "tps": 68.67,
-      "e2e_s": 245.94,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-fable-5-1-high": {
       "usd": 6617.89,
-      "ttfat_s": 14.62,
-      "tps": 57.12,
-      "e2e_s": 23.37,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-fable-5-1-medium": {
       "usd": 4896.58,
-      "ttfat_s": 3.25,
-      "tps": 54.79,
-      "e2e_s": 12.38,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-fable-5-1-xhigh": {
       "usd": 10096.62,
-      "ttfat_s": 73.47,
-      "tps": 62.17,
-      "e2e_s": 81.51,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-haiku-5-5-high": {
       "usd": 94.07,
@@ -37,10 +37,10 @@
     },
     "claude-haiku-5-5-medium": {
       "usd": 72.7,
-      "ttfat_s": 11.41,
-      "tps": 169.41,
-      "e2e_s": 14.36,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-haiku-5-5-xhigh": {
       "usd": 192.7,
@@ -51,59 +51,59 @@
     },
     "claude-opus-5-5": {
       "usd": 8909.67,
-      "ttfat_s": 729.62,
-      "tps": 96.63,
-      "e2e_s": 734.79,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-opus-5-5-high": {
       "usd": 2715.98,
-      "ttfat_s": 34.52,
-      "tps": 79.56,
-      "e2e_s": 40.8,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-opus-5-5-medium": {
       "usd": 2031.27,
-      "ttfat_s": 16.41,
-      "tps": 79.64,
-      "e2e_s": 22.69,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-opus-5-5-xhigh": {
       "usd": 4765.91,
-      "ttfat_s": 127.23,
-      "tps": 85.42,
-      "e2e_s": 133.08,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-sonnet-5-5": {
       "usd": 7980.63,
-      "ttfat_s": 463.03,
-      "tps": 139.3,
-      "e2e_s": 466.62,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-sonnet-5-5-high": {
       "usd": 1268.3,
-      "ttfat_s": 10.95,
-      "tps": 103.06,
-      "e2e_s": 15.8,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-sonnet-5-5-medium": {
       "usd": 679.16,
-      "ttfat_s": 3.75,
-      "tps": 100.88,
-      "e2e_s": 8.71,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "claude-sonnet-5-5-xhigh": {
       "usd": 2902.5,
-      "ttfat_s": 29.68,
-      "tps": 107.35,
-      "e2e_s": 34.34,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gemini-4-argon": {
       "usd": 6102.84,
@@ -128,31 +128,31 @@
     },
     "gpt-6-1-sol": {
       "usd": 1123.97,
-      "ttfat_s": 315.06,
-      "tps": 79.3,
-      "e2e_s": 321.37,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-1-sol-high": {
       "usd": 573.17,
-      "ttfat_s": 44.36,
-      "tps": 59.92,
-      "e2e_s": 52.7,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-1-sol-medium": {
       "usd": 388.57,
-      "ttfat_s": 4.99,
-      "tps": 49.76,
-      "e2e_s": 15.04,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-1-sol-xhigh": {
       "usd": 717.71,
-      "ttfat_s": 126.08,
-      "tps": 71.04,
-      "e2e_s": 133.12,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-1-terra": {
       "usd": 972.34,
@@ -184,52 +184,52 @@
     },
     "gpt-6-astra": {
       "usd": 5661.18,
-      "ttfat_s": 270.03,
-      "tps": 78.2,
-      "e2e_s": 276.42,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-astra-high": {
       "usd": 3204.0,
-      "ttfat_s": 48.12,
-      "tps": 62.86,
-      "e2e_s": 56.08,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-astra-medium": {
       "usd": 2638.29,
-      "ttfat_s": 5.07,
-      "tps": 56.92,
-      "e2e_s": 13.86,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "gpt-6-astra-xhigh": {
       "usd": 3746.22,
-      "ttfat_s": 149.41,
-      "tps": 65.99,
-      "e2e_s": 156.99,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "grok-4-7": {
-      "usd": 5784.27,
-      "ttfat_s": 42.06,
-      "tps": 86.82,
-      "e2e_s": 47.81,
-      "fetched": "2026-11-01"
+      "usd": 5905.5,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "grok-4-7-high": {
       "usd": 4721.61,
-      "ttfat_s": 32.59,
-      "tps": 78.49,
-      "e2e_s": 38.96,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     },
     "grok-4-7-low": {
       "usd": 2168.65,
-      "ttfat_s": 5.74,
-      "tps": 72.1,
-      "e2e_s": 12.68,
-      "fetched": "2026-11-01"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-08"
     }
   }
 }
