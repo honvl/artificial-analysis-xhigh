@@ -106,18 +106,18 @@
       "fetched": "2026-11-08"
     },
     "gemini-4-argon": {
-      "usd": 6102.84,
-      "ttfat_s": 40.47,
-      "tps": 83.29,
-      "e2e_s": 46.47,
-      "fetched": "2026-11-02"
+      "usd": 7620.22,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-09"
     },
     "gemini-4-carbon-medium": {
       "usd": 5903.03,
       "ttfat_s": null,
       "tps": null,
       "e2e_s": null,
-      "fetched": "2026-11-02"
+      "fetched": "2026-11-09"
     },
     "gpt-5-6-terra-medium": {
       "usd": 446.53,
@@ -156,31 +156,31 @@
     },
     "gpt-6-1-terra": {
       "usd": 972.34,
-      "ttfat_s": 273.04,
-      "tps": 110.03,
-      "e2e_s": 277.58,
-      "fetched": "2026-11-02"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-09"
     },
     "gpt-6-1-terra-high": {
       "usd": 266.79,
-      "ttfat_s": 20.26,
-      "tps": 93.21,
-      "e2e_s": 25.62,
-      "fetched": "2026-11-02"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-09"
     },
     "gpt-6-1-terra-medium": {
       "usd": 190.36,
-      "ttfat_s": 5.83,
-      "tps": 90.95,
-      "e2e_s": 11.33,
-      "fetched": "2026-11-02"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-09"
     },
     "gpt-6-1-terra-xhigh": {
       "usd": 400.18,
-      "ttfat_s": 68.83,
-      "tps": 97.9,
-      "e2e_s": 73.94,
-      "fetched": "2026-11-02"
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-09"
     },
     "gpt-6-astra": {
       "usd": 5661.18,

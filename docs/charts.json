@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-08 00:43 UTC",
+  "changed_at": "2026-11-09 06:44 UTC",
   "grades": {
     "max": [
       {
@@ -386,11 +386,7 @@
       "next": "Gemini 4 Argon (High)",
       "next_score": 50.4,
       "best_speed": null,
-      "next_speed": {
-        "ttfat_s": 40.47,
-        "tps": 83.29,
-        "e2e_s": 46.47
-      }
+      "next_speed": null
     },
     {
       "lab": "Anthropic",
