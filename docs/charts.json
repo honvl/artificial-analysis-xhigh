@@ -1,7 +1,16 @@
 {
-  "changed_at": "2026-11-09 06:44 UTC",
+  "changed_at": "2026-11-09 19:52 UTC",
   "grades": {
     "max": [
+      {
+        "name": "Claude Fable 5.2 (Max, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "max",
+        "score": 64.6,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
       {
         "name": "Gemini 4 Carbon (High)",
         "lab": "Google",
@@ -75,15 +84,6 @@
         "full_run_subscription": null
       },
       {
-        "name": "Claude Fable 5.1 (Max, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "max",
-        "score": 49.2,
-        "full_run_api": 13326.78,
-        "full_run_subscription": 294.19
-      },
-      {
         "name": "Kimi K3.1 Pro",
         "lab": "Kimi",
         "color": "#047afe",
@@ -94,6 +94,15 @@
       }
     ],
     "xhigh": [
+      {
+        "name": "Claude Fable 5.2 (Xhigh, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "xhigh",
+        "score": 62.2,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
       {
         "name": "Gemini 4 Carbon (High)",
         "lab": "Google",
@@ -140,15 +149,6 @@
         "full_run_subscription": null
       },
       {
-        "name": "Claude Fable 5.1 (Xhigh, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "xhigh",
-        "score": 50.0,
-        "full_run_api": 10096.62,
-        "full_run_subscription": 222.88
-      },
-      {
         "name": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
         "lab": "Anthropic",
         "color": "#cc785c",
@@ -186,6 +186,15 @@
       }
     ],
     "high": [
+      {
+        "name": "Claude Fable 5.2 (High, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "high",
+        "score": 61.8,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
       {
         "name": "Gemini 4 Carbon (High)",
         "lab": "Google",
@@ -230,15 +239,6 @@
         "score": 50.3,
         "full_run_api": 573.17,
         "full_run_subscription": 55.92
-      },
-      {
-        "name": "Claude Fable 5.1 (High, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "high",
-        "score": 47.2,
-        "full_run_api": 6617.89,
-        "full_run_subscription": 146.09
       },
       {
         "name": "GPT-6.1 Terra (High)",
@@ -288,6 +288,15 @@
         "full_run_subscription": null
       },
       {
+        "name": "Claude Fable 5.2 (Medium, Default Fallback)",
+        "lab": "Anthropic",
+        "color": "#cc785c",
+        "effort": "medium",
+        "score": 56.4,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
         "name": "GPT-6 Astra (Medium)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
@@ -313,15 +322,6 @@
         "score": 46.3,
         "full_run_api": 388.57,
         "full_run_subscription": 37.91
-      },
-      {
-        "name": "Claude Fable 5.1 (Medium, Default Fallback)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "medium",
-        "score": 43.2,
-        "full_run_api": 4896.58,
-        "full_run_subscription": 108.09
       },
       {
         "name": "GPT-6.1 Terra (Medium)",
@@ -376,28 +376,15 @@
   ],
   "step_down": [
     {
-      "lab": "Google",
-      "levels": [
-        "medium",
-        "high"
-      ],
-      "best": "Gemini 4 Carbon (Medium)",
-      "best_score": 58.3,
-      "next": "Gemini 4 Argon (High)",
-      "next_score": 50.4,
-      "best_speed": null,
-      "next_speed": null
-    },
-    {
       "lab": "Anthropic",
       "levels": [
         "medium",
         "high"
       ],
-      "best": "Claude Opus 5.5 (Medium, Default Fallback)",
-      "best_score": 48.2,
-      "next": "Claude Sonnet 5.5 (High, Default Fallback)",
-      "next_score": 41.5,
+      "best": "Claude Fable 5.2 (Medium, Default Fallback)",
+      "best_score": 56.4,
+      "next": "Claude Opus 5.5 (High, Default Fallback)",
+      "next_score": 51.8,
       "best_speed": null,
       "next_speed": null
     },
@@ -407,10 +394,10 @@
         "high",
         "xhigh"
       ],
-      "best": "Claude Opus 5.5 (High, Default Fallback)",
-      "best_score": 51.8,
-      "next": "Claude Sonnet 5.5 (Xhigh, Default Fallback)",
-      "next_score": 49.9,
+      "best": "Claude Fable 5.2 (High, Default Fallback)",
+      "best_score": 61.8,
+      "next": "Claude Opus 5.5 (Xhigh, Default Fallback)",
+      "next_score": 57.4,
       "best_speed": null,
       "next_speed": null
     },
@@ -420,10 +407,23 @@
         "xhigh",
         "max"
       ],
-      "best": "Claude Opus 5.5 (Xhigh, Default Fallback)",
-      "best_score": 57.4,
-      "next": "Claude Sonnet 5.5 (Max, Default Fallback)",
-      "next_score": 54.5,
+      "best": "Claude Fable 5.2 (Xhigh, Default Fallback)",
+      "best_score": 62.2,
+      "next": "Claude Opus 5.5 (Max, Default Fallback)",
+      "next_score": 59.1,
+      "best_speed": null,
+      "next_speed": null
+    },
+    {
+      "lab": "Google",
+      "levels": [
+        "medium",
+        "high"
+      ],
+      "best": "Gemini 4 Carbon (Medium)",
+      "best_score": 58.3,
+      "next": "Gemini 4 Argon (High)",
+      "next_score": 50.4,
       "best_speed": null,
       "next_speed": null
     },
