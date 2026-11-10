@@ -28,6 +28,34 @@
       "e2e_s": null,
       "fetched": "2026-11-08"
     },
+    "claude-fable-5-2": {
+      "usd": 22191.42,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-10"
+    },
+    "claude-fable-5-2-high": {
+      "usd": 7105.77,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-10"
+    },
+    "claude-fable-5-2-medium": {
+      "usd": 3359.66,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-10"
+    },
+    "claude-fable-5-2-xhigh": {
+      "usd": 11741.62,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-10"
+    },
     "claude-haiku-5-5-high": {
       "usd": 94.07,
       "ttfat_s": 17.81,

@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-09 19:52 UTC",
+  "changed_at": "2026-11-10 03:37 UTC",
   "grades": {
     "max": [
       {
@@ -8,8 +8,8 @@
         "color": "#cc785c",
         "effort": "max",
         "score": 64.6,
-        "full_run_api": null,
-        "full_run_subscription": null
+        "full_run_api": 22191.42,
+        "full_run_subscription": 489.88
       },
       {
         "name": "Gemini 4 Carbon (High)",
@@ -100,8 +100,8 @@
         "color": "#cc785c",
         "effort": "xhigh",
         "score": 62.2,
-        "full_run_api": null,
-        "full_run_subscription": null
+        "full_run_api": 11741.62,
+        "full_run_subscription": 259.2
       },
       {
         "name": "Gemini 4 Carbon (High)",
@@ -192,8 +192,8 @@
         "color": "#cc785c",
         "effort": "high",
         "score": 61.8,
-        "full_run_api": null,
-        "full_run_subscription": null
+        "full_run_api": 7105.77,
+        "full_run_subscription": 156.86
       },
       {
         "name": "Gemini 4 Carbon (High)",
@@ -293,8 +293,8 @@
         "color": "#cc785c",
         "effort": "medium",
         "score": 56.4,
-        "full_run_api": null,
-        "full_run_subscription": null
+        "full_run_api": 3359.66,
+        "full_run_subscription": 74.16
       },
       {
         "name": "GPT-6 Astra (Medium)",
