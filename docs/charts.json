@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-12 00:47 UTC",
+  "changed_at": "2026-11-12 19:59 UTC",
   "grades": {
     "max": [
       {
@@ -57,6 +57,15 @@
         "full_run_subscription": 176.17
       },
       {
+        "name": "Gemini 4 Hydrogen (Xhigh)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "xhigh",
+        "score": 53.9,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
         "name": "GPT-6.1 Terra (Max)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
@@ -80,15 +89,6 @@
         "color": "#0089f4",
         "effort": "max",
         "score": 50.1,
-        "full_run_api": null,
-        "full_run_subscription": null
-      },
-      {
-        "name": "Kimi K3.1 Pro",
-        "lab": "Kimi",
-        "color": "#047afe",
-        "effort": null,
-        "score": 46.5,
         "full_run_api": null,
         "full_run_subscription": null
       }
@@ -129,6 +129,15 @@
         "score": 55.3,
         "full_run_api": 3746.22,
         "full_run_subscription": 365.48
+      },
+      {
+        "name": "Gemini 4 Hydrogen (Xhigh)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "xhigh",
+        "score": 53.9,
+        "full_run_api": null,
+        "full_run_subscription": null
       },
       {
         "name": "GPT-6.1 Sol (Xhigh)",
@@ -174,15 +183,6 @@
         "score": 40.5,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "Grok 4.7 (Xhigh)",
-        "lab": "SpaceXAI",
-        "color": "#736cd3",
-        "effort": "xhigh",
-        "score": 35.5,
-        "full_run_api": 5905.5,
-        "full_run_subscription": 73.82
       }
     ],
     "high": [
@@ -221,6 +221,15 @@
         "score": 51.8,
         "full_run_api": 2715.98,
         "full_run_subscription": 59.96
+      },
+      {
+        "name": "Gemini 4 Hydrogen (High)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "high",
+        "score": 50.8,
+        "full_run_api": null,
+        "full_run_subscription": null
       },
       {
         "name": "Gemini 4 Argon (High)",
@@ -266,15 +275,6 @@
         "score": 40.5,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "Grok 4.7 (High)",
-        "lab": "SpaceXAI",
-        "color": "#736cd3",
-        "effort": "high",
-        "score": 35.2,
-        "full_run_api": 4721.61,
-        "full_run_subscription": 59.02
       }
     ],
     "medium": [
@@ -324,6 +324,15 @@
         "full_run_subscription": 37.91
       },
       {
+        "name": "Gemini 4 Hydrogen (Medium)",
+        "lab": "Google",
+        "color": "#34a853",
+        "effort": "medium",
+        "score": 41.2,
+        "full_run_api": null,
+        "full_run_subscription": null
+      },
+      {
         "name": "GPT-6.1 Terra (Medium)",
         "lab": "OpenAI",
         "color": "#1f1f1f",
@@ -358,15 +367,6 @@
         "score": 30.1,
         "full_run_api": null,
         "full_run_subscription": null
-      },
-      {
-        "name": "Claude Haiku 5.5 (Medium)",
-        "lab": "Anthropic",
-        "color": "#cc785c",
-        "effort": "medium",
-        "score": 24.6,
-        "full_run_api": 72.7,
-        "full_run_subscription": 1.6
       }
     ]
   },
@@ -422,8 +422,21 @@
       ],
       "best": "Gemini 4 Carbon (Medium)",
       "best_score": 58.3,
-      "next": "Gemini 4 Argon (High)",
-      "next_score": 50.4,
+      "next": "Gemini 4 Hydrogen (High)",
+      "next_score": 50.8,
+      "best_speed": null,
+      "next_speed": null
+    },
+    {
+      "lab": "Google",
+      "levels": [
+        "high",
+        "xhigh"
+      ],
+      "best": "Gemini 4 Carbon (High)",
+      "best_score": 60.0,
+      "next": "Gemini 4 Hydrogen (Xhigh)",
+      "next_score": 53.9,
       "best_speed": null,
       "next_speed": null
     },

@@ -140,12 +140,33 @@
       "e2e_s": null,
       "fetched": "2026-11-09"
     },
+    "gemini-4-carbon": {
+      "usd": 8239.69,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-12"
+    },
     "gemini-4-carbon-medium": {
       "usd": 5903.03,
       "ttfat_s": null,
       "tps": null,
       "e2e_s": null,
       "fetched": "2026-11-09"
+    },
+    "gemini-4-hydrogen": {
+      "usd": 4085.72,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-12"
+    },
+    "gemini-4-hydrogen-high": {
+      "usd": 1768.4,
+      "ttfat_s": null,
+      "tps": null,
+      "e2e_s": null,
+      "fetched": "2026-11-12"
     },
     "gpt-5-6-terra-medium": {
       "usd": 446.53,
