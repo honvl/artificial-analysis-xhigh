@@ -1,5 +1,5 @@
 {
-  "changed_at": "2026-11-12 19:59 UTC",
+  "changed_at": "2026-11-13 11:07 UTC",
   "grades": {
     "max": [
       {
@@ -482,16 +482,6 @@
   ],
   "coding_agents": [
     {
-      "label": "Claude Code - Claude Opus 5.5 (Max, Default Fallback)",
-      "agent": "Claude Code",
-      "model": "Claude Opus 5.5 (Max, Default Fallback)",
-      "lab": "Anthropic",
-      "color": "#cc785c",
-      "score": 61.7,
-      "cost_usd": 11.42,
-      "wall_sec": 3661.2
-    },
-    {
       "label": "Antigravity CLI - Gemini 4 Carbon (High)",
       "agent": "Antigravity CLI",
       "model": "Gemini 4 Carbon (High)",
@@ -502,14 +492,14 @@
       "wall_sec": 1789.9
     },
     {
-      "label": "Claude Code - Claude Sonnet 5.5 (Max, Default Fallback)",
-      "agent": "Claude Code",
-      "model": "Claude Sonnet 5.5 (Max, Default Fallback)",
-      "lab": "Anthropic",
-      "color": "#cc785c",
-      "score": 59.3,
-      "cost_usd": 13.3,
-      "wall_sec": 4784.6
+      "label": "Muse Code - Muse Wonder Full (Max)",
+      "agent": "Muse Code",
+      "model": "Muse Wonder Full (Max)",
+      "lab": "Meta",
+      "color": "#0089f4",
+      "score": 58.9,
+      "cost_usd": null,
+      "wall_sec": 2096.3
     },
     {
       "label": "Codex - GPT-6 Astra (Max)",
@@ -522,24 +512,14 @@
       "wall_sec": 1486.7
     },
     {
-      "label": "Codex - GPT-6.1 Sol (Max)",
-      "agent": "Codex",
-      "model": "GPT-6.1 Sol (Max)",
-      "lab": "OpenAI",
-      "color": "#1f1f1f",
-      "score": 54.1,
-      "cost_usd": 1.5,
-      "wall_sec": 1421.4
-    },
-    {
-      "label": "Muse Code - Muse Wonder (Max)",
-      "agent": "Muse Code",
-      "model": "Muse Wonder (Max)",
-      "lab": "Meta",
-      "color": "#0089f4",
-      "score": 52.0,
-      "cost_usd": 8.05,
-      "wall_sec": 1472.5
+      "label": "Opencode - GLM-5.3 (Max)",
+      "agent": "Opencode",
+      "model": "GLM-5.3 (Max)",
+      "lab": "Z AI",
+      "color": "#1c7ff8",
+      "score": 48.9,
+      "cost_usd": 5.23,
+      "wall_sec": 3369.7
     },
     {
       "label": "Mistral Vibe - Mistral Large 4 (High)",
@@ -582,5 +562,5 @@
       "wall_sec": 1558.9
     }
   ],
-  "coding_changed_at": "2026-11-12 00:47 UTC"
+  "coding_changed_at": "2026-11-13 11:07 UTC"
 }
